@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Recursive } from "next/font/google";
 import "./globals.css";
+import MarginOfBody from "@/components/MarginOfBody";
 
 
 const recursive= Recursive({ subsets: ["latin"] });
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={recursive.className}>
       
-        {children}</body>
+        <MarginOfBody>
+        {children}
+        </MarginOfBody>
+        </body>
     </html>
   );
 }
