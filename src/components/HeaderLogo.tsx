@@ -10,9 +10,10 @@ function HeaderLogo() {
             <p className='font-semibold text-white text-2xl ml-2.5'>
                 Finance
             </p>
+            {/* rpc feature allows sharing of the api spevification between server and the client */}
+            
         </div>
     </Link>
   )
 }
-
 export default HeaderLogo

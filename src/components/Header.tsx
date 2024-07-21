@@ -1,5 +1,6 @@
 import React from 'react'
 import HeaderLogo from './HeaderLogo'
+import Navbar from './Navbar'
 
 function Header() {
   return (
@@ -9,6 +10,7 @@ function Header() {
             <div className='w-full flex items-center justify-between mb-14 '>
                 <div className='flex items-center lg:gap-16'>
                     <HeaderLogo/>
+                    <Navbar/>
                      </div>
             </div>
         </div>
