@@ -19,3 +19,16 @@ export default async function dbConnect():Promise<void> {
         process.exit(1)
     }
 }
+
+export async function dbDisconnect():Promise<void> {
+    if (connection.isConnected) {
+        console.log("Already connected to db");
+        return
+    }
+    try {
+        const db=await mongoose.disconnect();
+    } catch (error) {
+        console.error("db connection failed",error);
+        process.exit(1)
+    }
+}

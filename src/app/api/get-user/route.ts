@@ -1,5 +1,3 @@
-
-
 import dbConnect from "@/lib/dbconnects";
 import userModel from "@/model/user.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -30,7 +28,7 @@ export async function GET(req: Request) {
     });
 
     if (existingUser && existingUserByEmail) {
-      return Response.redirect(`${process.env.KINDE_SITE_URL}/dashboard`)
+      return Response.redirect(`${process.env.KINDE_SITE_URL}/dashboard`);
     }
     const client = new userModel({
       userName: user?.given_name! + "" + user?.family_name,
@@ -40,11 +38,13 @@ export async function GET(req: Request) {
 
     await client.save();
 
-    const response = 
-    Response.redirect(`${process.env.KINDE_SITE_URL}/dashboard`)
+    
 
-  
-      return response;
+    const response = Response.redirect(
+      `${process.env.KINDE_SITE_URL}/dashboard`
+    );
+
+    return response;
   } catch (error) {
     console.error(
       "Error while connecting to the database or saving user:",

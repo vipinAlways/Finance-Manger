@@ -1,10 +1,15 @@
 import mongoose, { Schema } from "mongoose";
+import { Transaction, transactionSchema } from "./transaction.model";
+
+
+
 
 
 export interface User extends Document {
   userName: string;
   email: string;
   id:string
+  transactions:Transaction[],
 }
 
 const userSchema:Schema<User> = new mongoose.Schema({
@@ -13,6 +18,7 @@ const userSchema:Schema<User> = new mongoose.Schema({
     type: String,
     require: [true, "User name is required"],
     trim: true,
+    
   },
 
   email: {
@@ -21,9 +27,12 @@ const userSchema:Schema<User> = new mongoose.Schema({
     unique: true,
   
   },
+  transactions:{type:[transactionSchema],ref:"transactions" }
 });
 
-const userModel = (mongoose.models.User as mongoose.Model<User>)||mongoose.model<User>("User" , userSchema)
+const userModel = (mongoose.models.User as mongoose.Model<User>)||mongoose.model<User>("user" , userSchema)
 
 
 export default userModel;
+
+
