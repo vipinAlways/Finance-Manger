@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
   if (user) {
     try {
-      const { amount, date, note, method, category } = await req.json();
+      const { amount, date, note, method, category,transactionType } = await req.json();
 
       let newTransaction =  await  transactionModel.create({
         amount,
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
         note,
         method,
         category,
+        transactionType,
         user: user._id,
       });
 
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
       await newTransaction.save();
       user.transactions.push(newTransaction._id );
       await user.save();
-
+      await dbDisconnect()
       return Response.json({ success: true, ok:true,message: "Transaction added successfully", transaction: newTransaction})
     } catch (error) {
       console.error("Error creating transaction:", error);

@@ -7,6 +7,7 @@ export interface Transaction extends Document {
   user: mongoose.Schema.Types.ObjectId;
   amount: number;
   note: string;
+  transactionType:string
 }
 
 export const transactionSchema: Schema<Transaction> = new Schema({
@@ -19,15 +20,16 @@ export const transactionSchema: Schema<Transaction> = new Schema({
   method: {
     type: String,
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user", // Ensure this matches the model name for User
-  },
   amount: {
     type: Number,
   },
+  transactionType: { type: String,  required: true },
   note: {
     type: String,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
   },
 });
 

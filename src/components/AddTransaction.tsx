@@ -1,25 +1,26 @@
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
+import { Button } from "./ui/button";
+import { Cross } from "lucide-react";
 
 function AddTransaction({ className }: { className: string }) {
-  const [amount, setAmount] = useState('');
-  const [note, setNote] = useState('');
-  const [category, setCategory] = useState('');
-  const [method, setMethod] = useState('');
-  const [date, setDate] = useState('');
-  const [error, setError] = useState('');
+  const [amount, setAmount] = useState("");
+  const [note, setNote] = useState("");
+  const [category, setCategory] = useState("");
+  const [method, setMethod] = useState("");
+  const [date, setDate] = useState("");
+  const [transactionType, setType] = useState("");
+  const [error, setError] = useState("");
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Check if any input field is empty
-    if (!amount || !note || !category || !method || !date) {
-      setError('All fields are required.');
+    if (!amount || !category || !method || !date ||!transactionType) {
+      setError("All fields are required.");
       return;
     }
 
-    setError(''); // Clear any existing error message
-
+    setError("");
     try {
       let response = await fetch("http://localhost:3000/api/post-transaction", {
         method: "POST",
@@ -28,11 +29,13 @@ function AddTransaction({ className }: { className: string }) {
       response = await response.json();
       if (response.ok) {
         console.log("Transaction added successfully");
-        setAmount('');
-        setNote('');
-        setCategory('');
-        setDate('');
-        setMethod('');
+        setAmount("");
+        setNote("");
+        setCategory("");
+        setDate("");
+        setMethod("");
+
+        window.location.reload();
       } else {
         console.error("Failed to add transaction:", response);
       }
@@ -42,63 +45,131 @@ function AddTransaction({ className }: { className: string }) {
   };
 
   return (
-    <div className={cn(``, className)}>
-      <form onSubmit={addTransaction}>
-        <label htmlFor="amount">Amount</label>
-        <input
-          type="text"
-          onChange={(e) => setAmount(e.target.value)}
-          name="amount"
-          placeholder="Enter amount"
-          id="amount"
-          className="border w-60 h-8 rounded-sm m-3"
-          value={amount}
-        />
-        <label htmlFor="date">Date</label>
-        <input
-          type="date"
-          onChange={(e) => setDate(e.target.value)}
-          name="date"
-          placeholder="Enter date"
-          id="date"
-          className="border w-60 h-8 rounded-sm m-3"
-          value={date}
-        />
-        <label htmlFor="method">Method</label>
-        <input
-          type="text"
-          onChange={(e) => setMethod(e.target.value)}
-          name="method"
-          placeholder="Enter method"
-          id="method"
-          className="border w-60 h-8 rounded-sm m-3"
-          value={method}
-        />
-        <label htmlFor="category">Category</label>
-        <input
-          type="text"
-          onChange={(e) => setCategory(e.target.value)}
-          name="category"
-          placeholder="Enter category"
-          id="category"
-          className="border w-60 h-8 rounded-sm m-3"
-          value={category}
-        />
-        <label htmlFor="note">Note</label>
-        <input
-          type="text"
-          onChange={(e) => setNote(e.target.value)}
-          name="note"
-          placeholder="Enter note"
-          id="note"
-          className="border w-60 h-8 rounded-sm m-3"
-          value={note}
-        />
-        <button type="submit" className="border">
+    <div
+      className={cn(
+        `absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#5849494f] w-full h-full z-[99] `,
+        className
+      )}
+    >
+      <Button
+        className={`rounded-full border-2 text-left absolute right-10 text-2xl w-fit h-fit bg-blue-50 text-blue-700 border-blue-500  `}
+        onClick={() => window.location.reload()}
+      >
+        X
+      </Button>
+      <form
+        onSubmit={addTransaction}
+        className={`flex flex-col items-start py-7   w-2/5 px-9  border-2 border-transparent rounded-sm absolute mb-10 text-white bg-blue-700 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  `}
+      >
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="amount" className="text-xl leading-none">
+            Amount
+          </label>
+          <input
+            type="text"
+            onChange={(e) => setAmount(e.target.value)}
+            name="amount"
+            placeholder="Enter amount"
+            id="amount"
+            className="border w-60 h-8 rounded-sm text-black "
+            value={amount}
+          />
+        </div>
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="date" className="text-xl leading-none">
+            Date
+          </label>
+          <input
+            type="date"
+            onChange={(e) => setDate(e.target.value)}
+            name="date"
+            placeholder="Enter date"
+            id="date"
+            className="border w-60 h-8 rounded-sm  text-black"
+            value={date}
+          />
+        </div>
+
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="method" className="text-xl leading-none">
+            Method
+          </label>
+          <select
+            onChange={(e) => setMethod(e.target.value)}
+            name="method"
+            id="method"
+            className="border w-60 h-8 rounded-sm text-black "
+            value={method}
+          >
+            <option value="cash" className="text-black">
+              Cash
+            </option>
+            <option value="online" className="text-black">
+              Online
+            </option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="category" className="text-xl leading-none">
+            Category
+          </label>
+          <select
+            onChange={(e) => setCategory(e.target.value)}
+            name="category"
+            id="category"
+            className="border w-60 h-8 rounded-sm text-black "
+            value={category}
+          >
+            <option value="Food" className="text-black">
+              Food
+            </option>
+            <option value="Petrol" className="text-black">
+              Petrol
+            </option>
+            <option value="other" className="text-black">
+              other
+            </option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="transactionType" className="text-xl leading-none">
+            Type
+          </label>
+          <select
+            onChange={(e) => setType(e.target.value)}
+            name="transactionType"
+            id="transactionType"
+            className="border w-60 h-8 rounded-sm text-black "
+            value={transactionType}
+          >
+            <option value="spent" className="text-black">
+              Spent
+            </option>
+            <option value="earn" className="text-black">
+              Earn
+            </option>
+           
+          </select>
+        </div>
+        <div className="flex flex-col gap-3 items-start my-3">
+          <label htmlFor="note" className="text-xl leading-none">
+            Note
+          </label>
+          <input
+            type="text"
+            onChange={(e) => setNote(e.target.value)}
+            name="note"
+            placeholder="Enter note"
+            id="note"
+            className="border w-60 h-8 rounded-sm text-black "
+            value={note}
+          />
+        </div>
+        <button type="submit" className="border-2 p-2 rounded-md">
           Submit
         </button>
+        {error && <p className="text-red-500 mt-3 text-l">{error}</p>}
       </form>
-      {error && <p className="text-red-500 mt-3">{error}</p>}
     </div>
   );
 }

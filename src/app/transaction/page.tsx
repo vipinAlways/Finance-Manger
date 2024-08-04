@@ -7,19 +7,27 @@ import React, { useState } from 'react'
 function page() {
    
     const [block, setBlock] = useState(false)
+
+    const onclick = ()=>{
+      if (block) setBlock(false)
+        
+      setBlock(true)
+    }
    
 
  
 
   return (
-   <div className='w-full'>
+   <div className=''>
         <div className='flex justify-end w-full'>
-                <Button onClick={()=>(setBlock(true))}>Add Transaction</Button>
+                <Button onClick={onclick}>Add Transaction</Button>
 
-                <AddTransaction className={block ?`block` :'hidden' }/>
         </div>
+                <AddTransaction className={block ?`` :'hidden' }/>
 
-        <TransactionTable/>
+        <div className='w-full h-full relative '>
+          <TransactionTable/>
+        </div>
    </div>
   )
 }

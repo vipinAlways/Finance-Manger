@@ -39,7 +39,7 @@ export async function GET(req: Request) {
       );
     }
 
-      console.log("testing");
+      
     await dbDisconnect();
     return NextResponse.json(transactions);
   } catch (error) {

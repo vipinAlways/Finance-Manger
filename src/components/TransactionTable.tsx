@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow, TableCell } from "./ui/table";
 import { Transaction } from "@/model/transaction.model";
+import DeleteTransaction from "./DeleteTransaction";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     async function fetchTransactions() {
-      const response = await fetch('/api/get-transaction');
+      const response = await fetch(`/api/get-transaction`,{cache:"no-cache"});
       const result = await response.json();
-      console.log('API response:', result);
+      
 
     
       if (result.transactions) {
@@ -23,8 +24,11 @@ function TransactionTable() {
 
     fetchTransactions();
   }, []);
+ 
+
 
   return (
+    
     <Table>
       <TableCaption>Here are all your transactions</TableCaption>
       <TableHeader>
@@ -33,17 +37,22 @@ function TransactionTable() {
           <TableHead>Amount</TableHead>
           <TableHead>Method</TableHead>
           <TableHead>Category</TableHead>
+          <TableHead>type</TableHead>
           <TableHead className="text-right">Note</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => (
-          <TableRow key={Date.now()}>
+          
+          <TableRow key={transaction._id}>
             <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
             <TableCell>{transaction.amount}</TableCell>
             <TableCell>{transaction.method}</TableCell>
             <TableCell>{transaction.category}</TableCell>
+            <TableCell>{transaction.transactionType}</TableCell>
             <TableCell className="text-right">{transaction.note}</TableCell>
+            {/* @ts-ignore */}
+            <TableCell className="text-right"><DeleteTransaction id={transaction._id}/></TableCell>
           </TableRow>
         ))}
       </TableBody>
