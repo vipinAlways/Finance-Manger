@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow, TableCell } from "./ui/table";
 import { Transaction } from "@/model/transaction.model";
 import DeleteTransaction from "./DeleteTransaction";
+import { cn } from "@/lib/utils";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     async function fetchTransactions() {
-      const response = await fetch(`/api/get-transaction`,{cache:"no-cache"});
+      const response = await fetch(`/api/get-transaction`);
       const result = await response.json();
       
 
@@ -46,13 +47,13 @@ function TransactionTable() {
           
           <TableRow key={transaction._id}>
             <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
-            <TableCell>{transaction.amount}</TableCell>
+            <TableCell className={cn('',transaction.transactionType === "earn" ? "text-green-500" : "text-red-600" )} >{transaction.amount}</TableCell>
             <TableCell>{transaction.method}</TableCell>
             <TableCell>{transaction.category}</TableCell>
             <TableCell>{transaction.transactionType}</TableCell>
             <TableCell className="text-right">{transaction.note}</TableCell>
             {/* @ts-ignore */}
-            <TableCell className="text-right"><DeleteTransaction id={transaction._id}/></TableCell>
+            <TableCell className="text-right"><DeleteTransaction transactionID={transaction._id}/></TableCell>
           </TableRow>
         ))}
       </TableBody>

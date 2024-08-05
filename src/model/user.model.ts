@@ -9,7 +9,7 @@ export interface User extends Document {
   userName: string;
   email: string;
   id:string
-  transactions:Transaction[],
+  transaction:Transaction[],
 }
 
 const userSchema:Schema<User> = new mongoose.Schema({
@@ -27,7 +27,7 @@ const userSchema:Schema<User> = new mongoose.Schema({
     unique: true,
   
   },
-  transactions:{type:[transactionSchema],ref:"transactions" }
+  transaction:{type:[transactionSchema],ref:"transaction" }
 });
 
 const userModel = (mongoose.models.User as mongoose.Model<User>)||mongoose.model<User>("user" , userSchema)

@@ -33,9 +33,9 @@ export async function POST(req: Request) {
 
    
 
-      
       await newTransaction.save();
-      user.transactions.push(newTransaction._id );
+      // @ts-ignore 
+      user.transaction.push(newTransaction._id );
       await user.save();
       await dbDisconnect()
       return Response.json({ success: true, ok:true,message: "Transaction added successfully", transaction: newTransaction})

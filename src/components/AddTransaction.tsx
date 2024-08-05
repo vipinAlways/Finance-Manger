@@ -9,13 +9,13 @@ function AddTransaction({ className }: { className: string }) {
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
   const [date, setDate] = useState("");
-  const [transactionType, setType] = useState("");
+  const [transactionType, setTransactionType] = useState("");
   const [error, setError] = useState("");
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount || !category || !method || !date ||!transactionType) {
+    if (!amount || !category || !method || !date || !transactionType) {
       setError("All fields are required.");
       return;
     }
@@ -24,9 +24,17 @@ function AddTransaction({ className }: { className: string }) {
     try {
       let response = await fetch("http://localhost:3000/api/post-transaction", {
         method: "POST",
-        body: JSON.stringify({ amount, method, note, category, date }),
+        body: JSON.stringify({
+          amount,
+          method,
+          note,
+          category,
+          date,
+          transactionType,
+        }),
       });
       response = await response.json();
+      console.log(response);
       if (response.ok) {
         console.log("Transaction added successfully");
         setAmount("");
@@ -34,6 +42,7 @@ function AddTransaction({ className }: { className: string }) {
         setCategory("");
         setDate("");
         setMethod("");
+        setTransactionType("");
 
         window.location.reload();
       } else {
@@ -101,6 +110,9 @@ function AddTransaction({ className }: { className: string }) {
             className="border w-60 h-8 rounded-sm text-black "
             value={method}
           >
+            <option value="" disabled >
+              Select a Method
+            </option>
             <option value="cash" className="text-black">
               Cash
             </option>
@@ -120,35 +132,35 @@ function AddTransaction({ className }: { className: string }) {
             className="border w-60 h-8 rounded-sm text-black "
             value={category}
           >
-            <option value="Food" className="text-black">
-              Food
+            <option value="" disabled >
+              Select a Category
             </option>
-            <option value="Petrol" className="text-black">
-              Petrol
-            </option>
-            <option value="other" className="text-black">
-              other
-            </option>
+            <option value="car">Car</option>
+            <option value="petrol">Petrol</option>
+            <option value="food">Food</option>
+            <option value="freelance">freelace</option>
+            <option value="pocketMoney">Pocket Money</option>
+            <option value="other">Other</option>
           </select>
         </div>
         <div className="flex flex-col gap-3 items-start my-3">
-          <label htmlFor="transactionType" className="text-xl leading-none">
-            Type
+          <label htmlFor="transactionTyped" className="text-xl leading-none">
+            Transaction Type
           </label>
           <select
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e) => setTransactionType(e.target.value)}
             name="transactionType"
             id="transactionType"
             className="border w-60 h-8 rounded-sm text-black "
             value={transactionType}
           >
-            <option value="spent" className="text-black">
-              Spent
+             <option value="" disabled >Select a Transaction Type</option>
+            <option value="spend" className="text-black">
+              Spend
             </option>
             <option value="earn" className="text-black">
               Earn
             </option>
-           
           </select>
         </div>
         <div className="flex flex-col gap-3 items-start my-3">
