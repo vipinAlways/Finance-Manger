@@ -45,7 +45,7 @@ function TransactionTable() {
       <TableBody>
         {transactions.map((transaction) => (
           
-          <TableRow key={transaction._id}>
+          <TableRow key={[transaction._id].toLocaleString()}>
             <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
             <TableCell className={cn('',transaction.transactionType === "earn" ? "text-green-500" : "text-red-600" )} >{transaction.amount}</TableCell>
             <TableCell>{transaction.method}</TableCell>

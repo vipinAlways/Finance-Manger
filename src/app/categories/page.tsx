@@ -119,7 +119,7 @@ const Page: React.FC = () => {
           </TableHeader>
           <TableBody>
             {FilteredTransactions.map((transaction) => (
-              <TableRow key={transaction._id}>
+              <TableRow key={[transaction._id].toLocaleString()}>
                 <TableCell>
                   {new Date(transaction.date).toLocaleDateString()}
                 </TableCell>
@@ -143,17 +143,25 @@ const Page: React.FC = () => {
         </Table>
       </div>
 
-      {FilteredTransactions.length === 0  ? (
-       ''
+      {FilteredTransactions.length === 0 ? (
+        <p className="text-center mt-4 text-xl text-blue-600">No transaction found</p>
       ) : (
         <Table className="mt-4">
-        <TableRow >
-        <TableCell colSpan={1}>Total amount {selectType}</TableCell>
-        <TableCell colSpan={5} className="">
-          {totalAmount}
-        </TableCell>
-      </TableRow>
-      </Table>
+          <TableRow>
+            <TableCell colSpan={1}>Total amount {selectType}</TableCell>
+            <TableCell
+              colSpan={5}
+              className={cn(
+                "",
+                selectType === "earn"
+                  ? "text-green-500"
+                  : "text-red-600"
+              )}
+            >
+              {totalAmount}
+            </TableCell>
+          </TableRow>
+        </Table>
       )}
     </div>
   );

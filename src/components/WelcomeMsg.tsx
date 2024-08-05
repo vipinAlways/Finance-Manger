@@ -11,7 +11,7 @@ function WelcomeMsg() {
   if(pathName === '/'){
     return(
       <div>
-      <p className='text-white text-xl'>
+      <p className='text-white lg:text-xl max-sm:text-sm'>
         Here you can manage your Expencess
       </p>
       </div>

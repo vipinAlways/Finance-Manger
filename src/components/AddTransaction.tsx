@@ -68,7 +68,7 @@ function AddTransaction({ className }: { className: string }) {
       </Button>
       <form
         onSubmit={addTransaction}
-        className={`flex flex-col items-start py-7   w-2/5 px-9  border-2 border-transparent rounded-sm absolute mb-10 text-white bg-blue-700 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  `}
+        className={`flex flex-col items-start py-7   w-2/5 max-sm:w-4/5 px-9  border-2 border-transparent rounded-sm absolute mb-10 text-white bg-blue-700 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  `}
       >
         <div className="flex flex-col gap-3 items-start my-3">
           <label htmlFor="amount" className="text-xl leading-none">
@@ -80,7 +80,7 @@ function AddTransaction({ className }: { className: string }) {
             name="amount"
             placeholder="Enter amount"
             id="amount"
-            className="border w-60 h-8 rounded-sm text-black "
+            className="border w-60  h-8 rounded-sm text-black "
             value={amount}
           />
         </div>
@@ -94,7 +94,7 @@ function AddTransaction({ className }: { className: string }) {
             name="date"
             placeholder="Enter date"
             id="date"
-            className="border w-60 h-8 rounded-sm  text-black"
+            className="border w-60  h-8 rounded-sm  text-black"
             value={date}
           />
         </div>
@@ -107,7 +107,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setMethod(e.target.value)}
             name="method"
             id="method"
-            className="border w-60 h-8 rounded-sm text-black "
+            className="border w-60  h-8 rounded-sm text-black "
             value={method}
           >
             <option value="" disabled >
@@ -129,7 +129,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setCategory(e.target.value)}
             name="category"
             id="category"
-            className="border w-60 h-8 rounded-sm text-black "
+            className="border w-60  h-8 rounded-sm text-black "
             value={category}
           >
             <option value="" disabled >
@@ -151,7 +151,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setTransactionType(e.target.value)}
             name="transactionType"
             id="transactionType"
-            className="border w-60 h-8 rounded-sm text-black "
+            className="border w-60  h-8 rounded-sm text-black "
             value={transactionType}
           >
              <option value="" disabled >Select a Transaction Type</option>
@@ -173,7 +173,7 @@ function AddTransaction({ className }: { className: string }) {
             name="note"
             placeholder="Enter note"
             id="note"
-            className="border w-60 h-8 rounded-sm text-black "
+            className="border w-60  h-8 rounded-sm text-black "
             value={note}
           />
         </div>
