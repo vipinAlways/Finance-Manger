@@ -57,8 +57,8 @@ const Page: React.FC = () => {
   );
   return (
     <div className="w-full">
-      <div className="w-full flex justify-evenly items-center my-4 ">
-        <div className="flex items-center gap-3">
+      <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 ">
+        <div className="flex items-center gap-3 max-sm:justify-between max-sm:flex-col">
           <label
             htmlFor="searchCategory"
             className="font-semibold text-lg text-zinc-800"
@@ -68,7 +68,7 @@ const Page: React.FC = () => {
           <select
             onChange={(e) => setSearchBox(e.target.value)}
             value={searchBox}
-            className="w-60 border-2 rounded-md border-blue-500 p-2 text-lg font-semibold text-zinc-800"
+            className="w-60 max-sm:w-36 max-sm:text-sm border-2 rounded-md border-blue-500 p-2 text-lg font-semibold text-zinc-800"
             id="searchCategory"
           >
             <option value="" disabled>
@@ -82,7 +82,7 @@ const Page: React.FC = () => {
             <option value="other">Other</option>
           </select>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3  max-sm:flex-col">
           <label
             htmlFor="transactionTypeSearch"
             className="font-semibold text-lg text-zinc-800"
@@ -93,28 +93,29 @@ const Page: React.FC = () => {
             id="transactionTypeSearch"
             onChange={(e) => setSelectType(e.target.value)}
             value={selectType}
-            className="w-60 border-2 rounded-md border-blue-500 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-blue-500 p-2 text-l font-semibold text-zinc-800"
           >
             <option value="" disabled>
               Select an option
             </option>
             <option value="spend">Spend</option>
             <option value="earn">Earn</option>
+            <option value="loan">loan</option>
           </select>
         </div>
       </div>
 
       <div className="w-full border-2">
-        <Table>
-          <TableCaption>Here are all your transactions</TableCaption>
-          <TableHeader>
+        <Table >
+          <TableCaption className="text-blue-700 text-center max-sm:hidden">Here are all your transactions`</TableCaption>
+          <TableHeader >
             <TableRow>
-              <TableHead className="w-[100px]">Date</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>type</TableHead>
-              <TableHead className="text-right">Note</TableHead>
+              <TableHead className="w-[100px] text-blue-500">Date</TableHead>
+              <TableHead className="text-blue-500"> Amount</TableHead>
+              <TableHead className="text-blue-500">Method</TableHead>
+              <TableHead className="text-blue-500">Category</TableHead>
+              <TableHead className="text-blue-500">type</TableHead>
+              <TableHead className="text-right text-blue-500">Note</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -126,10 +127,7 @@ const Page: React.FC = () => {
                 <TableCell
                   className={cn(
                     "",
-                    transaction.transactionType === "earn"
-                      ? "text-green-500"
-                      : "text-red-600"
-                  )}
+                    transaction.transactionType === "earn" ? "text-green-500" : transaction.transactionType==="spend" ?"text-red-600" :"text-yellow-500" )}
                 >
                   {transaction.amount}
                 </TableCell>
@@ -144,10 +142,11 @@ const Page: React.FC = () => {
       </div>
 
       {FilteredTransactions.length === 0 ? (
-        <p className="text-center mt-4 text-xl text-blue-600">No transaction found</p>
+        <p className="text-center mt-4 text-xl text-blue-900">No transaction found</p>
       ) : (
         <Table className="mt-4">
-          <TableRow>
+         <TableBody>
+         <TableRow>
             <TableCell colSpan={1}>Total amount {selectType}</TableCell>
             <TableCell
               colSpan={5}
@@ -161,6 +160,7 @@ const Page: React.FC = () => {
               {totalAmount}
             </TableCell>
           </TableRow>
+         </TableBody>
         </Table>
       )}
     </div>

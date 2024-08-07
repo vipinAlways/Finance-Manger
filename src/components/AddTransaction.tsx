@@ -161,6 +161,9 @@ function AddTransaction({ className }: { className: string }) {
             <option value="earn" className="text-black">
               Earn
             </option>
+            <option value="loan" className="text-black">
+              Loan
+            </option>
           </select>
         </div>
         <div className="flex flex-col gap-3 items-start my-3">

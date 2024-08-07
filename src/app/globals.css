@@ -2,21 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-  
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 222.2 84% 4.1%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222.2 84% 4.1%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222.2 84% 4.1%;
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 215.4 16.3% 46.1%;
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
@@ -33,24 +32,24 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 84% 4.1%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 84% 4.1%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 84% 4.1%;
     --popover-foreground: 210 40% 98%;
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217.2 30s 0.8 185%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217.2 30s 0.8 185%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 217.2 30s 0.8 185%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 217.2 30s 0.8 185%;
+    --input: 217.2 30s 0.8 185%;
     --ring: 224.3 76.3% 48%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -60,7 +59,6 @@
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -68,4 +66,62 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.wrapper {
+  margin-inline: auto;
+  position: relative;
+  min-height: 50vh;
+  margin-top: 2rem;
+  overflow: hidden;
+  
+}
+@keyframes scrollLeft {
+  to {
+    left: -200px;
+  }
+}
+
+.item {
+  width: 210px;
+  height: fit-content;
+  position: absolute;
+  left: max(calc(200px * 8));
+  animation-name: scrollLeft;
+  animation-duration: 30s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.item:hover{
+  border-radius: 10px 10px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1),
+  0 0 10px 10px rgba(31, 116, 207, 0.3),
+  0 0 20px 20px rgba(0, 102, 204, 0.2),
+  0 0 30px 30px rgba(0, 81, 153, 0.1);
+}
+.item1 {
+  animation-delay: calc(30s / 8 * (8 - 1) * -1);
+}
+.item2 {
+  animation-delay: calc(30s / 8 * (8 - 2) * -1);
+}
+.item3 {
+  animation-delay: calc(30s / 8 * (8 - 3) * -1);
+}
+.item4 {
+  animation-delay: calc(30s / 8 * (8 - 4) * -1);
+}
+.item5 {
+  animation-delay: calc(30s / 8 * (8 - 5) * -1);
+}
+.item6 {
+  animation-delay: calc(30s / 8 * (8 - 6) * -1);
+}
+.item7 {
+  animation-delay: calc(30s / 8 * (8 - 7) * -1);
 }

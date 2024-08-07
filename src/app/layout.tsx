@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
   return (
     <html lang="en">
-      <body className={recursive.className}>
+      <body className={`${recursive.className} relative`}>
         <Header/>
         <MarginOfBody>
         {children}

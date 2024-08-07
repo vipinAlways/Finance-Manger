@@ -6,10 +6,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   await dbConnect();
-  const { getUser } = getKindeServerSession();
+  const {getUser} =  getKindeServerSession();
   const User = await getUser();
 
   if (!User) {
+    await dbDisconnect();
     return NextResponse.json(
       {
         success: false,
@@ -19,38 +20,53 @@ export async function GET(req: Request) {
     );
   }
 
-  try {
-    let user = await userModel
-      .findOne({ id: User?.id })
-      
-      
-          if (!user) {
-            return NextResponse.json(
-              { success: false, message: "User not found s" },
-              { status: 404 }
-            );
-          }
-    let transactions = await transactionModel.find({user:user?._id});
 
-    if (!transactions) {
+  const url = new URL(req.url);
+  const page = parseInt(url.searchParams.get('page') || '1', 10);
+  const perpage = parseInt(url.searchParams.get('perpage') || '6', 10);
+
+  try {
+    const user = await userModel.findOne({ id: User.id });
+
+    if (!user) {
+      await dbDisconnect();
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
+    }
+
+
+    const transactions = await transactionModel
+      .find({ user: user?._id })
+      .skip((page - 1) * perpage)
+      .limit(perpage);
+
+    const totalTransactions = await transactionModel.countDocuments({ user: user?._id });
+
+    if (!transactions.length) {
+      await dbDisconnect();
       return NextResponse.json(
         { success: false, message: "No transactions found" },
         { status: 404 }
       );
     }
 
-      
     await dbDisconnect();
-    return NextResponse.json(transactions);
+    return NextResponse.json({
+      transactions,
+      page,
+      perpage,
+      total: totalTransactions
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
-    await dbDisconnect()
+    await dbDisconnect();
     return NextResponse.json(
       {
         success: false,
-        ok: false,
-        message: "Transaction not found successfully",
+        message: "An error occurred while fetching transactions",
       },
       { status: 500 }
     );

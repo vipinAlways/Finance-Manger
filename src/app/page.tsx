@@ -1,19 +1,21 @@
-import React from 'react'
+'use client'
+import InfiteScroll from "@/components/InfiteScroll";
+import React, { useEffect, useState } from "react";
 
-function   page() {
-  return (
-<div className='relative'>
 
-    <div className='w-full h-full flex items-center flex-col gap-2'>
-        <h1 className='text-center mt-10 lg:text-4xl max-sm:text-xl text-blue-600 font-bold '>Welcome To Finance Free </h1>
-        <p className='text-center lg:text-2xl max-sm:text-lg'>here you can manage your finances with current update</p>
-
-    
-    </div>
+function page() {
   
-</div>
-    
-  )
-}
 
-export default page 
+ 
+  return (
+  <div>
+    <h1 className="text-blue-600 lg:text-6xl max-sm:text-2xl max-sm:leading-none text-center mt-6 w-[70%] max-sm:w-full mx-auto ">Welcome To Finance Free</h1>
+    <p className="text-center text-blue-400 lg:text-3xl max-sm:text-lg max-sm:w-[90%] mt-4 w-[70%] mx-auto">Here you can mange your finances and improve your finance mangement skill</p>
+
+    <div className="w-full h-full">
+      <InfiteScroll/>
+    </div>
+  </div>
+  );
+}
+export default page;

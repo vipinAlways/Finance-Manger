@@ -43,11 +43,11 @@ function page() {
   }, [block]);
 
   return (
-    <div className="">
-      <div className="flex justify-end w-full">
+    <div className="relative">
+      <div className="flex justify-end w-full mt-4 ">
         <Button onClick={onclick}>Add Transaction</Button>
       </div>
-     <div className="w-full ">
+     <div className="w-full  ">
      <AddTransaction className={block ? `` : "hidden"} />
      </div>
 
