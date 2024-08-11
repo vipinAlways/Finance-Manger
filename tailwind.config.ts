@@ -74,13 +74,19 @@ const config = {
         'scroll': {
           from: { left: "0" },
           to: { left: "-200px" }
-        }
+        },
+        'blink': {
+          "0%,100%": { opacity : "0.1"},
+          "50%": { opacity:"0.5" },
+          "90%": { opacity:"0.8" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         'bounce': 'bounce 1s infinite',
-        'scroll': 'scroll 1s linear infinite'
+        'scroll': 'scroll 1s linear infinite',
+        'blink': 'blink 1.2s linear infinite',
       },
     },
   },

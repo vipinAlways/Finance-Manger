@@ -75,7 +75,7 @@ const Page: React.FC = () => {
               Select an option
             </option>
             <option value="car">Car</option>
-            <option value="Petrol">Petrol</option>
+            <option value="petrol">Petrol</option>
             <option value="food">Food</option>
             <option value="freelance">Freelance</option>
             <option value="pocketMoney">Pocket Money</option>
@@ -105,44 +105,46 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full border-2">
-        <Table >
-          <TableCaption className="text-blue-700 text-center max-sm:hidden">Here are all your transactions`</TableCaption>
-          <TableHeader >
-            <TableRow>
-              <TableHead className="w-[100px] text-blue-500">Date</TableHead>
-              <TableHead className="text-blue-500"> Amount</TableHead>
-              <TableHead className="text-blue-500">Method</TableHead>
-              <TableHead className="text-blue-500">Category</TableHead>
-              <TableHead className="text-blue-500">type</TableHead>
-              <TableHead className="text-right text-blue-500">Note</TableHead>
+     {
+      (selectType ==='' && searchBox === '' )? null: <div className="w-full border-2">
+      <Table >
+        <TableCaption className="text-blue-700 text-center max-sm:hidden">Here are all your transactions`</TableCaption>
+        <TableHeader >
+          <TableRow>
+            <TableHead className="w-[100px] text-blue-500">Date</TableHead>
+            <TableHead className="text-blue-500"> Amount</TableHead>
+            <TableHead className="text-blue-500">Method</TableHead>
+            <TableHead className="text-blue-500">Category</TableHead>
+            <TableHead className="text-blue-500">type</TableHead>
+            <TableHead className="text-right text-blue-500">Note</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {FilteredTransactions.map((transaction) => (
+            <TableRow key={[transaction._id].toLocaleString()}>
+              <TableCell>
+                {new Date(transaction.date).toLocaleDateString()}
+              </TableCell>
+              <TableCell
+                className={cn(
+                  "",
+                  transaction.transactionType === "earn" ? "text-green-500" : transaction.transactionType==="spend" ?"text-red-600" :"text-yellow-500" )}
+              >
+                {transaction.amount}
+              </TableCell>
+              <TableCell>{transaction.method}</TableCell>
+              <TableCell>{transaction.category}</TableCell>
+              <TableCell>{transaction.transactionType}</TableCell>
+              <TableCell className="text-right">{transaction.note}</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {FilteredTransactions.map((transaction) => (
-              <TableRow key={[transaction._id].toLocaleString()}>
-                <TableCell>
-                  {new Date(transaction.date).toLocaleDateString()}
-                </TableCell>
-                <TableCell
-                  className={cn(
-                    "",
-                    transaction.transactionType === "earn" ? "text-green-500" : transaction.transactionType==="spend" ?"text-red-600" :"text-yellow-500" )}
-                >
-                  {transaction.amount}
-                </TableCell>
-                <TableCell>{transaction.method}</TableCell>
-                <TableCell>{transaction.category}</TableCell>
-                <TableCell>{transaction.transactionType}</TableCell>
-                <TableCell className="text-right">{transaction.note}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+     }
 
       {FilteredTransactions.length === 0 ? (
-        <p className="text-center mt-4 text-xl text-blue-900">No transaction found</p>
+        <p className={cn('text-center text-xl text-blue-900' , (selectType ==='' && searchBox === '') ?"lg:mt-7 mt-4" : ' lg:mt-5 mt-3')}>No transaction found</p>
       ) : (
         <Table className="mt-4">
          <TableBody>

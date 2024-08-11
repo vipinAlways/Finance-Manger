@@ -5,9 +5,9 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { draftMode } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE({ params }: { params: { transactionId: any } }) {
+export async function DELETE({req}: {req:NextRequest }) {
   draftMode().disable()
-  const transactionId = params.transactionId;
+  
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const User = await getUser();
@@ -22,6 +22,8 @@ export async function DELETE({ params }: { params: { transactionId: any } }) {
     );
   }
 
+
+  const {transactionId} = await req.json()
   try {
    
     const transactionToDelete = await transactionModel.findByIdAndDelete(transactionId);
@@ -64,7 +66,7 @@ export async function DELETE({ params }: { params: { transactionId: any } }) {
     console.log(error);
     console.log(error);
     return NextResponse.json(
-      { success: false, message: "transaction has not been delete" },
+      { success: false, message: "transaction has not been delete", ok:false },
       { status: 500 }
     );
   }

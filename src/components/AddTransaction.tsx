@@ -10,6 +10,7 @@ function AddTransaction({ className }: { className: string }) {
   const [method, setMethod] = useState("");
   const [date, setDate] = useState("");
   const [transactionType, setTransactionType] = useState("");
+  const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
 
   const addTransaction = async (e: React.FormEvent) => {
@@ -34,16 +35,16 @@ function AddTransaction({ className }: { className: string }) {
         }),
       });
       response = await response.json();
-      console.log(response);
+      
       if (response.ok) {
-        console.log("Transaction added successfully");
+        
         setAmount("");
         setNote("");
         setCategory("");
         setDate("");
         setMethod("");
         setTransactionType("");
-
+        setDisable(true)
         window.location.reload();
       } else {
         console.error("Failed to add transaction:", response);
@@ -56,12 +57,12 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        `absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#5849494f] w-full h-full z-[99] `,
+        `absolute  top-[5%] -translate-y-[15%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] `,
         className
       )}
     >
       <Button
-        className={`rounded-full border-2 text-left absolute right-10 text-2xl w-fit h-fit bg-blue-50 text-blue-700 border-blue-500  `}
+        className={`rounded-full border-2 top-[10%] text-left absolute right-10 text-2xl w-fit h-fit bg-blue-50 text-blue-700 border-blue-500  `}
         onClick={() => window.location.reload()}
       >
         X
@@ -180,7 +181,7 @@ function AddTransaction({ className }: { className: string }) {
             value={note}
           />
         </div>
-        <button type="submit" className="border-2 p-2 rounded-md">
+        <button type="submit" disabled={disable} className="border-2 p-2 rounded-md">
           Submit
         </button>
         {error && <p className="text-red-500 mt-3 text-l">{error}</p>}

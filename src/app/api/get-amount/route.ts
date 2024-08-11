@@ -1,4 +1,5 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
+import amountModel from "@/model/amount.model";
 import transactionModel from "@/model/transaction.model";
 import userModel from "@/model/user.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -6,7 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   await dbConnect();
-  const {getUser} =  getKindeServerSession();
+  const { getUser } = getKindeServerSession();
   const User = await getUser();
 
   if (!User) {
@@ -20,13 +21,12 @@ export async function GET(req: Request) {
     );
   }
 
-
   const url = new URL(req.url);
-  const page = parseInt(url.searchParams.get('page') || '1', 10);
-  const perpage = parseInt(url.searchParams.get('perpage') || '6', 10);
+ 
 
   try {
     const user = await userModel.findOne({ id: User.id });
+    console.log(user);
 
     if (!user) {
       await dbDisconnect();
@@ -36,38 +36,33 @@ export async function GET(req: Request) {
       );
     }
 
+    const amount = await amountModel.find({ user:user?._id });
 
-    const transactions = await transactionModel
-      .find({ user: user?._id })
-      .skip((page - 1) * perpage)
-      .limit(perpage)
-      .sort({date:-1});
+    
 
-    const totalTransactions = await transactionModel.countDocuments({ user: user?._id });
-
-    if (!transactions.length) {
+    if (!amount.length) {
       await dbDisconnect();
       return NextResponse.json(
-        { success: false, message: "No transactions found" },
+        { success: false, message: "No amount found" },
         { status: 404 }
       );
     }
 
     await dbDisconnect();
     return NextResponse.json({
-      transactions,
-      page,
-      perpage,
-      total: totalTransactions
-    });
+      success:true,
+      message:"successfully get an amoun",
+      amount,
+     
+    },{status:200});
   } catch (error) {
-    console.error(error);
+    
 
     await dbDisconnect();
     return NextResponse.json(
       {
         success: false,
-        message: "An error occurred while fetching transactions",
+        message: "An error occurred while fetching amount",
       },
       { status: 500 }
     );

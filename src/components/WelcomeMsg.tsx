@@ -26,15 +26,18 @@ function WelcomeMsg() {
       </div>
     )
   }
-  return (
-    <div className='space-y-2 mb-4 max-sm:text-center'>
-     <h2 className='text-2xl lg:text-4xl text-white font-medium '>Welcome {user?.given_name} 😁</h2>
 
-     <p className='text-sm lg:text-base text-[#89b6fd]'>
-      This is your financial Overview Report till <strong className='text-[#b0b8c6]'>{currentDate.getDate()}/{currentDate.getMonth()}/{currentDate.getFullYear()}</strong> 
-     </p>
-    </div>
-   )
+  else{
+    return (
+      <div className='space-y-2 mb-4 max-sm:text-center'>
+       <h2 className='text-2xl lg:text-4xl text-white font-medium '>Welcome {user?.given_name} 😁</h2>
+  
+       <p className='text-sm lg:text-base text-[#89b6fd]'>
+        This is your financial Overview Report till <strong className='text-[#b0b8c6]'>{currentDate.getDate()}/{currentDate.getMonth()}/{currentDate.getFullYear()}</strong> 
+       </p>
+      </div>
+     )
+  }
 }
 
 export default WelcomeMsg

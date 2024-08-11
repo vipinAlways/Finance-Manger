@@ -43,7 +43,7 @@ function page() {
   }, [block]);
 
   return (
-    <div className="relative">
+    <div className="">
       <div className="flex justify-end w-full mt-4 ">
         <Button onClick={onclick}>Add Transaction</Button>
       </div>
@@ -54,19 +54,19 @@ function page() {
       <div className="w-full h-full  ">
         {loading ? (
           <div className="flex justify-center items-center space-x-2">
-            <div
-              className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
-              style={{ animationDelay: "0s" }}
-            ></div>
-            <div
-              className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
-              style={{ animationDelay: "0.2s" }}
-            ></div>
-            <div
-              className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
-              style={{ animationDelay: "0.4s" }}
-            ></div>
-          </div>
+          <div
+            className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0s" }}
+          ></div>
+          <div
+            className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0.2s" }}
+          ></div>
+          <div
+            className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0.4s" }}
+          ></div>
+        </div>
         ) : (
           <TransactionTable />
         )}

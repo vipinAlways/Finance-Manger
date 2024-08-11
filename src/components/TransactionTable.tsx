@@ -89,14 +89,15 @@ function TransactionTable() {
               <TableCell className="text-right">{transaction.note}</TableCell>
     
               <TableCell className="text-right">
-                <DeleteTransaction transactionID={[transaction._id].toLocaleString()} />
+              {transaction && <DeleteTransaction transactionID={[transaction._id].toLocaleString()} />}
+
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center lg:mt-4 mt-2">
         {" "}
         <Button
           className={cn("lg:p-2 p-0.5", page === 0 ? "hidden" : "")}

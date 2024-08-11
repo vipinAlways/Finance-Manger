@@ -3,7 +3,7 @@ import userModel from "@/model/user.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
     await dbConnect();
 
@@ -31,20 +31,17 @@ export async function GET(req: Request) {
       return Response.redirect(`${process.env.KINDE_SITE_URL}/dashboard`);
     }
     const client = new userModel({
-      userName: user?.given_name! + "" + user?.family_name,
+      userName: user?.given_name! + user?.family_name,
       email: user?.email,
       id: user?.id,
     });
 
     await client.save();
 
-    
-
-    const response = Response.redirect(
-      `${process.env.KINDE_SITE_URL}/dashboard`
+    return NextResponse.json(
+      { success: true, ok: true, message: "ho gya register",client },
+      { status: 200 }
     );
-
-    return response;
   } catch (error) {
     console.error(
       "Error while connecting to the database or saving user:",
