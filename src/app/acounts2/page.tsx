@@ -298,7 +298,7 @@ const Page = () => {
         const response = await fetch(`/api/get-transaction?page=1&perpage=${transactions.length}`);
         const result = await response.json();
 
-        if (result.transactions || Array.isArray(result)) {
+        if (result.amount || Array.isArray(result)) {
           if (duration === "Weekly") {
            const { startOfWeek, endOfWeek } = getCurrentWeekRange();
           const filteredTransactionsOfWeek:Transaction[] = (result.transactions || result).filter(

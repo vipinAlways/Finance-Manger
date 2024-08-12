@@ -1,23 +1,25 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface Amount {
-    Weekly:number,
-    Monthly:number,
-    createdAt:Date,
+    [x: string]: any;
+    startDate:Date,
+    amount:number,
+    endDate:Date,
     user:mongoose.Schema.Types.ObjectId
 }
 
 const amountSchema:Schema<Amount> = new Schema ({
-    Weekly:{
-        type:Number
+    startDate:{
+        type:Date,
+        require:true
     },
-    Monthly:{
-        type:Number
+    endDate:{
+        type:Date
     },
-    createdAt: {
-        type: Date,
+    amount: {
+        type: Number,
         required: true,
-        default: Date.now,
+
       },
     user:{type:mongoose.Schema.Types.ObjectId ,ref:"users"}
 })

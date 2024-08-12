@@ -27,7 +27,7 @@ function TransactionTable() {
 
       if (Array.isArray(result.transactions)) {
         setTransactions((prev) => [...prev, ...result.transactions]);
-        // Set hasMore based on whether there are transactions or not
+       
         setHasMore(result.transactions.length > 0);
       } else {
         console.error("Unexpected API response structure");
@@ -52,7 +52,7 @@ function TransactionTable() {
   return (
     <div>
       <Table className={cn("",transactions.length === 0 ? 'hidden':'')}>
-        <TableCaption>Here are all your transactions</TableCaption>
+        <TableCaption>Here are  your transactions</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Date</TableHead>

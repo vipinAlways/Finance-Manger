@@ -68,7 +68,7 @@ const Page: React.FC = () => {
           <select
             onChange={(e) => setSearchBox(e.target.value)}
             value={searchBox}
-            className="w-60 max-sm:w-36 max-sm:text-sm border-2 rounded-md border-blue-500 p-2 text-lg font-semibold text-zinc-800"
+            className="w-60 max-sm:w-36 max-sm:text-sm border-2 rounded-md border-green-500 p-2 text-lg font-semibold text-zinc-800"
             id="searchCategory"
           >
             <option value="" disabled>
@@ -93,7 +93,7 @@ const Page: React.FC = () => {
             id="transactionTypeSearch"
             onChange={(e) => setSelectType(e.target.value)}
             value={selectType}
-            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-blue-500 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-500 p-2 text-l font-semibold text-zinc-800"
           >
             <option value="" disabled>
               Select an option
@@ -108,15 +108,15 @@ const Page: React.FC = () => {
      {
       (selectType ==='' && searchBox === '' )? null: <div className="w-full border-2">
       <Table >
-        <TableCaption className="text-blue-700 text-center max-sm:hidden">Here are all your transactions`</TableCaption>
+        <TableCaption className="text-green-700 text-center max-sm:hidden">Here are all your transactions`</TableCaption>
         <TableHeader >
           <TableRow>
-            <TableHead className="w-[100px] text-blue-500">Date</TableHead>
-            <TableHead className="text-blue-500"> Amount</TableHead>
-            <TableHead className="text-blue-500">Method</TableHead>
-            <TableHead className="text-blue-500">Category</TableHead>
-            <TableHead className="text-blue-500">type</TableHead>
-            <TableHead className="text-right text-blue-500">Note</TableHead>
+            <TableHead className="w-[100px] text-green-500">Date</TableHead>
+            <TableHead className="text-green-500"> Amount</TableHead>
+            <TableHead className="text-green-500">Method</TableHead>
+            <TableHead className="text-green-500">Category</TableHead>
+            <TableHead className="text-green-500">type</TableHead>
+            <TableHead className="text-right text-green-500">Note</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -144,7 +144,7 @@ const Page: React.FC = () => {
      }
 
       {FilteredTransactions.length === 0 ? (
-        <p className={cn('text-center text-xl text-blue-900' , (selectType ==='' && searchBox === '') ?"lg:mt-7 mt-4" : ' lg:mt-5 mt-3')}>No transaction found</p>
+        <p className={cn('text-center text-xl text-green-900' , (selectType ==='' && searchBox === '') ?"lg:mt-7 mt-4" : ' lg:mt-5 mt-3')}>No transaction found</p>
       ) : (
         <Table className="mt-4">
          <TableBody>

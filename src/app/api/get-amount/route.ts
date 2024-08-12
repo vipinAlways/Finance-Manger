@@ -50,10 +50,8 @@ export async function GET(req: Request) {
 
     await dbDisconnect();
     return NextResponse.json({
-      success:true,
-      message:"successfully get an amoun",
-      amount,
-     
+       amount,
+      ok:true
     },{status:200});
   } catch (error) {
     

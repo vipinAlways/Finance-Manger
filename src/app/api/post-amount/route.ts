@@ -1,5 +1,5 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import amountModel from "@/model/amount.model";
+import amountModel, { Amount } from "@/model/amount.model";
 
 import userModel from "@/model/user.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -22,11 +22,12 @@ export async function POST(req: Request) {
 
   if (user) {
     try {
-      const { Weekly, Monthly } = await req.json();
+      const { amount,startDate , endDate } = await req.json();
 
-      let newAmount = new amountModel({
-        Weekly,
-        Monthly,
+      let newAmount:Amount = new amountModel({
+        amount,
+        startDate,
+        endDate,
         user:user._id
       });
 
