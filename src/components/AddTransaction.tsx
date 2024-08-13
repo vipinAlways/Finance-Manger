@@ -57,12 +57,12 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        `absolute  top-[5%] -translate-y-[15%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] `,
+        `absolute  -top-[5%] -translate-y-[15%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] `,
         className
       )}
     >
       <Button
-        className={`rounded-full border-2 top-[10%] text-left absolute right-10 text-2xl w-fit h-fit bg-green-50 text-green-700 border-green-500  `}
+        className={`rounded-full border-2 top-[21%] translate-y-[15%] text-left absolute right-10 text-2xl w-fit h-fit bg-green-50 text-green-700 border-green-500  `}
         onClick={() => window.location.reload()}
       >
         X

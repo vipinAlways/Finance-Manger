@@ -1,7 +1,12 @@
 "use client";
+import BarGraph from "@/components/BarGraph";
+// import PieGraph from "@/components/pieGraph";
+
 import React, { useEffect } from "react";
 
 function page() {
+
+
   useEffect(() => {
     const postUser = async () => {
       try {
@@ -19,11 +24,21 @@ function page() {
         console.error("Error while adding transaction:", error);
       }
     };
-  
+
     postUser();
   }, []);
 
-  return <div>dashboard</div>;
+  return (
+    <div>
+     <div className="w-[120vh] mt-2">
+      <h1 className="text-center w-full mb-1 text-lg">Your transaction graph</h1>
+      <BarGraph />
+     </div>
+     <div>
+      {/* <PieGraph/> */}
+     </div>
+    </div>
+  );
 }
 
 export default page;
