@@ -57,19 +57,19 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        `absolute  -top-[5%] -translate-y-[15%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] `,
+        `absolute  top-[20%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center flex-col `,
         className
       )}
     >
       <Button
-        className={`rounded-full border-2 top-[21%] translate-y-[15%] text-left absolute right-10 text-2xl w-fit h-fit bg-green-50 text-green-700 border-green-500  `}
+        className={`rounded-full border-2 text-2xl w-fit h-fit bg-green-50 text-green-700 border-green-500  `}
         onClick={() => window.location.reload()}
       >
         X
       </Button>
       <form
         onSubmit={addTransaction}
-        className={`flex flex-col items-start py-7   w-2/5 max-sm:w-4/5 px-9  border-2 border-transparent rounded-sm absolute mb-10 text-white bg-green-700 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  `}
+        className={`flex flex-col items-start py-7   w-2/5 max-sm:w-4/5 px-9  border-2 border-transparent rounded-sm  mb-10 text-white bg-green-700 `}
       >
         <div className="flex flex-col gap-3 items-start my-3">
           <label htmlFor="amount" className="text-xl leading-none">

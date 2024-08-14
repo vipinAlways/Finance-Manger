@@ -89,7 +89,7 @@ function TransactionTable() {
               <TableCell className="text-right">{transaction.note}</TableCell>
     
               <TableCell className="text-right">
-              {transaction && <DeleteTransaction transactionID={[transaction._id].toLocaleString()} />}
+              {transaction && <DeleteTransaction key={[transaction._id].toLocaleString()} transactionID={[transaction._id].toLocaleString()} />}
 
               </TableCell>
             </TableRow>

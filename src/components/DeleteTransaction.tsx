@@ -8,12 +8,11 @@ type DeleteTransactionProps = {
 function DeleteTransaction({ transactionID }: DeleteTransactionProps) {
   const deleteItem = async () => {
     try {
-      const response = await fetch(`/api/delete-transaction`, {
+      const response = await fetch(`/api/delete-transaction/${transactionID}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ transactionId: transactionID }),
       });
 
       if (!response.ok) {
@@ -29,7 +28,7 @@ function DeleteTransaction({ transactionID }: DeleteTransactionProps) {
       }
     } catch (error) {
       console.error(error);
-      alert(`An error occurred while deleting the transaction,${transactionID}`);
+      alert(`An error occurred while deleting the transaction: ${transactionID}`);
     }
   };
 

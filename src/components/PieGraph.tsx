@@ -1,50 +1,108 @@
-// "use client";
+"use client";
 
-// import { Transaction } from '@/model/transaction.model';
-// import React, { useEffect, useState } from 'react';
-// import { Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Transaction } from "@/model/transaction.model";
+import React, { useEffect, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Amount } from "@/model/amount.model";
 
-// // Register ArcElement, Tooltip, and Legend
-// ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-// function PieGraph() {
-//   const [transactions, setTransactions] = useState<Transaction[]>([]);
+function PieGraph() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [budget, setBudget] = useState<Amount[]>([]);
+  const [from, setFrom] = useState<Date>();
+  const [to, setTo] = useState<Date>();
 
-//   useEffect(() => {
-//     async function fetchTransactions() {
-//       const response = await fetch(`/api/get-transaction?page=1&perpage=50`);
-//       const result = await response.json();
+  function generateColors(numColors: number) {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+      const color = `hsl(${(i * 360) / numColors}, 70%, 50%)`;
+      colors.push(color);
+    }
+    return colors;
+  }
 
-//       if (Array.isArray(result.transactions)) {
-//         setTransactions((prev) => [...prev, ...result.transactions]);
-//       } else {
-//         console.error("Unexpected API response structure");
-//       }
-//     }
+  useEffect(() => {
+    async function fetchTransactions() {
+      const response = await fetch(`/api/get-transaction?page=1&perpage=50`);
+      const result = await response.json();
 
-//     fetchTransactions();
-//   }, []);
+      if (Array.isArray(result.transactions)) {
+        setTransactions((prev) => [...prev, ...result.transactions]);
+      } else {
+        console.error("Unexpected API response structure");
+      }
+    }
 
-//   const allCategory = Array.from(new Set(transactions.map((item) => item.category)));
+    fetchTransactions();
+  }, []);
 
-//   const data = {
-//     labels: allCategory, 
-//     datasets: [
-//       {
-//         label: 'Transaction According to Category',
-//         data: allCategory.map((category) => {
-//           return transactions
-//             .filter((item) => item.category === category)
-//             .reduce((acc, curr) => acc + curr.amount, 0);
-//         }),
-//         backgroundColor: allCategory.map(() => 'rgb(255, 99, 132)'),
-//         hoverOffset: 4,
-//       },
-//     ],
-//   };
+  useEffect(() => {
+    budget.forEach((item) => {
+      if (
+        new Date(item.startDate) <= new Date() &&
+        new Date(item.endDate) >= new Date()
+      ) {
+        setFrom(new Date(item.startDate));
+        setTo(new Date(item.endDate));
+      }
+    });
+  }, [budget]);
 
-//   return <Doughnut data={data} />;
-// }
+  useEffect(() => {
+    const fetchBudget = async () => {
+      const response = await fetch("/api/get-amount");
+      const result = await response.json();
 
-// export default PieGraph;
+      if (result.ok) {
+        if (Array.isArray(result.amount)) {
+          setBudget(result.amount);
+        } else {
+          console.error("Unexpected API response structure from amount");
+        }
+      } else {
+        console.error("Error in fetching budget");
+      }
+    };
+
+    fetchBudget();
+  }, []);
+
+  const filteredTransactions = transactions.filter((item) => {
+    return new Date(item.date) >= from! && new Date(item.date) <= to!;
+  });
+
+  const categoryTotals: { [key: string]: number } = filteredTransactions.reduce(
+    (acc: { [key: string]: number }, curr: Transaction) => {
+      if (curr.transactionType === "earn") {
+        acc[curr.category] = (acc[curr.category] || 0) + curr.amount;
+      } else if (curr.transactionType === "spend") {
+        acc[curr.category] = (acc[curr.category] || 0) - curr.amount;
+      }
+      return acc;
+    },
+    {}
+  );
+  
+
+  const allCategory = Object.keys(categoryTotals);
+  const dataValues = Object.values(categoryTotals);
+  const backgroundColors = generateColors(allCategory.length);
+
+  const data = {
+    labels: allCategory,
+    datasets: [
+      {
+        label: "total exepnce catrgory wise",
+        data: dataValues,
+        backgroundColor:backgroundColors,
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  return <Doughnut data={data}  />;
+}
+
+export default PieGraph;

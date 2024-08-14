@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -77,9 +77,9 @@ const config = {
           to: { left: "-200px" }
         },
         'blink': {
-          "0%,100%": { opacity : "0.1"},
-          "50%": { opacity:"0.5" },
-          "90%": { opacity:"0.8" },
+          "0%,100%": { opacity: "0.1" },
+          "50%": { opacity: "0.5" },
+          "90%": { opacity: "0.8" },
         },
       },
       animation: {
@@ -92,6 +92,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

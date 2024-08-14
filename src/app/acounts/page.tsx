@@ -134,7 +134,7 @@ function Page() {
   }
 
   return (
-    <div className="w-full h-full mb-4">
+    <div className="w-full h-full mb-4 ">
       {amount === 0 ? (
         <PostAmount />
       ) : (

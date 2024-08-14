@@ -2,17 +2,18 @@ import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
 import transactionModel from "@/model/transaction.model";
 import userModel from "@/model/user.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { draftMode } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE({req}: {req:NextRequest }) {
-  draftMode().disable()
-  
+export async function DELETE({ req, params }: { req: NextRequest; params: { transactionID: string } }) {
+
+
   await dbConnect();
+  const transactionId = params.transactionID;
   const { getUser } = getKindeServerSession();
   const User = await getUser();
 
   if (!User) {
+    await dbDisconnect();
     return NextResponse.json(
       {
         success: false,
@@ -22,51 +23,51 @@ export async function DELETE({req}: {req:NextRequest }) {
     );
   }
 
-
-  const {transactionId} = await req.json()
   try {
-   
-    const transactionToDelete = await transactionModel.findByIdAndDelete(transactionId);
-
+    
+    const transactionToDelete = await transactionModel.findByIdAndDelete({transactionId});
 
     if (!transactionToDelete) {
+      await dbDisconnect();
       return NextResponse.json(
-        { success: true, message: "transaction not dound" },
+        { success: false, message: "Transaction not found",ok:true },
         { status: 404 }
       );
     }
-
+  
     const user = await userModel.updateOne(
       {
         id: User.id,
       },
-      { $pull: { transactions: { _id: transactionId} } }
+      { $pull: { transactions: { _id: transactionId } } }
     );
+
     if (user.modifiedCount === 0) {
+      await dbDisconnect();
       return NextResponse.json(
         {
           success: false,
-          message: "message not found || already deletetd",
-
+          message: "Transaction not found or already deleted",
         },
         { status: 404 }
       );
     }
-    await dbDisconnect()
+
+    await dbDisconnect();
     return NextResponse.json(
       {
         success: true,
-        message: "transaction has been delete",
-        ok:true,
-        transactionToDelete
+        message: "Transaction has been deleted",
+        ok: true,
+        transactionToDelete,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
-    console.log(error);
+    console.error(error);
+    await dbDisconnect();
     return NextResponse.json(
-      { success: false, message: "transaction has not been delete", ok:false },
+      { success: false, message: "Failed to delete the transaction", ok: false },
       { status: 500 }
     );
   }

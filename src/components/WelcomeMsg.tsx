@@ -3,13 +3,11 @@ import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
-function WelcomeMsg() {
+function WelcomeMsg({className}:{className:string}) {
   const pathName= usePathname()
 
   const {user} = useKindeBrowserClient()
   const currentDate = new Date()
-  console.log(currentDate);
-  console.log(currentDate.getMonth());
   if(pathName === '/' && !user){
     return(
       <div>
@@ -21,7 +19,7 @@ function WelcomeMsg() {
   }
   else if(pathName === '/' && user){
     return(
-      <div>
+      <div className={`${className}`}>
       <p className='text-[#ffc0f3] lg:text-xl max-sm:text-sm cursor-pointer max-sm:text-center'>
       <span className='hover:shadow-xl shrink text-xl shadow-pink-500'>I</span> {' '} <span className='hover:shadow-xl shadow-pink-500'>Hope</span>{' '} <span className='hover:shadow-xl shadow-pink-500'>You</span> {" "} <span className='hover:shadow-xl shadow-pink-500'>are</span> {' '} <span className='hover:shadow-xl shadow-pink-500'>Loving</span>{' '} <span className='hover:shadow-xl shadow-pink-500'>It</span>
       </p>
@@ -31,7 +29,7 @@ function WelcomeMsg() {
 
   else{
     return (
-      <div className='space-y-2 mb-4 max-sm:text-center'>
+      <div className={`space-y-2 mb-4 max-sm:text-center ${className}`}>
        <h2 className='text-2xl lg:text-4xl text-white font-medium '>Welcome {user?.given_name} 😁</h2>
   
        <p className='text-sm lg:text-base text-white'>

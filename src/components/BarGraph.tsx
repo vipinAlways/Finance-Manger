@@ -91,8 +91,8 @@ const data = {
         );
         return matchingTransaction ? matchingTransaction.amount : 0;
       }),
-      backgroundColor: "green",
-      borderColor: "rgba(75, 192, 192, 0.24)",
+      backgroundColor: "rgba(75, 192, 192, 0.84)",
+      borderColor: "green",
       borderWidth: 1,
     },
     {

@@ -69,6 +69,7 @@ body::-webkit-scrollbar{
   overflow: hidden;
   
 }
+
 @keyframes scrollLeft {
   to {
     left: -200px;
@@ -93,9 +94,9 @@ body::-webkit-scrollbar{
 .item:hover{
   border-radius: 10px 10px;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1),
-  0 0 10px 10px rgba(31, 116, 207, 0.3),
-  0 0 20px 20px rgba(0, 102, 204, 0.2),
-  0 0 30px 30px rgba(0, 81, 153, 0.1);
+  0 0 10px 10px rgba(31, 207, 166, 0.3),
+  0 0 20px 20px rgba(31, 207, 107, 0.2),
+  0 0 30px 30px rgba(31, 207, 140, 0.1);
 }
 .item1 {
   animation-delay: calc(30s / 8 * (8 - 1) * -1);
@@ -136,13 +137,15 @@ input[type="number"] {
 @keyframes slide {
   from{
       left: -6rem;
-      /* transform: translateX(-5rem); */
-      /* transform: rotateX(90deg); */
   }
   to{
     left: -3.5rem;
-    /* transform: translateX(-5rem); */
-    /* transform: rotateX(90deg); */
+
   }
 }
 
+.Quick{
+  background-image: linear-gradient(#3dbe3d,#1c6a1c);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
