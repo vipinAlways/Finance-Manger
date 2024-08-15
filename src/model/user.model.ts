@@ -6,7 +6,7 @@ export interface User extends Document {
   userName: string;
   email: string;
   id: string;
-  transaction: Transaction[];
+  transaction: any;
   amount: Amount[];
 }
 

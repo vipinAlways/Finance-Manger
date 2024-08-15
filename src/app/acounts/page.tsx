@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 function Page() {
   const [amount, setAmount] = useState<number>(0);
   const [from, setStartDate] = useState("");
+  const [amountId, setAmountId] = useState("");
   const [to, setEndDate] = useState("");
   const [budget, setBudget] = useState<Amount[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -96,6 +97,7 @@ function Page() {
           setAmount(data.amount);
           setEndDate(new Date(data.endDate).toLocaleDateString());
           setStartDate(new Date(data.startDate).toLocaleDateString());
+          setAmountId(data._id)
         } else {
           setAmount(0);
         }
@@ -140,7 +142,7 @@ function Page() {
       ) : (
         <div className="mt-4 flex items-start relative">
 
-          <DeleteBudget className=""/>
+          <DeleteBudget className="" amountId={amountId}/>
           <div className="cursor-pointer flex flex-col gap-6 items-center w-fit  bg-gradient-to-tr from-green-800 via-green-300 to-green-500 px-4 rounded-lg py-6 ">
             <div className="flex flex-col items-center gap-3">
               <h1 className="lg:text-2xl max-sm:text-lg max-md:text-xl text-white">

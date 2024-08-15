@@ -23,7 +23,7 @@ function AddTransaction({ className }: { className: string }) {
 
     setError("");
     try {
-      let response = await fetch("http://localhost:3000/api/post-transaction", {
+      let response = await fetch("/api/post-transaction", {
         method: "POST",
         body: JSON.stringify({
           amount,
@@ -57,7 +57,7 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        `absolute  top-[20%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center flex-col `,
+      `absolute  top-[0%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col `,
         className
       )}
     >

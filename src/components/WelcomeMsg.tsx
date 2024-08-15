@@ -20,7 +20,7 @@ function WelcomeMsg({className}:{className:string}) {
   else if(pathName === '/' && user){
     return(
       <div className={`${className}`}>
-      <p className='text-[#ffc0f3] lg:text-xl max-sm:text-sm cursor-pointer max-sm:text-center'>
+      <p className='text-white lg:text-xl max-sm:text-sm cursor-pointer max-sm:text-center'>
       <span className='hover:shadow-xl shrink text-xl shadow-pink-500'>I</span> {' '} <span className='hover:shadow-xl shadow-pink-500'>Hope</span>{' '} <span className='hover:shadow-xl shadow-pink-500'>You</span> {" "} <span className='hover:shadow-xl shadow-pink-500'>are</span> {' '} <span className='hover:shadow-xl shadow-pink-500'>Loving</span>{' '} <span className='hover:shadow-xl shadow-pink-500'>It</span>
       </p>
       </div>

@@ -2,39 +2,32 @@ import React from "react";
 import { Button } from "./ui/button";
 
 type DeleteTransactionProps = {
-  transactionID: string;
+  transactionId: string;
 };
 
-function DeleteTransaction({ transactionID }: DeleteTransactionProps) {
-  const deleteItem = async () => {
+const DeleteTransaction: React.FC<DeleteTransactionProps> = ({ transactionId }) => {
+  const deleteTransaction = async () => {
     try {
-      const response = await fetch(`/api/delete-transaction/${transactionID}`, {
+      const response = await fetch(`/api/delete-transaction/${transactionId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete the transaction");
-      }
-
       const data = await response.json();
+      console.log(data);
+      
 
-      if (data.ok) {
+   
+      if (data.status === 200) {
         alert("Transaction has been deleted");
       } else {
-        alert(`Transaction has not been deleted: ${data.message}`);
+        alert("Transaction has not been deleted");
       }
     } catch (error) {
-      console.error(error);
-      alert(`An error occurred while deleting the transaction: ${transactionID}`);
+      console.error("Error during fetch operation:", error);
+      alert("An error occurred while deleting the transaction. Please try again.");
     }
   };
 
-  return (
-    <Button onClick={deleteItem}>Delete</Button>
-  );
-}
+  return <Button onClick={deleteTransaction}>Delete</Button>;
+};
 
 export default DeleteTransaction;
