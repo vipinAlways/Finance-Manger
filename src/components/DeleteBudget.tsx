@@ -22,7 +22,7 @@ useEffect(()=>{
         console.error('Failed to delete budget');
       }
     } catch (error) {
-      console.error('Error:', error);
+      alert("server error")
     }
  
   }
