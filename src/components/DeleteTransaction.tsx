@@ -16,11 +16,9 @@ const DeleteTransaction: React.FC<DeleteTransactionProps> = ({ transactionId }) 
       
 
    
-      if (data.status === 200) {
+      if (data.ok) {
         alert("Transaction has been deleted");
-      } else {
-        alert("Transaction has not been deleted");
-      }
+      } 
     } catch (error) {
       console.error("Error during fetch operation:", error);
       alert("An error occurred while deleting the transaction. Please try again.");

@@ -7,7 +7,7 @@ export interface User extends Document {
   email: string;
   id: string;
   transaction: any;
-  amount: Amount[];
+  amount: any;
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({

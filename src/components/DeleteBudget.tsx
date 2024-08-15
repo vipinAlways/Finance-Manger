@@ -13,7 +13,7 @@ useEffect(()=>{
 },[])
   const deleteBudget  =async ()=>{
     try {
-      const response = await fetch(`/api/deleteBudget/${amountId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/delete-budget/${amountId}`, { method: 'DELETE' });
       const data = await response.json();
       
       if (data.ok) {
