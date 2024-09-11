@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 import DeleteBudget from "@/components/DeleteBudget";
 import PostAmount from "@/components/PostAmount";
 import TransactionsAccorindToDate from "@/components/TransactionsAccorindToDate";
@@ -136,11 +136,11 @@ function Page() {
   }
 
   return (
-    <div className="w-full h-full mb-4 ">
+    <div className="w-full h-full items-start flex  justify-between  ">
       {amount === 0 ? (
         <PostAmount />
       ) : (
-        <div className="mt-4 flex items-start relative">
+        <div className="mt-4 flex items-start flex-col relative w-96">
 
           <DeleteBudget className="" amountId={amountId}/>
           <div className="cursor-pointer flex flex-col gap-6 items-center w-fit  bg-gradient-to-tr from-green-800 via-green-300 to-green-500 px-4 rounded-lg py-6 ">
@@ -231,7 +231,7 @@ function Page() {
         </div>
       )}
 
-        <div className="flex items-center flex-col mt-4 lg:mt-8 gap-4" >
+        <div className="flex items-center flex-col mt-4 lg:mt-8 gap-4 flex-1  w-96" >
           <Button onClick={tableShow}
              className="lg:text-xl max-sm:text-sm max-md:text-lg " >
             {

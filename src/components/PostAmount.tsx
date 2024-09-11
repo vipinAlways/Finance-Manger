@@ -52,7 +52,7 @@ function PostAmount() {
     };
 
     return (
-        <div className='mt-4'>
+        <div className='mt-4 w-full'>
             <form
                 onSubmit={handleSubmit}
                 className='w-1/2 mx-auto my-auto flex flex-col items-center h-[50vh] justify-around px-2 border-2 bg-gradient-to-r  from-green-800 via-green-300 to-green-500  rounded-lg' 
@@ -68,7 +68,7 @@ function PostAmount() {
                     className='border w-1/2 p-2 lg:text-xl max-md:text-lg max-sm:text-sm font-semibold rounded-md bg-zinc-300 text-green-400'
                 />
              </div>
-                <div className='flex justify-evenly w-full'>
+                <div className='flex justify-evenly w-full flex-col lg:flex-row'>
                     <div className='flex flex-col items-center gap-2'>
                         <label className='text-white lg:text-xl max-md:text-lg max-sm:text-sm' htmlFor="startDate">From</label>
                         <input

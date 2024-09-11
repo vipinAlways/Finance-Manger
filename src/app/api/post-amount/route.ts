@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       });
 
       await newAmount.save();
-      // @ts-ignore
+      
       user.amount.push(newAmount._id);
       await user.save();
       await dbDisconnect();

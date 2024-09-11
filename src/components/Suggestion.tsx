@@ -19,21 +19,21 @@ function Suggestion({className}:{className:string}) {
         aria-label="Suggestion Slider"
       >
         <SwiperSlide>
-          <div className="w-64   bg-green-700 rounded-lg p-4">
+          <div className="w-64   bg-green-500 rounded-lg p-4">
             <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white  text-wrap">
              can add categories of your choice
             </p>
           </div>
         </SwiperSlide>
         <SwiperSlide>
-        <div className="w-64   bg-green-700 rounded-lg p-4">
+        <div className="w-64   bg-green-500 rounded-lg p-4">
             <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white  w-full text-wrap">
             Easily monitor your expenses
             </p>
           </div>
         </SwiperSlide>
         <SwiperSlide>
-        <div className="w-64   bg-green-700 rounded-lg p-4">
+        <div className="w-64   bg-green-500 rounded-lg p-4">
             <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white text-wrap">
             Manage your budget effectively
             </p>

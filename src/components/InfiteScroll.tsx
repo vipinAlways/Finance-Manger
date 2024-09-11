@@ -3,15 +3,15 @@ import React from "react";
 
 function InfiteScroll() {
   return (
-    <div className="wrapper h-full">
+    <div className="wrapper h-full flex flex-1">
       <Link href='/dashboard' className="item item1 mx-3">
         <img src="./image1.jpg" alt="" className="w-[210px] h-[210px] object-contain border"/>
-        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can monitor your journey with graphs.</h1>
+        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can monitor journey with graph.</h1>
       </Link >
       <Link href='/transaction' className="item item2 mx-3">
         {" "}
         <img src="./image5.jpg" alt="" className="w-[210px] h-[210px] object-contain border"/>
-        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can add transactions for Spend, Earn, or Loan</h1>
+        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can add transactions </h1>
       </Link>
       <Link href='/acounts' className="item item3 mx-3">
         {" "}
@@ -27,12 +27,12 @@ function InfiteScroll() {
       </Link>
       <Link href='/dashboard' className="item item5 mx-3">
         <img src="./image1.jpg" alt="" className="w-[210px] h-[210px] object-contain border"/>
-        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can monitor your journey with graphs.</h1>
+        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can monitor journey with graph.</h1>
       </Link >
       <Link href='/transaction' className="item item6 mx-3">
         {" "}
         <img src="./image5.jpg" alt="" className="w-[210px] h-[210px] object-contain border"/>
-        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can add transactions for Spend, Earn, or Loan</h1>
+        <h1 className="text-center mt-2 max-sm:mt-px text-xl w-full text-green-400 px-1">You can add transactions </h1>
       </Link>
       <Link href='/acounts' className="item item7 mx-3">
         {" "}
