@@ -1,8 +1,7 @@
 
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import amountModel from "@/model/amount.model";
-import transactionModel from "@/model/transaction.model";
-import userModel from "@/model/user.model";
+import amountModel from "@/Models/Amount.model";
+import userModel from "@/Models/User.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
@@ -27,7 +26,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     const user = await userModel.findOne({ _id:amount.user });
 
     if (!user) {
-      await dbDisconnect();
+    
       return NextResponse.json(
         {
           success: false,
@@ -41,7 +40,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     user.amount.pull(amountId);
     await user.save();
 
-    await dbDisconnect();
+  
     return NextResponse.json(
       {
         success: true,
@@ -52,7 +51,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     );
   } catch (error) {
     console.error(error);
-    await dbDisconnect();
+  
     return NextResponse.json(
       { success: false, message: "Failed to delete the transaction" },
       { status: 500 }

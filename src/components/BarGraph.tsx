@@ -11,8 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { Transaction } from "@/model/transaction.model";
-import { Amount } from "@/model/amount.model";
+import { Transaction } from "@/Models/Transaction.model";
+import { Amount } from "@/Models/Amount.model";
 
 ChartJS.register(
   CategoryScale,

@@ -1,7 +1,6 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import transactionModel from "@/model/transaction.model";
-import userModel from "@/model/user.model";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import transactionModel from "@/Models/Transaction.model";
+import userModel from "@/Models/User.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
@@ -26,7 +25,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     const user = await userModel.findOne({ _id:transaction?.user });
 
     if (!user) {
-      await dbDisconnect();
+ 
       return NextResponse.json(
         {
           success: false,

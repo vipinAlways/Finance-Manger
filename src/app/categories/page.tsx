@@ -1,5 +1,5 @@
 "use client";
-import { Transaction } from "@/model/transaction.model";
+import { Transaction } from "@/Models/Transaction.model";
 import React, { useEffect, useState } from "react";
 import {
   Table,

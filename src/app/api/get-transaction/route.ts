@@ -1,6 +1,6 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import transactionModel from "@/model/transaction.model";
-import userModel from "@/model/user.model";
+import transactionModel from "@/Models/Transaction.model";
+import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   const User = await getUser();
 
   if (!User) {
-    await dbDisconnect();
+  
     return NextResponse.json(
       {
         success: false,
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     const user = await userModel.findOne({ id: User.id });
 
     if (!user) {
-      await dbDisconnect();
+    
       return NextResponse.json(
         { success: false, message: "User not found" },
         { status: 404 }
@@ -46,14 +46,14 @@ export async function GET(req: Request) {
     const totalTransactions = await transactionModel.countDocuments({ user: user?._id });
 
     if (!transactions.length) {
-      await dbDisconnect();
+    
       return NextResponse.json(
         { success: false, message: "No transactions found" },
         { status: 404 }
       );
     }
 
-    await dbDisconnect();
+  
     return NextResponse.json({
       transactions,
       page,
@@ -63,7 +63,7 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error(error);
 
-    await dbDisconnect();
+  
     return NextResponse.json(
       {
         success: false,

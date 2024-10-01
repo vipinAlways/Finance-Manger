@@ -1,6 +1,6 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import transactionModel from "@/model/transaction.model";
-import userModel from "@/model/user.model";
+import transactionModel from "@/Models/Transaction.model";
+import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -21,6 +21,9 @@ export async function POST(req: Request) {
     try {
       const { amount, date, note, method, category,transactionType } = await req.json();
 
+
+      
+
       let newTransaction =  await  transactionModel.create({
         amount,
         date,
@@ -33,8 +36,10 @@ export async function POST(req: Request) {
 
    
 
+     
+
       await newTransaction.save();
-      // @ts-ignore 
+    
       user.transaction.push(newTransaction._id );
       await user.save();
       await dbDisconnect()

@@ -3,8 +3,8 @@ import DeleteBudget from "@/components/DeleteBudget";
 import PostAmount from "@/components/PostAmount";
 import TransactionsAccorindToDate from "@/components/TransactionsAccorindToDate";
 import { Button } from "@/components/ui/button";
-import { Amount } from "@/model/amount.model";
-import { Transaction } from "@/model/transaction.model";
+import { Amount } from "@/Models/Amount.model";
+import { Transaction } from "@/Models/Transaction.model";
 import { ArrowRightIcon, Sheet } from "lucide-react";
 import React, { useEffect, useState } from "react";
 

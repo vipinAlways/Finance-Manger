@@ -125,7 +125,7 @@ import {
 import DeleteTransaction from "./DeleteTransaction";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Transaction } from "@/model/transaction.model";
+import { Transaction } from "@/Models/Transaction.model";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

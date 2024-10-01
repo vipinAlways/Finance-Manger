@@ -1,5 +1,5 @@
-import { Amount } from '@/model/amount.model';
-import { Transaction } from '@/model/transaction.model';
+import { Amount } from '@/Models/Amount.model';
+import { Transaction } from '@/Models/Transaction.model';
 import React, { useEffect, useState } from 'react';
 import { Autoplay, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';

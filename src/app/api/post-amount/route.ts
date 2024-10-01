@@ -1,7 +1,7 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import amountModel, { Amount } from "@/model/amount.model";
+import amountModel, { Amount } from "@/Models/Amount.model";
 
-import userModel from "@/model/user.model";
+import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import { NextRequest, NextResponse } from "next/server";
