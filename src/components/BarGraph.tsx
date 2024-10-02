@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,7 +37,7 @@ function BarGraph() {
       const result = await response.json();
 
       if (Array.isArray(result.transactions)) {
-        setTransactions((prev) => [...prev, ...result.transactions]);
+        setTransactions(result.transactions); // Ensure this does not duplicate entries
       } else {
         console.error("Unexpected API response structure");
       }
@@ -64,74 +64,82 @@ function BarGraph() {
 
     fetchBudget();
   }, []);
-const dates: Date[] = [];
+console.log(budget);
+  
+  const dates = useMemo(() => {
+    const dateArray: Date[] = [];
+    budget.forEach((item) => {
+      let currentDate = new Date(item.startDate);
+      const endDate = new Date(item.endDate);
 
-function getDates() {
-  budget.forEach((item) => {
-    let currentDate = new Date(item.startDate);
-    const endDate = new Date(item.endDate);
+      while (currentDate <= endDate) {
+        dateArray.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    });
+    return dateArray;
+  }, [budget]);
 
-    while (currentDate <= endDate) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-  });
-}
+  
+  const formatDate = (date: Date) => `${date.getDate()} / ${date.getMonth() + 1}`;
 
-getDates();
+  const data = {
+    labels: dates.map((date) => formatDate(date)),
+    datasets: [
+      {
+        label: "Earn",
+        data: dates.map((date) => {
+          const matchingTransaction = transaction.find(
+            (item) =>
+              new Date(item.date).toLocaleDateString() === date.toLocaleDateString() &&
+              item.transactionType === "earn"
+          );
+          return matchingTransaction ? matchingTransaction.amount : 0;
+        }),
+        backgroundColor: "rgba(75, 192, 192, 0.84)",
+        borderColor: "green",
+        borderWidth: 1,
+      },
+      {
+        label: "Spend",
+        data: dates.map((date) => {
+          const matchingTransaction = transaction.find(
+            (item) =>
+              new Date(item.date).toLocaleDateString() === date.toLocaleDateString() &&
+              item.transactionType === "spend"
+          );
+          return matchingTransaction ? matchingTransaction.amount : 0;
+        }),
+        backgroundColor: "red",
+        borderColor: "rgba(255, 99, 132, 0.24)",
+        borderWidth: 1,
+      },
+      {
+        label: "Loan",
+        data: dates.map((date) => {
+          const matchingTransaction = transaction.find(
+            (item) =>
+              new Date(item.date).toLocaleDateString() === date.toLocaleDateString() &&
+              item.transactionType === "loan"
+          );
+          return matchingTransaction ? matchingTransaction.amount : 0;
+        }),
+        backgroundColor: "rgba(241, 241, 4, 0.248)",
+        borderColor: "yellow",
+        borderWidth: 1,
+      },
+    ],
+  };
 
-const data = {
-  labels: dates.map((date) => `${date.getDate()} / ${date.getMonth()}`),
-  datasets: [
-    {
-      label: "Earn",
-      data: dates.map((date) => {
-        const matchingTransaction = transaction.find((item) =>
-          new Date(item.date).toLocaleDateString() === date.toLocaleDateString() && item.transactionType === "earn"
-        );
-        return matchingTransaction ? matchingTransaction.amount : 0;
-      }),
-      backgroundColor: "rgba(75, 192, 192, 0.84)",
-      borderColor: "green",
-      borderWidth: 1,
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
     },
-    {
-      label: "Spend",
-      data: dates.map((date) => {
-        const matchingTransaction = transaction.find((item) =>
-          new Date(item.date).toLocaleDateString() === date.toLocaleDateString() && item.transactionType === "spend"
-        );
-        return matchingTransaction ? matchingTransaction.amount : 0;
-      }),
-      backgroundColor: "red",
-      borderColor: "rgba(255, 99, 132, 0.24)",
-      borderWidth: 1,
-    },
-    {
-      label: "Loan",
-      data: dates.map((date) => {
-        const matchingTransaction = transaction.find((item) =>
-          new Date(item.date).toLocaleDateString() === date.toLocaleDateString() && item.transactionType === "loan"
-        );
-        return matchingTransaction ? matchingTransaction.amount : 0;
-      }),
-      backgroundColor: "rgba(241, 241, 4, 0.248)",
-      borderColor: "yellow",
-      borderWidth: 1,
-    },
-  ],
-};
+  };
 
-const options = {
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
-
-return <Bar options={options} data={data}  />;
-
+  return <Bar options={options} data={data} />;
 }
 
 export default BarGraph;

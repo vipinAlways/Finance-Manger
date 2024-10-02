@@ -11,20 +11,20 @@ export async function POST(req: Request) {
   const user1 = await getUser();
 
   if (!user1) {
-    return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+    return NextResponse.json(
+      { success: false, message: "User not found" },
+      { status: 404 }
+    );
   }
 
   const user = await userModel.findOne({ id: user1?.id });
- 
 
   if (user) {
     try {
-      const { amount, date, note, method, category,transactionType } = await req.json();
+      const { amount, date, note, method, category, transactionType } =
+        await req.json();
 
-
-      
-
-      let newTransaction =  await  transactionModel.create({
+      let newTransaction = await transactionModel.create({
         amount,
         date,
         note,
@@ -34,23 +34,28 @@ export async function POST(req: Request) {
         user: user._id,
       });
 
-   
-
-     
-
       await newTransaction.save();
-    
-      user.transaction.push(newTransaction._id );
+
+      user.transaction.push(newTransaction._id);
       await user.save();
-      await dbDisconnect()
-      return Response.json({ success: true, ok:true,message: "Transaction added successfully", transaction: newTransaction})
+      await dbDisconnect();
+      return Response.json({
+        success: true,
+        ok: true,
+        message: "Transaction added successfully",
+        transaction: newTransaction,
+      });
     } catch (error) {
       console.error("Error creating transaction:", error);
-      return Response.json({ success: false, message: "Error creating transaction",ok:false }, { status: 500 });
+      return Response.json(
+        { success: false, message: "Error creating transaction", ok: false },
+        { status: 500 }
+      );
     }
   } else {
-    return NextResponse.json({  success: false, message: "User not found" }, { status: 404 });
+    return NextResponse.json(
+      { success: false, message: "User not found" },
+      { status: 404 }
+    );
   }
 }
-
-

@@ -26,7 +26,7 @@ export async function GET(req: Request) {
 
   try {
     const user = await userModel.findOne({ id: User.id });
-    console.log(user);
+  
 
     if (!user) {
   

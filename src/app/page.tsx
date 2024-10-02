@@ -1,5 +1,6 @@
 'use client'
 import InfiteScroll from "@/components/InfiteScroll";
+import WelcomePageCard from "@/components/WelcomePageCard";
 import React, { useEffect, useState } from "react";
 
 
@@ -15,7 +16,8 @@ function page() {
 
     </div>
     <div className="w-full h-full">
-      <InfiteScroll/>
+      {/* <InfiteScroll/> */}
+      <WelcomePageCard/>
     </div>
   </div>
   );

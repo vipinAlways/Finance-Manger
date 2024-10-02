@@ -151,3 +151,19 @@ input[type="number"] {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* By default, no scaling */
+.card {
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* When hovering over the card container, scale all cards down */
+.card-container:hover .card {
+  transform: scale(0.97);
+}
+
+/* When hovering over the specific card, scale it up */
+.card:hover {
+  transform: scale(1.05) !important;
+}
