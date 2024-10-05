@@ -18,6 +18,7 @@ useEffect(()=>{
       
       if (data.ok) {
         alert("Budget has been deleted");
+        window.location.reload()
       } else {
         console.error('Failed to delete budget');
       }

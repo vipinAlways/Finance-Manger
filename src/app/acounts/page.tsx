@@ -97,6 +97,7 @@ function Page() {
           setAmount(data.amount);
           setEndDate(new Date(data.endDate).toLocaleDateString());
           setStartDate(new Date(data.startDate).toLocaleDateString());
+          //@ts-ignore
           setAmountId(data._id)
         } else {
           setAmount(0);

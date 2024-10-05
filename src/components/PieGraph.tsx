@@ -76,9 +76,9 @@ function PieGraph() {
   const categoryTotals: { [key: string]: number } = filteredTransactions.reduce(
     (acc: { [key: string]: number }, curr: Transaction) => {
       if (curr.transactionType === "earn") {
-        acc[curr.category] = (acc[curr.category] || 0) + curr.amount;
+        acc[curr.category.toUpperCase()] = (acc[curr.category] || 0) + curr.amount;
       } else if (curr.transactionType === "spend") {
-        acc[curr.category] = (acc[curr.category] || 0) - curr.amount;
+        acc[curr.category.toUpperCase()] = (acc[curr.category] || 0) - curr.amount;
       }
       return acc;
     },

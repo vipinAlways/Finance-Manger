@@ -64,7 +64,7 @@ function BarGraph() {
 
     fetchBudget();
   }, []);
-console.log(budget);
+
   
   const dates = useMemo(() => {
     const dateArray: Date[] = [];
@@ -139,7 +139,7 @@ console.log(budget);
     },
   };
 
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} className="h-full w-full" />;
 }
 
 export default BarGraph;

@@ -11,7 +11,6 @@ export async function GET(req: Request) {
   const User = await getUser();
 
   if (!User) {
-
     return NextResponse.json(
       {
         success: false,
@@ -21,42 +20,33 @@ export async function GET(req: Request) {
     );
   }
 
- 
- 
-
   try {
     const user = await userModel.findOne({ id: User.id });
-  
 
     if (!user) {
-  
       return NextResponse.json(
         { success: false, message: "User not found" },
         { status: 404 }
       );
     }
 
-    const amount = await amountModel.find({ user:user?._id });
-
-    
+    const amount = await amountModel.find({ user: user?._id });
 
     if (!amount.length) {
-  
       return NextResponse.json(
         { success: false, message: "No amount found" },
         { status: 404 }
       );
     }
 
-
-    return NextResponse.json({
-       amount,
-      ok:true
-    },{status:200});
+    return NextResponse.json(
+      {
+        amount,
+        ok: true,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    
-
-
     return NextResponse.json(
       {
         success: false,

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import WelcomeMsg from "./WelcomeMsg";
 import Suggestion from "./Suggestion";
 
+
 function Header() {
   return (
     <header
@@ -23,9 +24,9 @@ function Header() {
             <AuthButtons />
           </div>
         </div>
-        <div className="flex items-center justify-around w-full gap-4 flex-1 ">
+        <div className="flex items-center justify-between w-full ">
           <WelcomeMsg className="" />
-          <Suggestion className="" />
+          <Suggestion/>
         </div>
       </div>
     </header>

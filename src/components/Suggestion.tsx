@@ -1,47 +1,39 @@
-'use client'
+"use client";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-import 'swiper/css';
-import 'swiper/css/scrollbar';
-import 'swiper/css/autoplay';
-import { Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+function Suggestion() {
+  const [budget, setBudget] = useState<[]>([]);
+  useEffect(() => {
+    const fetchBudget = async () => {
+      const response = await fetch("/api/get-amount");
+      const result = await response.json();
 
-function Suggestion({className}:{className:string}) {
-  return (
-    <div className={`flex relative justify-center gap-2 items-center w-80 h-fit ${className}`}>
-      <Swiper
-        direction="horizontal"
-        autoplay={{ delay: 2500 }}
-        
-        loop={true}
-        slidesPerView={1}
-        modules={[Autoplay]}
-        aria-label="Suggestion Slider"
+      if (result.ok) {
+        if (Array.isArray(result.amount)) {
+          setBudget(result.amount);
+        } else {
+          console.error("Unexpected API response structure from amount");
+        }
+      } else {
+        console.error("Error in fetching budget");
+      }
+    };
+
+    fetchBudget();
+  }, []);
+
+  if (budget.length <= 0) {
+    return (
+      <Link
+        href="/acounts"
+        className="text-2xl text-red-500 animate-blink cursor-pointer w-fit h-10 z-[999]"
       >
-        <SwiperSlide>
-          <div className="w-64   bg-green-500 rounded-lg p-4">
-            <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white  text-wrap">
-             can add categories of your choice
-            </p>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-        <div className="w-64   bg-green-500 rounded-lg p-4">
-            <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white  w-full text-wrap">
-            Easily monitor your expenses
-            </p>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-        <div className="w-64   bg-green-500 rounded-lg p-4">
-            <p className="lg:text-xl max-sm:text-sm max-md:text-lg text-white text-wrap">
-            Manage your budget effectively
-            </p>
-          </div>
-        </SwiperSlide>
-      </Swiper>
-    </div>
-  );
+        ! Looks like you have not set your budget
+      </Link>
+    );
+  }
+  return <div></div>;
 }
 
 export default Suggestion;

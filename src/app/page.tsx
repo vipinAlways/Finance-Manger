@@ -16,7 +16,7 @@ function page() {
 
     </div>
     <div className="w-full h-full">
-      {/* <InfiteScroll/> */}
+    
       <WelcomePageCard/>
     </div>
   </div>
