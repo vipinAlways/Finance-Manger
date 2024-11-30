@@ -8,7 +8,7 @@ export interface Transaction extends Document {
   user: mongoose.Schema.Types.ObjectId;
   amount: number;
   note: string;
-  transactionType: string;
+  transactionType: string
 }
 
 // Define the schema for the Transaction model

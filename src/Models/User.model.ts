@@ -6,9 +6,9 @@ import { transactionSchema } from "./Transaction.model";  // Import transaction 
 export interface User extends Document {
   userName: string;
   email: string;
-  id: string;
-  transaction: any;
-  amount: any;
+  id: string
+  transaction: any
+  amount: any
 }
 
 // Define the schema for the User model

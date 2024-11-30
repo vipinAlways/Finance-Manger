@@ -9,7 +9,6 @@ export async function GET(req: Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const User = await getUser();
-
   if (!User) {
     return NextResponse.json(
       {
