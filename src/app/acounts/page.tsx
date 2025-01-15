@@ -3,8 +3,6 @@ import DeleteBudget from "@/components/DeleteBudget";
 import PostAmount from "@/components/PostAmount";
 import TransactionsAccorindToDate from "@/components/TransactionsAccorindToDate";
 import { Button } from "@/components/ui/button";
-import { Amount } from "@/Models/Amount.model";
-import { Transaction } from "@/Models/Transaction.model";
 import { ArrowRightIcon} from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -30,13 +28,7 @@ function home() {
         );
         const result = await response.json();
 
-        if (result.transactions) {
-          setTransactions(result.transactions);
-        } else if (Array.isArray(result)) {
-          setTransactions(result);
-        } else {
-          console.error("Error in transaction response");
-        }
+       setTransactions(result.transaction)
       } catch (error) {
         alert("Currently our servers are not working, please try again later.");
       }

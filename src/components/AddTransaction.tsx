@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Cross } from "lucide-react";
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
@@ -12,6 +11,7 @@ function AddTransaction({ className }: { className: string }) {
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
+  const [categoryGroup, setCategoryGroup] = useState<any[]>([])
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,42 +22,70 @@ function AddTransaction({ className }: { className: string }) {
     }
 
     setError("");
-    try {
-      let response = await fetch("/api/post-transaction", {
-        method: "POST",
-        body: JSON.stringify({
-          amount,
-          method,
-          note,
-          category,
-          date,
-          transactionType,
-        }),
-      });
-      response = await response.json();
-      
-      if (response.ok) {
-        
-        setAmount("");
-        setNote("");
-        setCategory("");
-        setDate("");
-        setMethod("");
-        setTransactionType("");
-        setDisable(true)
-        window.location.reload();
-      } else {
-        console.error("Failed to add transaction:", response);
-      }
-    } catch (error) {
-      console.error("Error while adding transaction:", error);
-    }
+    useEffect(() => {
+      const postTransaction = async () => {
+        try {
+          let response = await fetch("/api/post-transaction", {
+            method: "POST",
+            body: JSON.stringify({
+              amount,
+              method,
+              note,
+              category,
+              date,
+              transactionType,
+            }),
+          });
+          response = await response.json();
+
+          if (response.ok) {
+            setAmount("");
+            setNote("");
+            setCategory("");
+            setDate("");
+            setMethod("");
+            setTransactionType("");
+            setDisable(true);
+            window.location.reload();
+          } else {
+            console.error("Failed to add transaction:", response);
+          }
+        } catch (error) {
+          console.error("Error while adding transaction:", error);
+        }
+      };
+
+      postTransaction();
+    });
   };
+
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const response = await fetch(`/api/get-category`);
+        const result = await response.json();
+  
+        console.log(result, "API response"); 
+  
+        if (result && Array.isArray(result.getAllCateGories)) {
+          setCategoryGroup(result.getAllCateGories); 
+        } else {
+          console.error("Unexpected API response structure for categories");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+  
+    getCategory();
+  }, []); 
+  
+  
 
   return (
     <div
       className={cn(
-      `absolute  top-[0%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col `,
+        `absolute  top-[0%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col `,
         className
       )}
     >
@@ -111,7 +139,7 @@ function AddTransaction({ className }: { className: string }) {
             className="border w-60  h-8 rounded-sm text-black "
             value={method}
           >
-            <option value="" disabled >
+            <option value="" disabled>
               Select a Method
             </option>
             <option value="cash" className="text-black">
@@ -133,15 +161,21 @@ function AddTransaction({ className }: { className: string }) {
             className="border w-60  h-8 rounded-sm text-black "
             value={category}
           >
-            <option value="" disabled >
+            <option value="" disabled>
               Select a Category
             </option>
-            <option value="car">Car</option>
+            {/* <option value="car">Car</option>
             <option value="petrol">Petrol</option>
             <option value="food">Food</option>
             <option value="freelance">freelace</option>
             <option value="pocketMoney">Pocket Money</option>
-            <option value="other">Other</option>
+            <option value="other">Other</option> */}
+
+            {
+              categoryGroup.map((cate,index)=>(
+                <option key={index} value={cate}>{cate}</option>
+              ))
+            }
           </select>
         </div>
         <div className="flex flex-col gap-3 items-start my-3">
@@ -155,7 +189,9 @@ function AddTransaction({ className }: { className: string }) {
             className="border w-60  h-8 rounded-sm text-black "
             value={transactionType}
           >
-             <option value="" disabled >Select a Transaction Type</option>
+            <option value="" disabled>
+              Select a Transaction Type
+            </option>
             <option value="spend" className="text-black">
               Spend
             </option>
@@ -181,7 +217,11 @@ function AddTransaction({ className }: { className: string }) {
             value={note}
           />
         </div>
-        <button type="submit" disabled={disable} className="border-2 p-2 rounded-md">
+        <button
+          type="submit"
+          disabled={disable}
+          className="border-2 p-2 rounded-md"
+        >
           Submit
         </button>
         {error && <p className="text-red-500 mt-3 text-l">{error}</p>}

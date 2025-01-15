@@ -12,7 +12,7 @@ import {
 import DeleteTransaction from "./DeleteTransaction";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Transaction } from "@/Models/Transaction.model";
+
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -95,7 +95,7 @@ function TransactionTable() {
               </TableCell>
               <TableCell className="text-right">{transaction.note}</TableCell>
               <TableCell className="text-right">
-                <DeleteTransaction transactionId={transaction._id as string} />
+                <DeleteTransaction transactionId={transaction._id} />
               </TableCell>
             </TableRow>
           ))}

@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import AuthButtons from "./AuthButtons";
 import { cn } from "@/lib/utils";
 import WelcomeMsg from "./WelcomeMsg";
-import Suggestion from "./Suggestion";
+
 
 
 function Header() {
@@ -26,7 +26,7 @@ function Header() {
         </div>
         <div className="flex items-center justify-between w-full ">
           <WelcomeMsg className="" />
-          <Suggestion/>
+          
         </div>
       </div>
     </header>
