@@ -1,3 +1,4 @@
+"use server"
 import dbConnect from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
 
@@ -8,32 +9,33 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
-  const User = await getUser();
-  if (!User) {
+  const user = await getUser();
+
+  if (!user || !user.email) {
     return NextResponse.json(
       {
         success: false,
-        message: "User not found",
+        message: "User not found or not authenticated",
       },
       { status: 404 }
     );
   }
 
   try {
-    const user = await userModel.findOne({ id: User.id });
+    const dbuser = await userModel.findOne({ email: user.email });
 
-    if (!user) {
+    if (!dbuser) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "User not found in database" },
         { status: 404 }
       );
     }
 
-    const amount = await amountModel.find({ user: user?._id });
+    const amount = await amountModel.find({ user: dbuser._id});
 
-    if (!amount.length) {
+    if (!amount) {
       return NextResponse.json(
-        { success: false, message: "No amount found" },
+        { success: false, message: "No amounts found for user" },
         { status: 404 }
       );
     }
@@ -46,10 +48,11 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error fetching amounts:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "An error occurred while fetching amount",
+        message: "An error occurred while fetching amounts",
       },
       { status: 500 }
     );

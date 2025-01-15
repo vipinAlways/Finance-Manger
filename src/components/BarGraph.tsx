@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState, useMemo } from "react";
 import {
   Chart as ChartJS,
@@ -32,26 +33,27 @@ function BarGraph() {
   useEffect(() => {
     async function fetchTransactions() {
       const response = await fetch(
-        `/api/get-transaction?page=1&perpage=${transaction.length}`
+        `/api/get-transaction?page=1&perpage=15`
       );
+      console.log(response);
       const result = await response.json();
 
       if (Array.isArray(result.transactions)) {
-        setTransactions(result.transactions); // Ensure this does not duplicate entries
+        setTransactions(result.transactions);
       } else {
         console.error("Unexpected API response structure");
       }
     }
 
     fetchTransactions();
-  }, [transaction.length]);
+  }, []);
 
   useEffect(() => {
     const fetchBudget = async () => {
       const response = await fetch("/api/get-amount");
       const result = await response.json();
-
-      if (result.ok) {
+    
+      if (result.ok && result) {
         if (Array.isArray(result.amount)) {
           setBudget(result.amount);
         } else {

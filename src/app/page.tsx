@@ -1,10 +1,10 @@
 'use client'
-import InfiteScroll from "@/components/InfiteScroll";
+
 import WelcomePageCard from "@/components/WelcomePageCard";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 
-function home() {
+function page() {
   
 
  
@@ -22,4 +22,4 @@ function home() {
   </div>
   );
 }
-export default home;
+export default page;

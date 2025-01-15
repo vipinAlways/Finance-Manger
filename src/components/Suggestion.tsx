@@ -6,20 +6,24 @@ function Suggestion() {
   const [budget, setBudget] = useState<[]>([]);
   useEffect(() => {
     const fetchBudget = async () => {
-      const response = await fetch("/api/get-amount");
-      const result = await response.json();
-
-      if (result.ok) {
-        if (Array.isArray(result.amount)) {
+      try {
+        const response = await fetch("/api/get-amount");
+        if (!response.ok) {
+          console.error("Failed to fetch budget:", response.statusText);
+          return;
+        }
+  
+        const result = await response.json();
+        if (result.ok && Array.isArray(result.amount)) {
           setBudget(result.amount);
         } else {
-          console.error("Unexpected API response structure from amount");
+          console.error("Unexpected API response structure:", result);
         }
-      } else {
-        console.error("Error in fetching budget");
+      } catch (error) {
+        console.error("Error fetching budget:", error);
       }
     };
-
+  
     fetchBudget();
   }, []);
 

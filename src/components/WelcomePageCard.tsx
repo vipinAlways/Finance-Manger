@@ -31,7 +31,7 @@ function WelcomePageCard() {
   {cardData.map((item, index) => (
     <Link
       href={item.url}
-      className="flex items-center border w-full rounded-xl h-40 p-1 transform transition-transform ease-in-out duration-300 card"
+      className="flex items-center border w-full rounded-xl h-40 p-1 hover:scale-105 transition-all ease-in-out duration-300 card"
       key={index}
     >
      <div className="w-52 h-36">

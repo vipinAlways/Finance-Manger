@@ -23,7 +23,7 @@ function Data() {
     async function fetchTransactions() {
       try {
         const response = await fetch(
-          `/api/get-transaction?page=1&perpage=${transactions.length}`
+          `/api/get-transaction`
         );
         const result = await response.json();
 

@@ -3,33 +3,42 @@ import BarGraph from "@/components/BarGraph";
 import CardData from "@/components/CardData";
 import PieGraph from "@/components/PieGraph";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 function home() {
-  const [budget,setBudget]= useState<[]>([])
+
   useEffect(() => {
     const postUser = async () => {
       try {
-        let response = await fetch("/api/post-user", {
+        const response = await fetch("/api/post-user", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        response = await response.json();
-        console.log(response);
-        if (response.ok) {
-          console.log("Transaction added successfully");
+  
+        const data = await response.json();
+        console.log("API response:", data);
+  
+        if (data.success && data.redirect) {
+          console.log("Redirecting to:", data.redirect);
+          window.location.href = data.redirect;
+        } else if (data.success) {
+          console.log("User added successfully");
         } else {
-          console.error("Failed to add transaction:", response);
+          console.error("Failed to add user:", data);
         }
       } catch (error) {
-        console.error("Error while adding transaction:", error);
+        console.error("Error while adding user:", error);
       }
     };
-
+  
     postUser();
   }, []);
-
   
-  console.log(budget);
+  
+  
+
 
   return (
     <div className="lg:flex-row flex  justify-around items-center gap-2 flex-1 relative ">

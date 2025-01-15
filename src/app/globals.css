@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   display: none;
 }
 @layer base {
@@ -67,7 +67,6 @@ body::-webkit-scrollbar{
   min-height: 50vh;
   margin-top: 2rem;
   overflow: hidden;
-  
 }
 
 @keyframes scrollLeft {
@@ -89,16 +88,14 @@ body::-webkit-scrollbar{
   flex-direction: column;
   align-items: center;
   margin-top: 2rem;
-  background:black;
+  background: black;
   border-radius: 10px;
 }
 
-.item:hover{
-  
+.item:hover {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1),
-  0 0 5px 5px rgba(31, 207, 166, 0.3),
-  0 0 10px 15px rgba(14, 105, 53, 0.2),
-  0 0 15px 15px rgba(31, 207, 140, 0.1);
+    0 0 5px 5px rgba(31, 207, 166, 0.3), 0 0 10px 15px rgba(14, 105, 53, 0.2),
+    0 0 15px 15px rgba(31, 207, 140, 0.1);
 }
 .item1 {
   animation-delay: calc(30s / 8 * (8 - 1) * -1);
@@ -123,48 +120,37 @@ body::-webkit-scrollbar{
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
-.animation{
-  animation: slide 0.8s  linear forwards;
-
+.animation {
+  animation: slide 0.8s linear forwards;
 }
 
 @keyframes slide {
-  from{
-      left: -6rem;
+  from {
+    left: -6rem;
   }
-  to{
+  to {
     left: -3.5rem;
-
   }
 }
 
-.Quick{
-  background-image: linear-gradient(#3dbe3d,#1c6a1c);
+.Quick {
+  background-image: linear-gradient(#3dbe3d, #1c6a1c);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* By default, no scaling */
-.card {
- 
-  transition: transform 0.3s ease-in-out;
-}
 
-/* When hovering over the card container, scale all cards down */
-.card-container:hover>:not(:hover){
+
+.card-container:hover > :not(:hover) {
   transform: scale(0.97);
   filter: blur(0.5px);
 }
 
-/* When hovering over the specific card, scale it up */
-.card:hover {
-  transform: scale(1.05) !important;
-}
