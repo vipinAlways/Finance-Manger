@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -5,22 +6,22 @@ const cardData = [
   {
     url: "/dashboard",
     description: "You can monitor journey with graph.",
-    imageUrl:'./image1.jpg'
+    imageUrl:'/image1.jpg'
   },
   {
     url: "/transation",
     description: " You can add transactions",
-    imageUrl:'./image4.jpg'
+    imageUrl:'/image4.jpg'
   },
   {
     url: "/categories",
     description: "  Make your financial management easy.",
-    imageUrl:'./image3.jpg'
+    imageUrl:'/image3.jpg'
   },
   {
     url: "/accounts",
     description: " Let software handle your small tasks.",
-    imageUrl:'./image5.jpg'
+    imageUrl:'/image5.jpg'
   },
 ];
 
@@ -33,11 +34,15 @@ function WelcomePageCard() {
       className="flex items-center border w-full rounded-xl h-40 p-1 transform transition-transform ease-in-out duration-300 card"
       key={index}
     >
-      <img
+     <div className="w-52 h-36">
+     <Image
         src={item.imageUrl}
         alt="hello"
-        className="w-52 rounded-lg h-36 object-contain border-r-2"
+        className=" rounded-lg object-contain border-r-2"
+        width={145}
+        height={176}
       />
+     </div>
       <h1 className="flex-grow text-xl text-center">
         {item.description}
       </h1>

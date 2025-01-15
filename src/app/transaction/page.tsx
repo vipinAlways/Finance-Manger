@@ -4,7 +4,7 @@ import TransactionTable from "@/components/TransactionTable";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 
-function page() {
+function home() {
   const [block, setBlock] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -75,4 +75,4 @@ function page() {
   );
 }
 
-export default page;
+export default home;

@@ -5,10 +5,10 @@ import TransactionsAccorindToDate from "@/components/TransactionsAccorindToDate"
 import { Button } from "@/components/ui/button";
 import { Amount } from "@/Models/Amount.model";
 import { Transaction } from "@/Models/Transaction.model";
-import { ArrowRightIcon, Sheet } from "lucide-react";
+import { ArrowRightIcon} from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-function Page() {
+function home() {
   const [amount, setAmount] = useState<number>(0);
   const [from, setStartDate] = useState("");
   const [amountId, setAmountId] = useState("");
@@ -26,7 +26,7 @@ function Page() {
     async function fetchTransactions() {
       try {
         const response = await fetch(
-          `/api/get-transaction?page=1&perpage=${transactions.length}`
+          `/api/get-transaction?home=1&perhome=${transactions.length}`
         );
         const result = await response.json();
 
@@ -43,7 +43,7 @@ function Page() {
     }
 
     fetchTransactions();
-  }, []);
+  }, [transactions.length]);
 
   useEffect(() => {
     const fetchBudget = async () => {
@@ -104,13 +104,13 @@ function Page() {
         }
       });
     }
-  }, [budget]);
+  }, [budget,currentDate]);
 
   useEffect(()=>{
     if (new Date(to) < currentDate) {
       setAmount(0)
     }
-  },[])
+  },[currentDate])
 
 
   const tableShow = () => {
@@ -253,4 +253,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default home;

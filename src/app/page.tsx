@@ -4,7 +4,7 @@ import WelcomePageCard from "@/components/WelcomePageCard";
 import React, { useEffect, useState } from "react";
 
 
-function page() {
+function home() {
   
 
  
@@ -22,4 +22,4 @@ function page() {
   </div>
   );
 }
-export default page;
+export default home;

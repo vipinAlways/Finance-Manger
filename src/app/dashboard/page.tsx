@@ -5,7 +5,7 @@ import PieGraph from "@/components/PieGraph";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-function page() {
+function home() {
   const [budget,setBudget]= useState<[]>([])
   useEffect(() => {
     const postUser = async () => {
@@ -57,4 +57,4 @@ function page() {
   );
 }
 
-export default page;
+export default home;

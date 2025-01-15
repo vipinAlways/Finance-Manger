@@ -44,7 +44,7 @@ function BarGraph() {
     }
 
     fetchTransactions();
-  }, []);
+  }, [transaction.length]);
 
   useEffect(() => {
     const fetchBudget = async () => {

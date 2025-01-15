@@ -31,7 +31,7 @@ function TransactionsAccorindToDate() {
     }
 
     fetchTransactions();
-  }, []);
+  }, [transactions.length]);
 
   useEffect(() => {
     const calculateTotalAmount = (type: string) =>

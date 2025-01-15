@@ -154,13 +154,14 @@ input[type="number"] {
 
 /* By default, no scaling */
 .card {
-  transform: scale(1);
+ 
   transition: transform 0.3s ease-in-out;
 }
 
 /* When hovering over the card container, scale all cards down */
-.card-container:hover .card {
+.card-container:hover>:not(:hover){
   transform: scale(0.97);
+  filter: blur(0.5px);
 }
 
 /* When hovering over the specific card, scale it up */

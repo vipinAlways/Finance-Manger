@@ -40,7 +40,7 @@ function Data() {
     }
 
     fetchTransactions();
-  }, []);
+  }, [transactions.length]);
 
   useEffect(() => {
     const calculateTotalAmount = (type: string) =>

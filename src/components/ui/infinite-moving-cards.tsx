@@ -24,25 +24,47 @@ export const InfiniteMovingCards = ({
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    addAnimation();
-  }, []);
-  const [start, setStart] = useState(false);
-  function addAnimation() {
-    if (containerRef.current && scrollerRef.current) {
-      const scrollerContent = Array.from(scrollerRef.current.children);
-
-      scrollerContent.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        if (scrollerRef.current) {
-          scrollerRef.current.appendChild(duplicatedItem);
+    function addAnimation() {
+      if (containerRef.current && scrollerRef.current) {
+        const scrollerContent = Array.from(scrollerRef.current.children);
+  
+        // Prevent duplicating items if already duplicated
+        const alreadyDuplicated = scrollerRef.current.dataset.duplicated;
+        if (!alreadyDuplicated) {
+          scrollerContent.forEach((item) => {
+            const duplicatedItem = item.cloneNode(true);
+            scrollerRef.current?.appendChild(duplicatedItem);
+          });
+  
+          scrollerRef.current.dataset.duplicated = "true"; // Mark as duplicated
         }
-      });
-
-      getDirection();
-      getSpeed();
-      setStart(true);
+  
+        getDirection();
+        getSpeed();
+        setStart(true);
+      }
     }
-  }
+  
+    addAnimation(); // Invoke the function
+  }, []); // Empty dependency array to run only once
+  
+  const [start, setStart] = useState(false);
+  // function addAnimation() {
+  //   if (containerRef.current && scrollerRef.current) {
+  //     const scrollerContent = Array.from(scrollerRef.current.children);
+
+  //     scrollerContent.forEach((item) => {
+  //       const duplicatedItem = item.cloneNode(true);
+  //       if (scrollerRef.current) {
+  //         scrollerRef.current.appendChild(duplicatedItem);
+  //       }
+  //     });
+
+  //     getDirection();
+  //     getSpeed();
+  //     setStart(true);
+  //   }
+  // }
   const getDirection = () => {
     if (containerRef.current) {
       if (direction === "left") {
