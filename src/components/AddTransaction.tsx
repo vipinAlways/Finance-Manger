@@ -11,7 +11,7 @@ function AddTransaction({ className }: { className: string }) {
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
-  const [categoryGroup, setCategoryGroup] = useState<any[]>([])
+  const [categoryGroup, setCategoryGroup] = useState<any[]>([]);
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,41 +22,45 @@ function AddTransaction({ className }: { className: string }) {
     }
 
     setError("");
-    useEffect(() => {
-      const postTransaction = async () => {
-        try {
-          let response = await fetch("/api/post-transaction", {
-            method: "POST",
-            body: JSON.stringify({
-              amount,
-              method,
-              note,
-              category,
-              date,
-              transactionType,
-            }),
-          });
-          response = await response.json();
 
-          if (response.ok) {
-            setAmount("");
-            setNote("");
-            setCategory("");
-            setDate("");
-            setMethod("");
-            setTransactionType("");
-            setDisable(true);
-            window.location.reload();
-          } else {
-            console.error("Failed to add transaction:", response);
-          }
-        } catch (error) {
-          console.error("Error while adding transaction:", error);
-        }
-      };
+    try {
+      const response = await fetch("/api/post-transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Ensure correct headers are set
+        },
+        body: JSON.stringify({
+          amount,
+          date,
+          note,
+          method,
+          category,
+          transactionType,
+        }),
+      });
 
-      postTransaction();
-    });
+      if (response.ok) {
+        const data = await response.json();
+
+        setAmount("");
+        setNote("");
+        setCategory("");
+        setDate("");
+        setMethod("");
+        setTransactionType("");
+        setDisable(true);
+
+        console.log("Transaction added successfully:", data);
+
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to add transaction:", errorData);
+        setError(errorData.message || "Failed to add transaction.");
+      }
+    } catch (error) {
+      console.error("Error while adding transaction:", error);
+      setError("An error occurred while adding the transaction.");
+    }
   };
 
   useEffect(() => {
@@ -64,11 +68,11 @@ function AddTransaction({ className }: { className: string }) {
       try {
         const response = await fetch(`/api/get-category`);
         const result = await response.json();
-  
-        console.log(result, "API response"); 
-  
+
+        console.log(result, "API response");
+
         if (result && Array.isArray(result.getAllCateGories)) {
-          setCategoryGroup(result.getAllCateGories); 
+          setCategoryGroup(result.getAllCateGories);
         } else {
           console.error("Unexpected API response structure for categories");
         }
@@ -76,11 +80,9 @@ function AddTransaction({ className }: { className: string }) {
         console.error("Error fetching categories:", error);
       }
     };
-  
+
     getCategory();
-  }, []); 
-  
-  
+  }, []);
 
   return (
     <div
@@ -164,18 +166,12 @@ function AddTransaction({ className }: { className: string }) {
             <option value="" disabled>
               Select a Category
             </option>
-            {/* <option value="car">Car</option>
-            <option value="petrol">Petrol</option>
-            <option value="food">Food</option>
-            <option value="freelance">freelace</option>
-            <option value="pocketMoney">Pocket Money</option>
-            <option value="other">Other</option> */}
 
-            {
-              categoryGroup.map((cate,index)=>(
-                <option key={index} value={cate}>{cate}</option>
-              ))
-            }
+            {categoryGroup.map((cate, index) => (
+              <option key={index} value={cate.nameOfCategorey}>
+                {cate.nameOfCategorey}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col gap-3 items-start my-3">

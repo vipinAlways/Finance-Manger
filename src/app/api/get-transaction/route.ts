@@ -36,6 +36,7 @@ export async function GET(req: Request) {
       );
     }
 
+    
     const transactions = await transactionModel
       .find({ user: dbUser._id })
       .skip((page - 1) * perpage)
@@ -45,7 +46,8 @@ export async function GET(req: Request) {
     const totalTransactions = await transactionModel.countDocuments({
       user: dbUser._id,
     });
-
+    
+    
     return NextResponse.json({
       success: true,
       transactions,

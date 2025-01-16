@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -12,7 +13,7 @@ import {
 import DeleteTransaction from "./DeleteTransaction";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-
+import { Transaction } from "..";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -28,7 +29,7 @@ function TransactionTable() {
         const result = await response.json();
 
         if (Array.isArray(result.transactions)) {
-          setTransactions((prev) => [...result.transactions]);
+          setTransactions(result.transactions);
           setHasMore(result.transactions.length > 0);
         } else {
           console.error("Unexpected API response structure");
@@ -40,6 +41,9 @@ function TransactionTable() {
 
     fetchTransactions();
   }, [page]);
+
+  console.log(transactions,"check this");
+  
 
   useEffect(() => {
     const initializePage = setTimeout(() => {
@@ -54,11 +58,12 @@ function TransactionTable() {
       setPage((prevPage) => prevPage + 1);
     }
   };
-  console.log(transactions,"ye hain");
+
+  console.log(Array.isArray(transactions),"check this   ");
 
   return (
-    <div>
-      <Table className={cn("", transactions.length === 0 ? "hidden" : "")}>
+    <>
+      <Table className={cn(transactions.length === 0 && "hidden")}>
         <TableCaption>Your transactions</TableCaption>
         <TableHeader>
           <TableRow>
@@ -72,7 +77,7 @@ function TransactionTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction,index) => (
+          {transactions.length > 0 &&  transactions.map((transaction, index) => (
             <TableRow key={index}>
               <TableCell>
                 {new Date(transaction.date).toLocaleDateString()}
@@ -95,7 +100,7 @@ function TransactionTable() {
               </TableCell>
               <TableCell className="text-right">{transaction.note}</TableCell>
               <TableCell className="text-right">
-                <DeleteTransaction transactionId={transaction._id} />
+                <DeleteTransaction transactionId={transaction._id || ""} />
               </TableCell>
             </TableRow>
           ))}
@@ -105,7 +110,7 @@ function TransactionTable() {
       {hasMore && (
         <div className="flex justify-center items-center lg:mt-4 mt-2">
           <Button
-            className={cn("lg:p-2 p-0.5", page === 0 ? "hidden" : "")}
+            className={cn("lg:p-2 p-0.5", page === 0 && "hidden")}
             onClick={handleShowMore}
             disabled={!hasMore}
           >
@@ -113,7 +118,7 @@ function TransactionTable() {
           </Button>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

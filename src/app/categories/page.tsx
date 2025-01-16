@@ -20,7 +20,7 @@ const Page: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
   const [hidden, setHidden] = useState(true);
   const [selectType, setSelectType] = useState("");
-  const [cateGory, setcateGory] = useState("");
+  const [nameOfcateGorey, setNameOfcateGorey] = useState<string>("");
   useEffect(() => {
     async function fetchTransactions() {
       try {
@@ -48,7 +48,7 @@ const Page: React.FC = () => {
   const createCategorey = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!cateGory) {
+    if (!nameOfcateGorey) {
       console.error("Not able to find category");
       return;
     }
@@ -60,14 +60,14 @@ const Page: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          cateGory,
+          nameOfcateGorey,
         }),
       });
 
       const data = await response.json();
 
       if (data.ok) {
-        setcateGory("");
+        setNameOfcateGorey("");
         setTimeout(() => {
           setHidden(true);
         }, 500); 
@@ -105,8 +105,9 @@ const Page: React.FC = () => {
         >
           <input
             type="text"
-            value={cateGory}
-            onChange={(e) => setcateGory(e.target.value)}
+            value={nameOfcateGorey}
+            name="cateGory"
+            onChange={(e) => setNameOfcateGorey(e.target.value)}
             className="h-8 w-64 px-4 rounded-lg text-zinc-800 "
           />
           <Button type="submit" className="h-8 w">
