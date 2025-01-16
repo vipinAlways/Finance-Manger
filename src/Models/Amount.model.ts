@@ -1,6 +1,11 @@
-import mongoose, { Document, Schema, Model } from "mongoose";
+import mongoose, {  Schema, Model } from "mongoose";
+import { Amount } from "..";
 
 const amountSchema: Schema<Amount> = new Schema({
+  budgetFor:{
+    type:String,
+    require:true
+  },
   startDate: {
     type: Date,
     required: true,

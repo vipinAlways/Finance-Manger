@@ -22,9 +22,10 @@ export async function POST(req: Request) {
 
   if (user) {
     try {
-      const { amount,startDate , endDate } = await req.json();
+      const { amount,startDate , endDate,budgetFor } = await req.json();
 
       let newAmount = new amountModel({
+        budgetFor,
         amount,
         startDate,
         endDate,
