@@ -22,7 +22,7 @@ declare interface User extends Document {
   id: string
   transaction: any
   amount: any
-  category: any
+  perosonalCategory: any
 }
 declare interface Category extends Document{
     nameOfCategorey:string,

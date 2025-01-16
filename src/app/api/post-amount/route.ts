@@ -1,10 +1,10 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
-import amountModel, { Amount } from "@/Models/Amount.model";
+import amountModel from "@/Models/Amount.model";
 
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     try {
       const { amount,startDate , endDate } = await req.json();
 
-      let newAmount:Amount = new amountModel({
+      let newAmount = new amountModel({
         amount,
         startDate,
         endDate,

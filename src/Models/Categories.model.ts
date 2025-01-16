@@ -13,7 +13,7 @@ export const categorySchema = new Schema({
 });
 
 const categoryModel: Model<Category> =
-  mongoose.models.Transaction ||
+  mongoose.models.Category ||
   mongoose.model<Category>("Category", categorySchema);
 
 export default categoryModel;

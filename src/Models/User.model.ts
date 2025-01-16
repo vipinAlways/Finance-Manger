@@ -17,7 +17,7 @@ const userSchema: Schema<User> = new mongoose.Schema({
   },
   transaction: [{ type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }], 
   amount: [{ type: mongoose.Schema.Types.ObjectId, ref: "Amount" }],  
-  category:[{type:mongoose.Schema.Types.ObjectId , ref:"Category"}]
+  perosonalCategory:[{type:mongoose.Schema.Types.ObjectId , ref:"Category"}]
 });
 
 
