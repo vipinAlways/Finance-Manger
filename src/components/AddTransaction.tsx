@@ -27,7 +27,7 @@ function AddTransaction({ className }: { className: string }) {
       const response = await fetch("/api/post-transaction", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Ensure correct headers are set
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           amount,
@@ -49,12 +49,9 @@ function AddTransaction({ className }: { className: string }) {
         setMethod("");
         setTransactionType("");
         setDisable(true);
-
-        console.log("Transaction added successfully:", data);
-
       } else {
         const errorData = await response.json();
-        console.error("Failed to add transaction:", errorData);
+
         setError(errorData.message || "Failed to add transaction.");
       }
     } catch (error) {
