@@ -46,7 +46,7 @@ const AmountSideBar = () => {
             <div className="h-96 w-full flex flex-col items-center">
             {budget.length > 0 &&
               budget.map((bud, index) => (
-                <Link href={`./${bud._id}`} key={bud.budgetFor + index} className="text-xl cursor-pointer">{bud.budgetFor}</Link>
+                <Link href={`/acounts/${bud._id}`} key={bud.budgetFor + index} className="text-xl cursor-pointer">{bud.budgetFor}</Link>
               ))}
             </div>
     

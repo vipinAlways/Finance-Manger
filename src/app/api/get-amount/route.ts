@@ -5,7 +5,7 @@ import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET() {
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
