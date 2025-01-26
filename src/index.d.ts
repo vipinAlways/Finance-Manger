@@ -9,6 +9,7 @@ declare interface Transaction extends Document {
   transactionType: string;
   _id: string;
   note?: string;
+  from: string;
 }
 
 declare interface Amount extends Document {

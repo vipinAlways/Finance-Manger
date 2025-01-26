@@ -42,8 +42,7 @@ function TransactionTable() {
     fetchTransactions();
   }, [page]);
 
-  console.log(transactions,"check this");
-  
+ 
 
   useEffect(() => {
     const initializePage = setTimeout(() => {
@@ -70,6 +69,7 @@ function TransactionTable() {
             <TableHead className="w-[100px]">Date</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Method</TableHead>
+            <TableHead>from</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Type</TableHead>
             <TableHead className="text-right">Note</TableHead>
@@ -94,6 +94,7 @@ function TransactionTable() {
                 {transaction.amount}
               </TableCell>
               <TableCell>{transaction.method}</TableCell>
+              <TableCell>{transaction.from}</TableCell>
               <TableCell>{transaction.category}</TableCell>
               <TableCell className="uppercase">
                 {transaction.transactionType}

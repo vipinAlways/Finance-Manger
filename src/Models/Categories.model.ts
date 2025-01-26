@@ -1,4 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
+import { Category } from "..";
 
 export const categorySchema = new Schema({
   nameOfCategorey: {

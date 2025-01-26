@@ -1,3 +1,4 @@
+"use server";
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
 import transactionModel from "@/Models/Transaction.model";
 import userModel from "@/Models/User.model";
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
 
   if (user) {
     try {
-      const { amount, date, note, method, category, transactionType } =
+      const { amount, date, note, method, category, transactionType,from } =
         await req.json();
 
       let newTransaction = await transactionModel.create({
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
         category,
         transactionType,
         user: user._id,
+        from
       });
 
       await newTransaction.save();

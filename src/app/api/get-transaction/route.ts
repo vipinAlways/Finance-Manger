@@ -45,6 +45,7 @@ export async function GET(req: Request) {
 
     const totalTransactions = await transactionModel.countDocuments({
       user: dbUser._id,
+      from:"house"
     });
     
     

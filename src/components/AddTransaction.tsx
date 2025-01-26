@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
+  const [from, setFrom] = useState("");
   const [note, setNote] = useState("");
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
@@ -12,11 +13,12 @@ function AddTransaction({ className }: { className: string }) {
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
   const [categoryGroup, setCategoryGroup] = useState<any[]>([]);
+  const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount || !category || !method || !date || !transactionType) {
+    if (!amount || !category || !method || !date || !transactionType || !from) {
       setError("All fields are required.");
       return;
     }
@@ -36,12 +38,12 @@ function AddTransaction({ className }: { className: string }) {
           method,
           category,
           transactionType,
+          from,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-
         setAmount("");
         setNote("");
         setCategory("");
@@ -49,9 +51,10 @@ function AddTransaction({ className }: { className: string }) {
         setMethod("");
         setTransactionType("");
         setDisable(true);
+        setFrom("");
+        setError("");
       } else {
         const errorData = await response.json();
-
         setError(errorData.message || "Failed to add transaction.");
       }
     } catch (error) {
@@ -65,54 +68,93 @@ function AddTransaction({ className }: { className: string }) {
       try {
         const response = await fetch(`/api/get-category`);
         const result = await response.json();
-
-        console.log(result, "API response");
-
         if (result && Array.isArray(result.getAllCateGories)) {
           setCategoryGroup(result.getAllCateGories);
         } else {
           console.error("Unexpected API response structure for categories");
+          setError("Failed to fetch categories.");
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setError("An error occurred while fetching categories.");
       }
     };
 
     getCategory();
   }, []);
 
+  useEffect(() => {
+    const getAmount = async () => {
+      try {
+        const response = await fetch(`/api/get-amount`);
+        const result = await response.json();
+        if (result && Array.isArray(result.amount)) {
+          setGetAmountFor(result.amount);
+        } else {
+          console.error("Unexpected API response structure for amounts");
+          setError("Failed to fetch amounts.");
+        }
+      } catch (error) {
+        console.error("Error fetching amounts:", error);
+        setError("An error occurred while fetching amounts.");
+      }
+    };
+
+    getAmount();
+  }, []);
+  
+
   return (
     <div
       className={cn(
-        `absolute  top-[0%] -translate-y-[0%] left-1/2 -translate-x-1/2 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col `,
+        "absolute top-0 left-1/2 -translate-x-1/2 -translate-y-0 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col",
         className
       )}
     >
-      <Button
-        className={`rounded-full border-2 text-2xl w-fit h-fit bg-green-50 text-green-700 border-green-500  `}
-        onClick={() => window.location.reload()}
-      >
-        X
-      </Button>
       <form
         onSubmit={addTransaction}
-        className={`flex flex-col items-start py-7   w-2/5 max-sm:w-4/5 px-9  border-2 border-transparent rounded-sm  mb-10 text-white bg-green-700 `}
+        className="flex flex-col items-center py-7 w-2/5 max-sm:w-4/5 px-9 mb-10 text-white bg-green-700 rounded-xl relative"
       >
-        <div className="flex flex-col gap-3 items-start my-3">
+        <Button
+          className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute top-1 right-2"
+          onClick={() => window.location.reload()}
+        >
+          X
+        </Button>
+        <div className="w-full flex items-start h-12 text-zinc-800">
+          <select
+            name="from"
+            id="from"
+            className="rounded-sm border h-9 w-40"
+            onChange={(e) => setFrom(e.target.value)}
+            value={from}
+            required
+          >
+            <option value="" disabled>
+              Select Amount For
+            </option>
+            {getAmountFor.map((amount, index) => (
+              <option key={index} value={amount.budgetFor}>
+                {amount.budgetFor}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="amount" className="text-xl leading-none">
             Amount
           </label>
           <input
-            type="text"
+            type="number"
             onChange={(e) => setAmount(e.target.value)}
             name="amount"
             placeholder="Enter amount"
             id="amount"
-            className="border w-60  h-8 rounded-sm text-black "
+            className="border h-10 rounded-sm text-black w-full"
             value={amount}
           />
         </div>
-        <div className="flex flex-col gap-3 items-start my-3">
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="date" className="text-xl leading-none">
             Date
           </label>
@@ -120,14 +162,13 @@ function AddTransaction({ className }: { className: string }) {
             type="date"
             onChange={(e) => setDate(e.target.value)}
             name="date"
-            placeholder="Enter date"
             id="date"
-            className="border w-60  h-8 rounded-sm  text-black"
+            className="border h-10 rounded-sm text-black w-full"
             value={date}
           />
         </div>
-
-        <div className="flex flex-col gap-3 items-start my-3">
+      
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="method" className="text-xl leading-none">
             Method
           </label>
@@ -135,7 +176,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setMethod(e.target.value)}
             name="method"
             id="method"
-            className="border w-60  h-8 rounded-sm text-black "
+            className="border h-10 rounded-sm text-black w-full"
             value={method}
           >
             <option value="" disabled>
@@ -149,7 +190,7 @@ function AddTransaction({ className }: { className: string }) {
             </option>
           </select>
         </div>
-        <div className="flex flex-col gap-3 items-start my-3">
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="category" className="text-xl leading-none">
             Category
           </label>
@@ -157,7 +198,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setCategory(e.target.value)}
             name="category"
             id="category"
-            className="border w-60  h-8 rounded-sm text-black "
+            className="border h-10 rounded-sm text-black w-full"
             value={category}
           >
             <option value="" disabled>
@@ -171,7 +212,7 @@ function AddTransaction({ className }: { className: string }) {
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-3 items-start my-3">
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="transactionTyped" className="text-xl leading-none">
             Transaction Type
           </label>
@@ -179,7 +220,7 @@ function AddTransaction({ className }: { className: string }) {
             onChange={(e) => setTransactionType(e.target.value)}
             name="transactionType"
             id="transactionType"
-            className="border w-60  h-8 rounded-sm text-black "
+            className="border h-10 rounded-sm text-black  w-full"
             value={transactionType}
           >
             <option value="" disabled>
@@ -196,7 +237,7 @@ function AddTransaction({ className }: { className: string }) {
             </option>
           </select>
         </div>
-        <div className="flex flex-col gap-3 items-start my-3">
+        <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
           <label htmlFor="note" className="text-xl leading-none">
             Note
           </label>
@@ -206,10 +247,11 @@ function AddTransaction({ className }: { className: string }) {
             name="note"
             placeholder="Enter note"
             id="note"
-            className="border w-60  h-8 rounded-sm text-black "
+            className="border h-10 rounded-sm text-black  w-full"
             value={note}
           />
         </div>
+       
         <button
           type="submit"
           disabled={disable}

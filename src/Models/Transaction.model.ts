@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
+import { Transaction } from "..";
 
 export const transactionSchema: Schema<Transaction> = new Schema({
   date: {
@@ -23,6 +24,10 @@ export const transactionSchema: Schema<Transaction> = new Schema({
   },
   note: {
     type: String,
+  },
+  from: {
+    type: String,
+    required:true
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

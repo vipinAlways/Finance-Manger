@@ -33,10 +33,16 @@ const AddAmount = () => {
           description: `Your budet added for ${budgetFor}`,
         });
 
-        setAmount(0);
-        setStartDate(new Date());
-        setEndDate(new Date());
-        setBudgetFor("");
+        
+        if (data.ok) {
+          setAmount(0);
+          setStartDate(new Date());
+          setEndDate(new Date());
+          setBudgetFor("");
+        
+        }else{
+          throw new Error("error while adding budget client response");
+        }
       } else {
         console.log("error while adding budget client response");
       }
