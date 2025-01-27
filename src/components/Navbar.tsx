@@ -14,7 +14,7 @@ const routes =[
     {href:'/transaction',label:"Transactions"},
     {href:'/acounts',label:"Acounts"},
     {href:'/categories',label:"Categories"},      
-    {href:'/settings',label:"Settings"},      
+          
 ]
 function Navbar() {
   const [isOpen,setIsopen] =useState(false)
