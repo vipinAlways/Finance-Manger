@@ -19,12 +19,13 @@ function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-
+  const [from, setFrom] = useState("");
+  const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const response = await fetch(
-          `/api/get-transaction?page=${page}&perpage=20`
+          `/api/get-transaction?page=${page}&perpage=20&from=${from}`
         );
         const result = await response.json();
 
@@ -40,9 +41,9 @@ function TransactionTable() {
     };
 
     fetchTransactions();
-  }, [page]);
+  }, [page, from]);
 
- 
+
 
   useEffect(() => {
     const initializePage = setTimeout(() => {
@@ -52,16 +53,43 @@ function TransactionTable() {
     return () => clearTimeout(initializePage);
   }, []);
 
+  useEffect(() => {
+    const getAmount = async () => {
+      try {
+        const response = await fetch(`/api/get-amount`);
+        const result = await response.json();
+        if (result && Array.isArray(result.amount)) {
+          setGetAmountFor(result.amount);
+        } else {
+          console.error("Unexpected API response structure for amounts");
+        }
+      } catch (error) {
+        console.error("Error fetching amounts:", error);
+      }
+    };
+
+    getAmount();
+  }, []);
+
+
   const handleShowMore = () => {
     if (hasMore) {
       setPage((prevPage) => prevPage + 1);
     }
   };
 
-  console.log(Array.isArray(transactions),"check this   ");
-
   return (
     <>
+      <div className=" w-full h-9">
+        <select name="from" id="from" value={from} onChange={(e) => setFrom(e.target.value)} className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize">
+          <option value="all">All</option>
+          {
+            getAmountFor.map((amount, index) => (
+              <option value={amount.budgetFor} key={index}>{amount.budgetFor}</option>))
+          }
+          <option value="he">ief</option>
+        </select>
+      </div>
       <Table className={cn(transactions.length === 0 && "hidden")}>
         <TableCaption>Your transactions</TableCaption>
         <TableHeader>
@@ -69,7 +97,7 @@ function TransactionTable() {
             <TableHead className="w-[100px]">Date</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Method</TableHead>
-            <TableHead>from</TableHead>
+
             <TableHead>Category</TableHead>
             <TableHead>Type</TableHead>
             <TableHead className="text-right">Note</TableHead>
@@ -77,34 +105,34 @@ function TransactionTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.length > 0 &&  transactions.map((transaction, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                {new Date(transaction.date).toLocaleDateString()}
-              </TableCell>
-              <TableCell
-                className={cn(
-                  transaction.transactionType === "earn"
-                    ? "text-green-500"
-                    : transaction.transactionType === "spend"
-                    ? "text-red-600"
-                    : "text-yellow-500"
-                )}
-              >
-                {transaction.amount}
-              </TableCell>
-              <TableCell>{transaction.method}</TableCell>
-              <TableCell>{transaction.from}</TableCell>
-              <TableCell>{transaction.category}</TableCell>
-              <TableCell className="uppercase">
-                {transaction.transactionType}
-              </TableCell>
-              <TableCell className="text-right">{transaction.note}</TableCell>
-              <TableCell className="text-right">
-                <DeleteTransaction transactionId={transaction._id || ""} />
-              </TableCell>
-            </TableRow>
-          ))}
+          {transactions.length > 0 &&
+            transactions.map((transaction, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  {new Date(transaction.date).toLocaleDateString()}
+                </TableCell>
+                <TableCell
+                  className={cn(
+                    transaction.transactionType === "earn"
+                      ? "text-green-500"
+                      : transaction.transactionType === "spend"
+                      ? "text-red-600"
+                      : "text-yellow-500"
+                  )}
+                >
+                  {transaction.amount}
+                </TableCell>
+                <TableCell>{transaction.method}</TableCell>
+                <TableCell>{transaction.category}</TableCell>
+                <TableCell className="uppercase">
+                  {transaction.transactionType}
+                </TableCell>
+                <TableCell className="text-right">{transaction.note}</TableCell>
+                <TableCell className="text-right">
+                  <DeleteTransaction transactionId={transaction._id || ""} />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
 

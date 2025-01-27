@@ -7,6 +7,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const from = searchParams.get("from") || "";
   try {
     await dbConnect();
 
@@ -25,7 +27,10 @@ export async function GET(req: Request) {
 
     const url = new URL(req.url);
     const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
-    const perpage = Math.max(parseInt(url.searchParams.get("perpage") || "6", 10), 1); 
+    const perpage = Math.max(
+      parseInt(url.searchParams.get("perpage") || "6", 10),
+      1
+    );
 
     const dbUser = await userModel.findOne({ id: user.id });
 
@@ -36,19 +41,18 @@ export async function GET(req: Request) {
       );
     }
 
-    
     const transactions = await transactionModel
-      .find({ user: dbUser._id })
+      .find(
+       from !== "all" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
+      )
       .skip((page - 1) * perpage)
       .limit(perpage)
       .sort({ date: -1 });
 
     const totalTransactions = await transactionModel.countDocuments({
       user: dbUser._id,
-      from:"house"
     });
-    
-    
+
     return NextResponse.json({
       success: true,
       transactions,
