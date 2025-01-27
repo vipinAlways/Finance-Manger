@@ -40,6 +40,7 @@ const Page = () => {
 
     getbudgets();
   }, []);
+
   return (
     <div className="h-full w-full relative py-3 flex ">
       <aside className="h-[30rem]  w-36 p-1 sticky top-2 flex flex-col items-center justify-between">
