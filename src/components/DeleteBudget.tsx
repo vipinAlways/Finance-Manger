@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 
-function DeleteBudget({ className, amountId }: { className: string; amountId: string }) {
+function DeleteBudget({ className, amountId }: { className?: string; amountId: string }) {
 
 const [animation,setAnimation] = useState('')
 
@@ -13,7 +13,7 @@ useEffect(()=>{
 },[])
   const deleteBudget  =async ()=>{
     try {
-      const response = await fetch(`/api/delete-budget/${amountId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/delete-budget?amountId=${amountId}`, { method: 'DELETE' });
       const data = await response.json();
       
       if (data.ok) {

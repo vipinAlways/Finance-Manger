@@ -42,7 +42,7 @@ const Page = () => {
   }, []);
   return (
     <div className="h-full w-full relative py-3 flex ">
-      <aside className="h-[30rem] border w-36 p-1 sticky top-2 flex flex-col items-center justify-between">
+      <aside className="h-[30rem]  w-36 p-1 sticky top-2 flex flex-col items-center justify-between">
         <h1 className="w-full text-lg bg-zinc-600 text-center rounded-lg text-green-100 ">
           Your budgets
         </h1>

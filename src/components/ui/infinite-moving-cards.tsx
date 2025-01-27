@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { dir } from "console";
 import React, { useEffect, useState } from "react";
 
 export const InfiniteMovingCards = ({
@@ -27,7 +28,7 @@ export const InfiniteMovingCards = ({
     function addAnimation() {
       if (containerRef.current && scrollerRef.current) {
         const scrollerContent = Array.from(scrollerRef.current.children);
-  
+
         // Prevent duplicating items if already duplicated
         const alreadyDuplicated = scrollerRef.current.dataset.duplicated;
         if (!alreadyDuplicated) {
@@ -35,62 +36,50 @@ export const InfiniteMovingCards = ({
             const duplicatedItem = item.cloneNode(true);
             scrollerRef.current?.appendChild(duplicatedItem);
           });
-  
+
           scrollerRef.current.dataset.duplicated = "true"; // Mark as duplicated
         }
-  
-        getDirection();
-        getSpeed();
+
+        if (containerRef.current) {
+          if (direction === "left") {
+            containerRef.current.style.setProperty(
+              "--animation-direction",
+              "forwards"
+            );
+          } else {
+            containerRef.current.style.setProperty(
+              "--animation-direction",
+              "reverse"
+            );
+          }
+        }
+        if (containerRef.current) {
+          if (speed === "fast") {
+            containerRef.current.style.setProperty(
+              "--animation-duration",
+              "20s"
+            );
+          } else if (speed === "normal") {
+            containerRef.current.style.setProperty(
+              "--animation-duration",
+              "40s"
+            );
+          } else {
+            containerRef.current.style.setProperty(
+              "--animation-duration",
+              "80s"
+            );
+          }
+        }
         setStart(true);
       }
     }
-  
-    addAnimation(); // Invoke the function
-  }, []); // Empty dependency array to run only once
-  
+
+    addAnimation();
+  }, [direction, speed]);
+
   const [start, setStart] = useState(false);
-  // function addAnimation() {
-  //   if (containerRef.current && scrollerRef.current) {
-  //     const scrollerContent = Array.from(scrollerRef.current.children);
 
-  //     scrollerContent.forEach((item) => {
-  //       const duplicatedItem = item.cloneNode(true);
-  //       if (scrollerRef.current) {
-  //         scrollerRef.current.appendChild(duplicatedItem);
-  //       }
-  //     });
-
-  //     getDirection();
-  //     getSpeed();
-  //     setStart(true);
-  //   }
-  // }
-  const getDirection = () => {
-    if (containerRef.current) {
-      if (direction === "left") {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "forwards"
-        );
-      } else {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "reverse"
-        );
-      }
-    }
-  };
-  const getSpeed = () => {
-    if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
-      }
-    }
-  };
   return (
     <div
       ref={containerRef}

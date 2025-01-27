@@ -14,6 +14,7 @@ import DeleteTransaction from "./DeleteTransaction";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Transaction } from "..";
+import AddTransaction from "./AddTransaction";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -21,6 +22,13 @@ function TransactionTable() {
   const [hasMore, setHasMore] = useState(true);
   const [from, setFrom] = useState("");
   const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
+  const [block, setBlock] = useState(false);
+
+  const onclick = () => {
+    if (block) setBlock(false);
+
+    setBlock(true);
+  };
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -42,8 +50,6 @@ function TransactionTable() {
 
     fetchTransactions();
   }, [page, from]);
-
-
 
   useEffect(() => {
     const initializePage = setTimeout(() => {
@@ -77,16 +83,41 @@ function TransactionTable() {
       setPage((prevPage) => prevPage + 1);
     }
   };
+  if (transactions.length === 0) {
+    return (
+      <div>
+        <h1 className="flex flex-col items-start gap-2.5 text-zinc-800 text-2xl">
+          It seems you haven&#39;t recorded any transactions yet.{" "}
+          <span className="text-3xl ">Let&#39;s get started!</span>
+        </h1>
+        <div className="py-2">
+          <div className=" w-20">
+            <Button onClick={onclick}>Add Transaction</Button>
+          </div>
+         
+            <AddTransaction className={cn(!block && "hidden")} />
+      
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className=" w-full h-9">
-        <select name="from" id="from" value={from} onChange={(e) => setFrom(e.target.value)} className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize">
+        <select
+          name="from"
+          id="from"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
+        >
           <option value="all">All</option>
-          {
-            getAmountFor.map((amount, index) => (
-              <option value={amount.budgetFor} key={index}>{amount.budgetFor}</option>))
-          }
+          {getAmountFor.map((amount, index) => (
+            <option value={amount.budgetFor} key={index}>
+              {amount.budgetFor}
+            </option>
+          ))}
           <option value="he">ief</option>
         </select>
       </div>

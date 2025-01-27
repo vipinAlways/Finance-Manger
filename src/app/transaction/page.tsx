@@ -2,9 +2,10 @@
 import AddTransaction from "@/components/AddTransaction";
 import TransactionTable from "@/components/TransactionTable";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 
-function page() {
+function Page() {
   const [block, setBlock] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +49,7 @@ function page() {
         <Button onClick={onclick}>Add Transaction</Button>
       </div>
       <div className="w-full  ">
-        <AddTransaction className={block ? `` : "hidden"} />
+        <AddTransaction className={cn(!block && "hidden")} />
       </div>
 
       <div className="w-full h-full  ">
@@ -75,4 +76,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

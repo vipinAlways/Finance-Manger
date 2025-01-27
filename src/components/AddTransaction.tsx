@@ -266,35 +266,71 @@ function AddTransaction({ className }: { className: string }) {
       ) : (
         <div>
           {getAmountFor.length === 0 && categoryGroup.length === 0 ? (
-            <div className="flex flex-col items-center gap-5">
+            <div className="flex flex-col items-center gap-5 relative">
+              <Button
+                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
+                    onClick={() => window.location.reload()}
+                  >
+                    X
+                  </Button>
               <h1 className="text-center text-3xl text-zinc-100 ">
-                Opps ! Looks like You Haven't Asign any budget and Category
+                Opps ! Looks like You Haven&#39;t Asign any budget and Category
               </h1>
               <div className="flex gap-5 justify-center">
-                <Link href="/acounts"     className="text-green-500 p-2 rounded-lg  bg-zinc-200">Set Budget</Link>
-                <Link href="/categories" className="text-green-500 p-2 rounded-lg  bg-zinc-200">Set Category</Link>
+                <Link
+                  href="/acounts"
+                  className="text-green-500 p-2 rounded-lg  bg-zinc-200"
+                >
+                  Set Budget
+                </Link>
+                <Link
+                  href="/categories"
+                  className="text-green-500 p-2 rounded-lg  bg-zinc-200"
+                >
+                  Set Category
+                </Link>
               </div>
             </div>
           ) : (
             <div>
               {getAmountFor.length === 0 ? (
-                <div className="flex flex-col items-center gap-5">
+                <div className="flex flex-col items-center gap-5 relative ">
+                  <Button
+                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
+                    onClick={() => window.location.reload()}
+                  >
+                    X
+                  </Button>
                   <h1 className="text-center text-3xl text-zinc-100 ">
-                    Opps ! Looks like You Haven't Asign any budget 
+                    Opps ! Looks like You Haven&#39;t Asign any budget
                   </h1>
                   <div>
-                    <Link href="/acounts" className="text-green-500 p-2 rounded-lg  bg-zinc-200">Set Budget</Link>
-
+                    <Link
+                      href="/acounts"
+                      className="text-green-500 p-2 rounded-lg  bg-zinc-200"
+                    >
+                      Set Budget
+                    </Link>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-5">
+                <div className="flex flex-col items-center gap-5 relative">
+                   <Button
+                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
+                    onClick={() => window.location.reload()}
+                  >
+                    X
+                  </Button>
                   <h1 className="text-center text-3xl text-zinc-100 ">
-                    Opps ! Looks like You Haven't Asign any  Category
+                    Opps ! Looks like You Haven&#39;t Asign any Category
                   </h1>
                   <div>
-               
-                    <Link href="/categories" className="text-green-500 p-2 rounded-lg  bg-zinc-200">Set Category</Link>
+                    <Link
+                      href="/categories"
+                      className="text-green-500 p-2 rounded-lg  bg-zinc-200"
+                    >
+                      Set Category
+                    </Link>
                   </div>
                 </div>
               )}

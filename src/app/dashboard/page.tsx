@@ -5,7 +5,7 @@ import PieGraph from "@/components/PieGraph";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
-function home() {
+function Home() {
 
   useEffect(() => {
     const postUser = async () => {
@@ -66,4 +66,4 @@ function home() {
   );
 }
 
-export default home;
+export default Home;
