@@ -13,7 +13,7 @@ import {
 import DeleteTransaction from "./DeleteTransaction";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Transaction } from "..";
+import { Transaction } from "../types";
 import AddTransaction from "./AddTransaction";
 
 function TransactionTable() {

@@ -25,9 +25,10 @@ declare interface User extends Document {
   userName: string;
   email: string;
   id: string;
-  transaction: any;
-  amount: any;
-  perosonalCategory: any;
+  transaction: mongoose.Schema.Types.ObjectId[];
+  amount: mongoose.Schema.Types.ObjectId[] ;
+  perosonalCategory: mongoose.Schema.Types.ObjectId[];
+  image:string;
 }
 declare interface Category extends Document {
   nameOfCategorey: string;

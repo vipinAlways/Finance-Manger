@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { Amount, Transaction } from "..";
+import { Amount, Transaction } from "../types";
 
 
 ChartJS.register(

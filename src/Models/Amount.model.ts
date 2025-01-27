@@ -1,5 +1,5 @@
 import mongoose, {  Schema, Model } from "mongoose";
-import { Amount } from "..";
+import { Amount } from "../types";
 
 const amountSchema: Schema<Amount> = new Schema({
   budgetFor:{

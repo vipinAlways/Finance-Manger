@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { User } from "..";
+import { User } from "../types";
 import Link from "next/link";
 
 function AddTransaction({ className }: { className: string }) {
