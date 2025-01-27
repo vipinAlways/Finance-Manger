@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Transaction } from "@/types";
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
   const [FilteredTransactions, setFilteredTransactions] = useState<

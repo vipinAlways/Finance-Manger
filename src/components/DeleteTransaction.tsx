@@ -9,7 +9,7 @@ const DeleteTransaction: React.FC<DeleteTransactionProps> = ({ transactionId }) 
   const deleteTransaction = async () => {
    if (transactionId) {
     try {
-      const response = await fetch(`/api/delete-transaction/${transactionId}`, {
+      const response = await fetch(`/api/delete-transaction?transactionId=${transactionId}`, {
         method: "DELETE",
       });
       const data = await response.json();

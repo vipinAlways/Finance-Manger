@@ -1,3 +1,4 @@
+"use server"
 import dbConnect from "@/lib/dbconnects";
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
       userName: `${user.given_name}${user.family_name}`,
       email: user.email,
       id: user.id,
+      image: user.picture,
     });
 
     await client.save();

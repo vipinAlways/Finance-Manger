@@ -1,12 +1,21 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
 import transactionModel from "@/Models/Transaction.model";
 import userModel from "@/Models/User.model";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest) {
   await dbConnect();
 
-  const transactionId = params.id;
+  const {searchParams} = new URL(req.url);
+  const transactionId = searchParams.get("transactionId") || "";
+  
+    if (!mongoose.Types.ObjectId.isValid(transactionId)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid amount ID" },
+        { status: 400 }
+      );
+    }
  
 
   try {

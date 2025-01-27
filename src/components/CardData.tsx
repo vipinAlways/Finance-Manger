@@ -1,11 +1,9 @@
-import { Amount } from "@/Models/Amount.model";
-import { Transaction } from "@/Models/Transaction.model";
+"use client"
 import React, { useEffect, useState } from "react";
-import { Autoplay, Scrollbar } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import Link from "next/link";
+import { Amount, Transaction } from "@/types";
 
 function Data() {
   const [amount, setAmount] = useState<number>(0);

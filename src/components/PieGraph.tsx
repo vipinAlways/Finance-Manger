@@ -1,10 +1,11 @@
 "use client";
 
-import { Transaction } from "@/Models/Transaction.model";
+
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Amount } from "@/Models/Amount.model";
+import { Amount, Transaction } from "@/types";
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
