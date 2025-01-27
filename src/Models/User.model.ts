@@ -20,7 +20,6 @@ const userSchema: Schema<User> = new mongoose.Schema({
     required: true,
   },
   transaction: [{ type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }],
-  amount: [{ type: mongoose.Schema.Types.ObjectId, ref: "Amount" }],
   perosonalCategory: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   ],
