@@ -9,7 +9,7 @@ import { Amount, Transaction } from "@/types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function PieGraph() {
+function PieGraph({forWhich}: {forWhich: string}) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [budget, setBudget] = useState<Amount[]>([]);
   const [from, setFrom] = useState<Date>();
@@ -24,20 +24,7 @@ function PieGraph() {
     return colors;
   }
 
-  useEffect(() => {
-    async function fetchTransactions() {
-      const response = await fetch(`/api/get-transaction?page=1&perpage=50`);
-      const result = await response.json();
-
-      if (Array.isArray(result.transactions)) {
-        setTransactions((prev) => [...prev, ...result.transactions]);
-      } else {
-        console.error("Unexpected API response structure");
-      }
-    }
-
-    fetchTransactions();
-  }, []);
+ 
 
   useEffect(() => {
     budget.forEach((item) => {
@@ -51,24 +38,44 @@ function PieGraph() {
     });
   }, [budget]);
 
-  useEffect(() => {
-    const fetchBudget = async () => {
-      const response = await fetch("/api/get-amount");
-      const result = await response.json();
 
-      if (result.ok) {
-        if (Array.isArray(result.amount)) {
-          setBudget(result.amount);
-        } else {
-          console.error("Unexpected API response structure from amount");
+
+    useEffect(() => {
+      const fetchBudget = async () => {
+        try {
+          const response = await fetch(`/api/get-amount?from=${forWhich}`);
+          const result = await response.json();
+    
+          if (result?.ok && Array.isArray(result.amount)) {
+            setBudget(result.amount);
+          } else {
+            console.error("Unexpected API response structure for budget data.");
+          }
+        } catch (error) {
+          console.error("Error fetching budget data:", error);
         }
-      } else {
-        console.error("Error in fetching budget");
-      }
-    };
-
-    fetchBudget();
-  }, []);
+      };
+    
+      const fetchTransactions = async () => {
+        try {
+          const response = await fetch(
+            `/api/get-transaction?page=1&perpage=20&from=${forWhich}`
+          );
+          const result = await response.json();
+    
+          if (Array.isArray(result.transactions)) {
+            setTransactions(result.transactions);
+          } else {
+            console.error("Unexpected API response structure for transactions data.");
+          }
+        } catch (error) {
+          console.error("Error fetching transactions data:", error);
+        }
+      };
+    
+      fetchBudget();
+      fetchTransactions();
+    }, [forWhich]);
 
   const filteredTransactions = transactions.filter((item) => {
     return new Date(item.date) >= from! && new Date(item.date) <= to!;

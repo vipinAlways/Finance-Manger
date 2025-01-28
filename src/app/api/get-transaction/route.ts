@@ -43,7 +43,7 @@ export async function GET(req: Request) {
 
     const transactions = await transactionModel
       .find(
-       from !== "all" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
+       from !== "" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
       )
       .skip((page - 1) * perpage)
       .limit(perpage)

@@ -26,46 +26,48 @@ ChartJS.register(
   Legend
 );
 
-function BarGraph() {
+function BarGraph({forWhich}: {forWhich: string}) {
   const [transaction, setTransactions] = useState<Transaction[]>([]);
   const [budget, setBudget] = useState<Amount[]>([]);
 
   useEffect(() => {
-    async function fetchTransactions() {
-      const response = await fetch(
-        `/api/get-transaction?page=1&perpage=15`
-      );
-      console.log(response);
-      const result = await response.json();
-
-      if (Array.isArray(result.transactions)) {
-        setTransactions(result.transactions);
-      } else {
-        console.error("Unexpected API response structure");
-      }
-    }
-
-    fetchTransactions();
-  }, []);
-
-  useEffect(() => {
     const fetchBudget = async () => {
-      const response = await fetch("/api/get-amount");
-      const result = await response.json();
-    
-      if (result.ok && result) {
-        if (Array.isArray(result.amount)) {
+      try {
+        const response = await fetch(`/api/get-amount?from=${forWhich}`);
+        const result = await response.json();
+  
+        if (result?.ok && Array.isArray(result.amount)) {
           setBudget(result.amount);
         } else {
-          console.error("Unexpected API response structure from amount");
+          console.error("Unexpected API response structure for budget data.");
         }
-      } else {
-        console.error("Error in fetching budget");
+      } catch (error) {
+        console.error("Error fetching budget data:", error);
       }
     };
-
+  
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch(
+          `/api/get-transaction?page=1&perpage=20&from=${forWhich}`
+        );
+        const result = await response.json();
+  
+        if (Array.isArray(result.transactions)) {
+          setTransactions(result.transactions);
+        } else {
+          console.error("Unexpected API response structure for transactions data.");
+        }
+      } catch (error) {
+        console.error("Error fetching transactions data:", error);
+      }
+    };
+  
     fetchBudget();
-  }, []);
+    fetchTransactions();
+  }, [forWhich]);
+  
+  console.log(transaction,'ye hainkya');
 
   
   const dates = useMemo(() => {

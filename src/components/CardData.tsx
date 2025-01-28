@@ -92,7 +92,7 @@ function Data({ forWhich }: { forWhich: string }) {
     }
   }, [budget]);
 
-  console.log(budget, "budget");
+ 
 
   useEffect(() => {
     if (forWhich === "") {
@@ -103,10 +103,10 @@ function Data({ forWhich }: { forWhich: string }) {
   }, [forWhich,budget.length]);
 
   return (
-    <div className="flex  justify-evenly w-[80%] gap-2 items-center h-[31vh] absolute -top-[15%] z-[999] left-1/2 -translate-x-1/2  ">
+    <div className="flex  justify-evenly w-full flex-1 gap-2 items-center h-full">
       <Link
         href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52 border flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400 text-white font-semibold rounded-xl"
+        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400 text-white font-semibold rounded-xl"
       >
         <div>
           <h1 className="mb-2">Remaining Balance</h1>
@@ -119,7 +119,7 @@ function Data({ forWhich }: { forWhich: string }) {
 
       <Link
         href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52 border flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-green-300 to-green-400 text-white font-semibold rounded-xl"
+        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-green-300 to-green-400 text-white font-semibold rounded-xl"
       >
         <div>
           <h1 className="mb-2">Earned Amount</h1>
@@ -130,7 +130,7 @@ function Data({ forWhich }: { forWhich: string }) {
 
       <Link
         href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52 border flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-red-400 via-red-300 to-red-400 text-white font-semibold rounded-xl"
+        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-red-400 via-red-300 to-red-400 text-white font-semibold rounded-xl"
       >
         <div>
           <h1 className="mb-2">Spent Amount</h1>
@@ -143,7 +143,7 @@ function Data({ forWhich }: { forWhich: string }) {
 
       <Link
         href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52 border flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-yellow-400 via-yellow-200 to-yellow-300 text-white font-semibold rounded-xl"
+        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-yellow-400 via-yellow-200 to-yellow-300 text-white font-semibold rounded-xl"
       >
         <div>
           <h1 className="mb-2">Loan Amount</h1>

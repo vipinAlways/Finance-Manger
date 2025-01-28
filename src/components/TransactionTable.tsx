@@ -75,7 +75,7 @@ function TransactionTable() {
     };
 
     getAmount();
-  }, []);
+  }, [from]);
 
 
   const handleShowMore = () => {
@@ -101,6 +101,7 @@ function TransactionTable() {
       </div>
     );
   }
+  console.log(transactions.length ,"check this transaction");
 
   return (
     <>
@@ -112,7 +113,7 @@ function TransactionTable() {
           onChange={(e) => setFrom(e.target.value)}
           className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
         >
-          <option value="all">All</option>
+          <option value="">All</option>
           {getAmountFor.map((amount, index) => (
             <option value={amount.budgetFor} key={index}>
               {amount.budgetFor}
