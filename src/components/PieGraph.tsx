@@ -18,7 +18,7 @@ function PieGraph({forWhich}: {forWhich: string}) {
   function generateColors(numColors: number) {
     const colors = [];
     for (let i = 0; i < numColors; i++) {
-      const color = `hsl(${(i * 360) / numColors}, 70%, 50%)`;
+      const color = `hsl(${(i * 360) / numColors}, 70%, 50%,0.9)`;
       colors.push(color);
     }
     return colors;
@@ -105,12 +105,18 @@ function PieGraph({forWhich}: {forWhich: string}) {
         label: "total exepnce catrgory wise",
         data: dataValues,
         backgroundColor:backgroundColors,
-        hoverOffset: 4,
+        hoverOffset: 2,
+        borderWidth: 3,
+    
       },
     ],
   };
 
-  return <Doughnut data={data}  />;
+
+  
+
+
+ return <Doughnut data={data}  className="h-full p-3"   />;
 }
 
 export default PieGraph;

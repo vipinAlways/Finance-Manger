@@ -29,7 +29,7 @@ export const InfiniteMovingCards = ({
       if (containerRef.current && scrollerRef.current) {
         const scrollerContent = Array.from(scrollerRef.current.children);
 
-        // Prevent duplicating items if already duplicated
+      
         const alreadyDuplicated = scrollerRef.current.dataset.duplicated;
         if (!alreadyDuplicated) {
           scrollerContent.forEach((item) => {
@@ -37,7 +37,7 @@ export const InfiniteMovingCards = ({
             scrollerRef.current?.appendChild(duplicatedItem);
           });
 
-          scrollerRef.current.dataset.duplicated = "true"; // Mark as duplicated
+          scrollerRef.current.dataset.duplicated = "true"; 
         }
 
         if (containerRef.current) {

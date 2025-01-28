@@ -9,8 +9,6 @@ export async function POST(req: Request) {
   try {
     
     await dbConnect();
-
-    // Get the authenticated user
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user || !user.id) {
@@ -20,7 +18,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Find the user in the database
     const dbuser = await userModel.findOne({ id: user.id });
     if (!dbuser) {
       return new Response(

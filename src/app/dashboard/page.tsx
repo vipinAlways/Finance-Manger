@@ -91,7 +91,7 @@ function Home() {
           <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] flex flex-col p-3 justify-between rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
+              className="h-[55vh] flex flex-col p-3 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
             >
               <PieGraph forWhich={from} />
             </Link>
