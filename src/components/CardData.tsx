@@ -1,18 +1,16 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import Link from "next/link";
 import { Amount, Transaction } from "@/types";
 
-function Data() {
+function Data({ forWhich }: { forWhich: string }) {
   const [amount, setAmount] = useState<number>(0);
   const [from, setStartDate] = useState<string>("");
   const [to, setEndDate] = useState<string>("");
   const [budget, setBudget] = useState<Amount[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loader, setLoader] = useState<boolean>(true);
-  const [hidden, setHidden] = useState<boolean>(true);
   const [earnAmount, setEarnAmount] = useState<number>(0);
   const [spendAmount, setSpendAmount] = useState<number>(0);
   const [loanAmount, setLoanAmount] = useState<number>(0);
@@ -20,9 +18,7 @@ function Data() {
   useEffect(() => {
     async function fetchTransactions() {
       try {
-        const response = await fetch(
-          `/api/get-transaction`
-        );
+        const response = await fetch(`/api/get-transaction`);
         const result = await response.json();
 
         if (result.transactions) {
@@ -62,7 +58,7 @@ function Data() {
   useEffect(() => {
     const fetchBudget = async () => {
       try {
-        const response = await fetch("/api/get-amount");
+        const response = await fetch(`/api/get-amount?from=${forWhich}`);
         const result = await response.json();
 
         if (result.ok) {
@@ -80,7 +76,7 @@ function Data() {
     };
 
     fetchBudget();
-  }, []);
+  }, [forWhich]);
 
   useEffect(() => {
     if (budget.length > 0) {
@@ -95,6 +91,16 @@ function Data() {
       });
     }
   }, [budget]);
+
+  console.log(budget, "budget");
+
+  useEffect(() => {
+    if (forWhich === "") {
+     const total =  budget.reduce((total, data) => total + data.amount, 0)
+     console.log(total,"check that");
+      setAmount(total);
+    }
+  }, [forWhich,budget.length]);
 
   return (
     <div className="flex  justify-evenly w-[80%] gap-2 items-center h-[31vh] absolute -top-[15%] z-[999] left-1/2 -translate-x-1/2  ">

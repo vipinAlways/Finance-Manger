@@ -3,9 +3,11 @@ import BarGraph from "@/components/BarGraph";
 import CardData from "@/components/CardData";
 import PieGraph from "@/components/PieGraph";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Home() {
+    const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
+      const [from, setFrom] = useState("");
 
   useEffect(() => {
     const postUser = async () => {
@@ -21,7 +23,7 @@ function Home() {
         console.log("API response:", data);
   
         if (data.success && data.redirect) {
-          console.log("Redirecting to:", data.redirect);
+          
           window.location.href = data.redirect;
         } else if (data.success) {
           console.log("User added successfully");
@@ -35,6 +37,26 @@ function Home() {
   
     postUser();
   }, []);
+
+
+
+   useEffect(() => {
+      const getAmount = async () => {
+        try {
+          const response = await fetch(`/api/get-amount`);
+          const result = await response.json();
+          if (result && Array.isArray(result.amount)) {
+            setGetAmountFor(result.amount);
+          } else {
+            console.error("Unexpected API response structure for amounts");
+          }
+        } catch (error) {
+          console.error("Error fetching amounts:", error);
+        }
+      };
+  
+      getAmount();
+    }, []);
   
   
   
@@ -42,6 +64,23 @@ function Home() {
 
   return (
     <div className="lg:flex-row flex  justify-around items-center gap-2 flex-1 relative ">
+       <div className=" w-full h-9">
+        <select
+          name="from"
+          id="from"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
+        >
+          <option value="">All</option>
+          {getAmountFor.map((amount, index) => (
+            <option value={amount.budgetFor} key={index}>
+              {amount.budgetFor}
+            </option>
+          ))}
+         
+        </select>
+      </div>
       <div className="flex items-center flex-col gap-1">
         <div className="w-[50vw] mt-2 flex flex-col p-3 rounded-xl  bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 h-[55vh]">
           <BarGraph />
@@ -50,7 +89,7 @@ function Home() {
       </div>
       <div className=" flex justify-evenly items-center max-sm:w-full lg:gap-2 md:gap-3 max-md:w-full">
         <div className="flex flex-col ">
-          <CardData/>
+          <CardData forWhich={from}/>
         </div>
         <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
           <Link

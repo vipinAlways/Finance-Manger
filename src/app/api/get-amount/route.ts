@@ -5,10 +5,12 @@ import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req:Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+  const { searchParams } = new URL(req.url);
+  const from = searchParams.get("from") || "";
 
   if (!user || !user.email) {
     return NextResponse.json(
@@ -29,23 +31,11 @@ export async function GET() {
         { status: 404 }
       );
     }
-
-    const amount = await amountModel.find({ user: dbuser._id});
-
-    if (!amount) {
-      return NextResponse.json(
-        { success: false, message: "No amounts found for user" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        amount,
-        ok: true,
-      },
-      { status: 200 }
-    );
+    const filter = from ? { user: dbuser._id, budgetFor: from } : { user: dbuser._id };
+    const amount = await amountModel.find(filter);
+    
+    return NextResponse.json({ amount, ok: true }, { status: 200 });
+    
   } catch (error) {
     console.error("Error fetching amounts:", error);
     return NextResponse.json(

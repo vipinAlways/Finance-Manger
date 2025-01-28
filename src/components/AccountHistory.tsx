@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AmountGet } from "@/app/acounts/page"; // Ensure this type is correctly imported or defined
+import { AmountGet } from "@/app/acounts/page"; 
 import DeleteBudget from "./DeleteBudget";
 
 const AccountHistory = ({ accountId }: { accountId: string }) => {
@@ -36,6 +36,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
       bud?._id === accountId && (
         <div key={bud._id}>
           {bud.budgetFor}
+          {bud.amount}
           <DeleteBudget amountId={bud._id} />
         </div>
       )
