@@ -78,6 +78,10 @@ function Data({ forWhich }: { forWhich: string }) {
     fetchBudget();
   }, [forWhich]);
 
+
+
+ 
+
   useEffect(() => {
     if (budget.length > 0) {
       budget.forEach((data) => {
@@ -90,17 +94,12 @@ function Data({ forWhich }: { forWhich: string }) {
         }
       });
     }
-  }, [budget]);
-
- 
-
-  useEffect(() => {
     if (forWhich === "") {
      const total =  budget.reduce((total, data) => total + data.amount, 0)
      console.log(total,"check that");
       setAmount(total);
     }
-  }, [forWhich,budget.length]);
+  }, [forWhich,budget.length,budget]);
 
   return (
     <div className="flex  justify-evenly w-full flex-1 gap-2 items-center h-full">
