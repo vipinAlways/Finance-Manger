@@ -7,6 +7,7 @@ import { Sheet,SheetContent,SheetTrigger } from './ui/sheet'
 import { useMedia } from 'react-use'
 import { Button } from './ui/button'
 import { Menu } from 'lucide-react'
+import Link from 'next/link'
 
 
 const routes =[
@@ -35,12 +36,14 @@ function Navbar() {
                 <Menu className='size-4'/>
               </Button>
             </SheetTrigger>
+            
             <SheetContent side='left' className='px-2'>
+
               <nav className='flex flex-col gap-y-2 pt-6'>
                 {routes.map((route)=>(
-                    <Button variant={route.href === pathName ? "secondary":"ghost"} key={route.href} onClick={()=>onClick(route.href)} className='w-full justify-start'>
+                    <Link  key={route.href} href={route.href} className='w-full justify-start'>
                       {route.label}
-                    </Button>
+                    </Link>
                 ))}
               </nav>
             </SheetContent>

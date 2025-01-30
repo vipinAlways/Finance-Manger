@@ -101,55 +101,51 @@ function Data({ forWhich }: { forWhich: string }) {
     }
   }, [forWhich,budget.length,budget]);
 
+  const blances =  [
+    {
+      name:"Remaining Balance",
+      amount:amount + earnAmount - spendAmount,
+      color:"bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400"
+    },
+    {
+      name:"Earned Amount",
+      amount:earnAmount ,
+      color:"bg-green-600"
+    },
+    {
+      name:"Spend Amount",
+      amount:spendAmount ,
+      color:"bg-red-600"
+    },
+    {
+      name:"Loan Amount",
+      amount:loanAmount ,
+      color:"bg-yellow-600"
+    },
+    
+  ]
+
   return (
-    <div className="flex  justify-evenly w-full flex-1 gap-2 items-center h-full">
-      <Link
+    <div className="flex  justify-evenly w-full flex-1 gap-2 items-center h-full flex-wrap">
+     {
+      blances.map((balance,index)=>(
+        <Link
         href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400 text-white font-semibold rounded-xl"
+        className={`hover:scale-105 transition ease-out hover:duration-200 h-32 md:w-52 w-32  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4  text-white font-semibold rounded-xl ${balance.color}`}
+        key={index}
       >
         <div>
-          <h1 className="mb-2">Remaining Balance</h1>
-          <hr className="w-full animate-blink" />
+          <h1 className="mb-2 underline">{balance.name}</h1>
+         
         </div>
         <p className="lg:text-xl max-sm:text-sm max-md:text-lg">
-          {amount + earnAmount - spendAmount}
+          {balance.amount}
         </p>
       </Link>
+      ))
+     }
 
-      <Link
-        href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-green-400 via-green-300 to-green-400 text-white font-semibold rounded-xl"
-      >
-        <div>
-          <h1 className="mb-2">Earned Amount</h1>
-          <hr className="w-full animate-blink" />
-        </div>
-        <p className="lg:text-xl max-sm:text-sm max-md:text-lg">{earnAmount}</p>
-      </Link>
-
-      <Link
-        href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-red-400 via-red-300 to-red-400 text-white font-semibold rounded-xl"
-      >
-        <div>
-          <h1 className="mb-2">Spent Amount</h1>
-          <hr className="w-full animate-blink" />
-        </div>
-        <p className="lg:text-xl max-sm:text-sm max-md:text-lg">
-          {spendAmount}
-        </p>
-      </Link>
-
-      <Link
-        href="/acounts"
-        className="hover:scale-105 transition ease-out hover:duration-200 h-32 w-52  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 bg-gradient-to-tr from-yellow-400 via-yellow-200 to-yellow-300 text-white font-semibold rounded-xl"
-      >
-        <div>
-          <h1 className="mb-2">Loan Amount</h1>
-          <hr className="w-full animate-blink" />
-        </div>
-        <p className="lg:text-xl max-sm:text-sm max-md:text-lg">{loanAmount}</p>
-      </Link>
+    
     </div>
   );
 }

@@ -56,9 +56,9 @@ function Home() {
   }, []);
 
   return (
-    <div className=" flex  flex-col items-center flex-1 relative w-full ">
-      <div className="flex items-center justify-evenly w-full h-40 absolute top-0 z-50 -translate-y-20">
-        <div className="w-fit py-5 px-2 h-full flex items-end">
+    <div className=" flex  flex-col items-center flex-1 relative w-full max-md:p-4  gap-10">
+      <div className="flex items-center justify-evenly w-full gap-4  max-md:flex-col  md:absolute top-0 z-50  md:-translate-y-20">
+        <div className="w-fit py-5 px-2 h-full flex items-end max-md:items-center max-md:justify-center">
           <select
             name="from"
             id="from"
@@ -74,24 +74,24 @@ function Home() {
             ))}
           </select>
         </div>
-        <div className="flex items-center w-3/4">
+        <div className="flex items-center md:w-3/4 w-80 flex-wrap">
           <CardData forWhich={from} />
         </div>
       </div>
-      <div className="flex items-center gap-5 w-full justify-around">
+      <div className="flex items-center gap-5 w-full justify-around max-md:flex-col">
         <div className="flex items-center flex-col  gap-1">
-          <div className="w-[50vw] mt-2 flex flex-col p-3 rounded-xl  bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 h-[55vh]">
+          <div className="w-[55vw] max-md:w-full mt-2 flex flex-col p-3 rounded-xl  bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 max-md:h-fit h-[55vh]">
             <BarGraph forWhich={from} />
           </div>
           <h1 className="text-2xl text-slate-700">
             Your Transaction via graph
           </h1>
         </div>
-        <div className=" flex justify-evenly items-center max-sm:w-full lg:gap-2 md:gap-3 max-md:w-full">
+        <div className="p-4 flex justify-evenly items-center max-sm:w-full lg:gap-2 md:gap-3 max-md:w-full">
           <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] flex flex-col p-3 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
+              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-md:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
             >
               <PieGraph forWhich={from} />
             </Link>

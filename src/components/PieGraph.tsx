@@ -116,7 +116,7 @@ function PieGraph({forWhich}: {forWhich: string}) {
   
 
 
- return <Doughnut data={data}  className="h-full p-3"   />;
+ return <Doughnut data={data}  className="h-full p-3 w-full"   />;
 }
 
 export default PieGraph;

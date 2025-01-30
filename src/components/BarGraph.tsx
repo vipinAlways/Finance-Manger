@@ -67,7 +67,7 @@ function BarGraph({forWhich}: {forWhich: string}) {
     fetchTransactions();
   }, [forWhich]);
   
-  console.log(transaction,'ye hainkya');
+  
 
   
   const dates = useMemo(() => {
