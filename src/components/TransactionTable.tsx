@@ -119,11 +119,11 @@ function TransactionTable() {
               {amount.budgetFor}
             </option>
           ))}
-          <option value="he">ief</option>
+         
         </select>
       </div>
-      <Table className={cn(transactions.length === 0 && "hidden")}>
-        <TableCaption>Your transactions</TableCaption>
+      <Table className={cn(transactions.length === 0 && "hidden" ,"my-4")}>
+       
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Date</TableHead>
@@ -171,7 +171,7 @@ function TransactionTable() {
       {hasMore && (
         <div className="flex justify-center items-center lg:mt-4 mt-2">
           <Button
-            className={cn("lg:p-2 p-0.5", page === 0 && "hidden")}
+            className={cn("lg:p-2", page === 0 && "hidden")}
             onClick={handleShowMore}
             disabled={!hasMore}
           >

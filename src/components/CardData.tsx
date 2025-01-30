@@ -110,17 +110,17 @@ function Data({ forWhich }: { forWhich: string }) {
     {
       name:"Earned Amount",
       amount:earnAmount ,
-      color:"bg-green-600"
+      color:"bg-green-500"
     },
     {
       name:"Spend Amount",
       amount:spendAmount ,
-      color:"bg-red-600"
+      color:"bg-red-500"
     },
     {
       name:"Loan Amount",
       amount:loanAmount ,
-      color:"bg-yellow-600"
+      color:"bg-yellow-500"
     },
     
   ]

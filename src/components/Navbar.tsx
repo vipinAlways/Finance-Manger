@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import NavButton from "./NavButton";
-import { usePathname, useRouter } from "next/navigation";
-import { useMedia } from "react-use";
+import { usePathname} from "next/navigation";
 import Link from "next/link";
 import {
   Sheet,
@@ -21,10 +20,7 @@ const routes = [
   { href: "/categories", label: "Categories" },
 ];
 function Navbar() {
-  const [isOpen, setIsopen] = useState(false);
   const pathName = usePathname();
-  const router = useRouter();
-  const isMobile = useMedia("(max-width:1024px)", false);
 
   return (
     <div>
@@ -38,20 +34,24 @@ function Navbar() {
           />
         ))}
       </nav>
-      <Sheet >
+      <Sheet>
         <SheetTrigger className="text-zinc-100">
           <Menu />
         </SheetTrigger>
-        <SheetContent side={"left"}>
+        <SheetContent side={"left"} className="w-60 bg-zinc-800 text-zinc-100">
           <SheetHeader>
             <SheetTitle>FINANCE MENAGER</SheetTitle>
-            <nav className='flex flex-col gap-y-2 pt-6'>
-                {routes.map((route)=>(
-                    <Link  key={route.href} href={route.href} className='w-full justify-start'>
-                      {route.label}
-                    </Link>
-                ))}
-              </nav>
+            <nav className="flex flex-col gap-y-2 pt-6">
+              {routes.map((route) => (
+                <Link
+                  key={route.href}
+                  href={route.href}
+                  className="w-full justify-start hover:bg-zinc-600 p-1.5 rounded-lg"
+                >
+                  {route.label}
+                </Link>
+              ))}
+            </nav>
           </SheetHeader>
         </SheetContent>
       </Sheet>

@@ -44,7 +44,7 @@ function Page() {
   }, [block]);
 
   return (
-    <div className="">
+    <div className="max-lg:p-4">
       <div className="flex justify-end w-full mt-4 ">
         <Button onClick={onclick}>Add Transaction</Button>
       </div>

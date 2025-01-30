@@ -78,9 +78,9 @@ function Home() {
           <CardData forWhich={from} />
         </div>
       </div>
-      <div className="flex items-center gap-5 w-full justify-around max-md:flex-col">
-        <div className="flex items-center flex-col  gap-1">
-          <div className="w-[55vw] max-md:w-full mt-2 flex flex-col p-3 rounded-xl  bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 max-md:h-fit h-[55vh]">
+      <div className="flex items-center gap-5 w-full justify-around max-sm:flex-col">
+        <div className="flex items-center flex-col max-sm:w-80 gap-1">
+          <div className="w-[55vw] max-md:w-[23rem] mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 max-sm:h-fit lg:h-[55vh] h-80 ">
             <BarGraph forWhich={from} />
           </div>
           <h1 className="text-2xl text-slate-700">
@@ -91,7 +91,7 @@ function Home() {
           <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-md:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
+              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-sm:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
             >
               <PieGraph forWhich={from} />
             </Link>
