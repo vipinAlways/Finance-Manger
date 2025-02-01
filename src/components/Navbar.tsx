@@ -35,7 +35,7 @@ function Navbar() {
         ))}
       </nav>
       <Sheet>
-        <SheetTrigger className="text-zinc-100">
+        <SheetTrigger className="text-zinc-100 hidden max-md:flex">
           <Menu />
         </SheetTrigger>
         <SheetContent side={"left"} className="w-60 bg-zinc-800 text-zinc-100">
