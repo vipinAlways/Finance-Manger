@@ -1,6 +1,8 @@
 "use client";
 import AddAmount from "@/components/AddAmount";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -21,6 +23,9 @@ const Page = () => {
     },
   ]);
   const [hidden, setHidden] = useState(true);
+  const [hidden2, setHidden2] = useState(true);
+  const [nameOfBudget, setNameOfBudget] = useState('');
+  const {toast} = useToast()
 
   useEffect(() => {
     const getbudgets = async () => {
@@ -40,6 +45,41 @@ const Page = () => {
 
     getbudgets();
   }, []);
+
+   const AddBudgetName = async (e:React.FormEvent) => {
+      e.preventDefault()
+      try {
+        let response = await fetch("/api/post-budgetName", {
+          method: "POST",
+          body: JSON.stringify({
+            nameOfBudget
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          toast({
+            title: "budgetAdded succesFully",
+            description: `Your budet added for ${nameOfBudget}`,
+          });
+  
+          
+          if (data.ok) {
+           setNameOfBudget('')
+          
+          }else{
+            throw new Error("error while adding budget name client response");
+          }
+        } else {
+          console.log("error while adding budget name client response");
+        }
+      } catch (error) {
+        console.log("error while adding budget name client server ");
+      }
+    };
 
   return (
     <div className="h-full w-full relative py-3 flex ">
@@ -69,7 +109,15 @@ const Page = () => {
           </div>
         </div>
       )}
-      <div className="w-full h-[30rem] flex items-center justify-center text-5xl">
+      <div className="w-full h-[30rem] flex items-center justify-center text-5xl relative">
+
+        <div className="absolute top-0 left-5 h-10 w-64">
+          <Button onClick={()=>setHidden2(hidden === true ? false :true)} >ADD NAME</Button>
+        <form action="POST" onSubmit={AddBudgetName} className={cn("flex items-center gap-3" ,hidden2 && "hidden")}>
+          <input type="text" value={nameOfBudget} onChange={(e)=>setNameOfBudget(e.target.value)} className="h-10 w-60 rounded-lg" />
+          <Button type="submit">Submit</Button>
+        </form>
+        </div>
       <h1>Your Budget</h1>
       </div>
     </div>

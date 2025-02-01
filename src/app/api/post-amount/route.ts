@@ -34,8 +34,8 @@ export async function POST(req: Request) {
 
       await newAmount.save();
       
-      user.amount.push(newAmount._id);
-      await user.save();
+   
+
       await dbDisconnect();
       return Response.json({
         success: true,

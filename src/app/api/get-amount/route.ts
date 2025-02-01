@@ -32,7 +32,10 @@ export async function GET(req:Request) {
       );
     }
     const filter = from ? { user: dbuser._id, budgetFor: from } : { user: dbuser._id };
-    const amount = await amountModel.find(filter);
+    const amount = await amountModel.find({
+        user :filter.user,
+        endDate:{$esists:true,$lte:new Date()}
+    });
     
     return NextResponse.json({ amount, ok: true }, { status: 200 });
     

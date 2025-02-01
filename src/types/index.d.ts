@@ -28,6 +28,7 @@ declare interface User extends Document {
   transaction: any;
   perosonalCategory: any;
   image:string;
+  budgetName:any
 }
 declare interface Category extends Document {
   nameOfCategorey: string;

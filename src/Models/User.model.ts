@@ -23,6 +23,7 @@ const userSchema: Schema<User> = new mongoose.Schema({
   perosonalCategory: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   ],
+  budgetName:[{type:mongoose.Schema.Types.ObjectId,ref:"BudgetName"}]
 });
 
 const userModel: Model<User> =

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { AmountGet } from "@/app/acounts/page"; 
 import DeleteBudget from "./DeleteBudget";
 
-const AccountHistory = ({ accountId }: { accountId: string }) => {
+const  AccountHistory = ({ accountId }: { accountId: string }) => {
   const [budget, setBudget] = useState<AmountGet[] | null>(null);
 
   useEffect(() => {
@@ -37,6 +37,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
         <div key={bud._id}>
           {bud.budgetFor}
           {bud.amount}
+
           <DeleteBudget amountId={bud._id} />
         </div>
       )
