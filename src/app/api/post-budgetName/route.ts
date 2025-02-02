@@ -11,54 +11,70 @@ export async function POST(req: Request) {
 
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
   if (!user) {
-    throw new Error("no session found");
+    return NextResponse.json(
+      { ok: false, success: false, message: "No session found" },
+      { status: 401 }
+    );
   }
+
   try {
-    const dbuser = await userModel.findOne({
-      email: user.email,
-    });
+    const dbuser = await userModel.findOne({ id: user.id });
+
     if (!dbuser) {
-      throw new Error("User is not register");
+      return NextResponse.json(
+        { ok: false, success: false, message: "User is not registered" },
+        { status: 404 }
+      );
     }
+
     const { nameOfBudget } = await req.json();
 
-    const isNameAllready = await BudgetNameModel.find({
+    if (!nameOfBudget) {
+      console.log("nahi hian ye");
+    }
+    const isNameAlready = await BudgetNameModel.findOne({
       nameOfBudget,
       user: dbuser._id,
     });
 
-    if (isNameAllready) {
-      return NextResponse.json({
-        ok: true,
-        success: true,
-      
-        message: "Allready have this Name budget",
-      },{
-        status:409
-      });
+    if (isNameAlready) {
+      return NextResponse.json(
+        {
+          ok: true,
+          success: false,
+          message: "Already have this budget name",
+        },
+        { status: 409 }
+      );
     }
 
     const budgetName = await BudgetNameModel.create({
       nameOfBudget,
       user: dbuser._id,
     });
-    await budgetName.save();
+    budgetName.save();
+    dbuser.budgetName.push(budgetName._id);
+    await dbuser.save();
 
-    await dbuser.budgetName.push(budgetName._id);
-
-    return NextResponse.json({
-      ok: true,
-      success: true,
-      status: 200,
-      message: "successFully Add name",
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        success: true,
+        message: "Successfully added budget name",
+        budgetName,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      ok: false,
-      success: false,
-      status: 500,
-      message: "successFully Add name",
-    });
+    return NextResponse.json(
+      {
+        ok: false,
+        success: false,
+        message: "Error adding budget name",
+      },
+      { status: 500 }
+    );
   }
 }

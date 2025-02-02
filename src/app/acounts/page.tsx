@@ -11,7 +11,7 @@ export interface AmountGet {
   startDate: Date;
   amount: number;
   endDate: Date;
-  _id?:string
+  _id?: string;
 }
 const Page = () => {
   const [budget, setBudget] = useState<AmountGet[]>([
@@ -24,8 +24,8 @@ const Page = () => {
   ]);
   const [hidden, setHidden] = useState(true);
   const [hidden2, setHidden2] = useState(true);
-  const [nameOfBudget, setNameOfBudget] = useState('');
-  const {toast} = useToast()
+  const [nameOfBudget, setNameOfBudget] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     const getbudgets = async () => {
@@ -46,40 +46,41 @@ const Page = () => {
     getbudgets();
   }, []);
 
-   const AddBudgetName = async (e:React.FormEvent) => {
-      e.preventDefault()
-      try {
-        let response = await fetch("/api/post-budgetName", {
-          method: "POST",
-          body: JSON.stringify({
-            nameOfBudget
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  const AddBudgetName = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/post-budgetName", {
+        method: "POST",
+        body: JSON.stringify({ nameOfBudget }),
+        headers: { "Content-Type": "application/json" },
+      });
   
-        if (response.ok) {
-          const data = await response.json();
-          toast({
-            title: "budgetAdded succesFully",
-            description: `Your budet added for ${nameOfBudget}`,
-          });
-  
-          
-          if (data.ok) {
-           setNameOfBudget('')
-          
-          }else{
-            throw new Error("error while adding budget name client response");
-          }
-        } else {
-          console.log("error while adding budget name client response");
-        }
-      } catch (error) {
-        console.log("error while adding budget name client server ");
+      const data = await response.json(); 
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add budget name");
       }
-    };
+  
+
+      toast({
+        title: "Budget Added Successfully",
+        description: `Your budget for "${nameOfBudget}" has been added.`,
+      });
+  
+
+      setNameOfBudget("");
+      setHidden2(false);
+    } catch (error: any) {
+      console.error("Error while adding budget name:", error);
+  
+     
+      toast({
+        title: "Error",
+        description:  "Something went wrong!",
+        variant: "destructive",
+      });
+    }
+  };
+  
 
   return (
     <div className="h-full w-full relative py-3 flex ">
@@ -87,12 +88,18 @@ const Page = () => {
         <h1 className="w-full text-lg bg-zinc-600 text-center rounded-lg text-green-100 ">
           Your budgets
         </h1>
-        
+
         <div className="h-96 w-full flex flex-col items-center">
-        {budget.length > 0 &&
-              budget.map((bud, index) => (
-                <Link href={`/acounts/${bud._id}`} key={bud.budgetFor + index} className="text-xl cursor-pointer">{bud.budgetFor}</Link>
-              ))}
+          {budget.length > 0 &&
+            budget.map((bud, index) => (
+              <Link
+                href={`/acounts/${bud._id}`}
+                key={bud.budgetFor + index}
+                className="text-xl cursor-pointer"
+              >
+                {bud.budgetFor}
+              </Link>
+            ))}
         </div>
 
         <Button
@@ -110,15 +117,26 @@ const Page = () => {
         </div>
       )}
       <div className="w-full h-[30rem] flex items-center justify-center text-5xl relative">
-
-        <div className="absolute top-0 left-5 h-10 w-64">
-          <Button onClick={()=>setHidden2(hidden === true ? false :true)} >ADD NAME</Button>
-        <form action="POST" onSubmit={AddBudgetName} className={cn("flex items-center gap-3" ,hidden2 && "hidden")}>
-          <input type="text" value={nameOfBudget} onChange={(e)=>setNameOfBudget(e.target.value)} className="h-10 w-60 rounded-lg" />
-          <Button type="submit">Submit</Button>
-        </form>
+        <div className="absolute top-0 left-5 h-24 flex flex-col items-start gap-2 w-64">
+          <Button onClick={() => setHidden2(!hidden2)} className="h-10">
+            ADD NAME
+          </Button>
+          <form
+            action="POST"
+            onSubmit={AddBudgetName}
+            className={cn("flex items-center gap-3", hidden2 && "hidden")}
+          >
+            <input
+              type="text"
+              value={nameOfBudget}
+              onChange={(e) => setNameOfBudget(e.target.value)}
+              className="h-10 w-60 rounded-lg text-lg px-3"
+              placeholder="Enter the name..."
+            />
+            <Button type="submit">Submit</Button>
+          </form>
         </div>
-      <h1>Your Budget</h1>
+        <h1>Your Budget</h1>
       </div>
     </div>
   );
