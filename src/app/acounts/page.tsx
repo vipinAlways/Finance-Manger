@@ -51,36 +51,33 @@ const Page = () => {
     try {
       const response = await fetch("/api/post-budgetName", {
         method: "POST",
-        body: JSON.stringify({ nameOfBudget }),
+        body: JSON.stringify({ nameOfBudget }), // ✅ Wrapped in object
         headers: { "Content-Type": "application/json" },
       });
-  
-      const data = await response.json(); 
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to add budget name");
+
+      const data = await response.json();
+
+      if (data.ok) {
+        toast({
+          title: "Budget Added Successfully",
+          description: `Your budget for "${nameOfBudget}" has been added.`,
+        });
+
+        setNameOfBudget("");
+        setHidden2(true);
+      } else {
+        throw new Error("Failed to add budget name");
       }
-  
-
-      toast({
-        title: "Budget Added Successfully",
-        description: `Your budget for "${nameOfBudget}" has been added.`,
-      });
-  
-
-      setNameOfBudget("");
-      setHidden2(false);
     } catch (error: any) {
       console.error("Error while adding budget name:", error);
-  
-     
+
       toast({
         title: "Error",
-        description:  "Something went wrong!",
+        description: "Something went wrong!",
         variant: "destructive",
       });
     }
   };
-  
 
   return (
     <div className="h-full w-full relative py-3 flex ">
@@ -105,6 +102,7 @@ const Page = () => {
         <Button
           className="text-sm p-1  w-full"
           onClick={() => setHidden(hidden ? false : true)}
+         
         >
           Another budget
         </Button>
@@ -118,7 +116,7 @@ const Page = () => {
       )}
       <div className="w-full h-[30rem] flex items-center justify-center text-5xl relative">
         <div className="absolute top-0 left-5 h-24 flex flex-col items-start gap-2 w-64">
-          <Button onClick={() => setHidden2(!hidden2)} className="h-10">
+          <Button  disabled={!hidden} onClick={() => setHidden2(!hidden2)} className="h-10">
             ADD NAME
           </Button>
           <form
@@ -133,7 +131,6 @@ const Page = () => {
               className="h-10 w-60 rounded-lg text-lg px-3"
               placeholder="Enter the name..."
             />
-            <Button type="submit">Submit</Button>
           </form>
         </div>
         <h1>Your Budget</h1>

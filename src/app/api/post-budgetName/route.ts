@@ -31,18 +31,16 @@ export async function POST(req: Request) {
 
     const { nameOfBudget } = await req.json();
 
-    if (!nameOfBudget) {
-      console.log("nahi hian ye");
-    }
     const isNameAlready = await BudgetNameModel.findOne({
-      nameOfBudget,
+      nameOfCategorey: nameOfBudget,
       user: dbuser._id,
     });
 
     if (isNameAlready) {
+      console.log("hain ye pehle");
       return NextResponse.json(
         {
-          ok: true,
+          ok: false,
           success: false,
           message: "Already have this budget name",
         },
@@ -51,11 +49,11 @@ export async function POST(req: Request) {
     }
 
     const budgetName = await BudgetNameModel.create({
-      nameOfBudget,
+      nameOfCategorey: nameOfBudget,
       user: dbuser._id,
     });
     budgetName.save();
-    dbuser.budgetName.push(budgetName._id);
+    dbuser.BudgetName.push(budgetName._id);
     await dbuser.save();
 
     return NextResponse.json(
@@ -68,6 +66,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.log("ye nahi catch");
     return NextResponse.json(
       {
         ok: false,

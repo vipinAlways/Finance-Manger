@@ -19,7 +19,7 @@ export async function GET() {
   }
   try {
     const dbuser = await userModel.findOne({
-      email: user.email,
+      id: user.id,
     });
     if (!dbuser) {
       return NextResponse.json(

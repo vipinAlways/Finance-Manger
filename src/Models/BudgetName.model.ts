@@ -2,7 +2,7 @@ import { BudgetName } from "@/types";
 import mongoose, { Model, Schema } from "mongoose";
 
 export const BudgetNameShcema = new Schema({
-  nameOfBudget: {
+  nameOfCategorey: {
     type: String,
     require: true,
     unique: true,
@@ -16,7 +16,7 @@ export const BudgetNameShcema = new Schema({
 });
 
 const BudgetNameModel: Model<BudgetName> =
-  mongoose.models.Category ||
+  mongoose.models.BudgetName ||
   mongoose.model<BudgetName>("BudgetName", BudgetNameShcema);
 
 export default BudgetNameModel;
