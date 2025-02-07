@@ -61,7 +61,7 @@ const AmountSideBar = () => {
             <div className='w-[calc(100vw-15rem)] z-50'>
               <div className="w-4/5 absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-opacity-10  bg-green-600">
               <div className="w-96 h-[25rem] mx-4">
-                <AddAmount />
+                <AddAmount hidden=''/>
               </div>
             </div>
             </div>

@@ -13,6 +13,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/types";
+import { useToast } from "@/components/ui/use-toast";
+
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
   const [FilteredTransactions, setFilteredTransactions] = useState<
@@ -22,30 +24,42 @@ const Page: React.FC = () => {
   const [hidden, setHidden] = useState(true);
   const [selectType, setSelectType] = useState("");
   const [nameOfcateGorey, setNameOfcateGorey] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [error, setError] = useState("");
+  const [categoryGroup, setCategoryGroup] = useState<any[]>([]);
+
+  const { toast } = useToast();
+
   useEffect(() => {
+    if (!startDate || !endDate) {
+      setTransactions([]); // Clear transactions if no dates are selected
+      return;
+    }
+  
     async function fetchTransactions() {
       try {
-        const response = await fetch(`/api/get-transaction`);
+        const response = await fetch(
+          `/api/get-transaction?start=${startDate}&end=${endDate}`
+        );
+  
         const result = await response.json();
-
+  
         if (result.transactions) {
           setTransactions(result.transactions);
         } else if (Array.isArray(result)) {
           setTransactions(result);
         } else {
-          alert(
-            "Currently over server are not working out please try again later"
-          );
+          alert("Currently, our servers are not working. Please try again later.");
         }
       } catch (error) {
-        alert(
-          "Currently over server are not working out please try again later"
-        );
+        alert("Currently, our servers are not working. Please try again later.");
       }
     }
-
+  
     fetchTransactions();
-  }, []);
+  }, [startDate, endDate]);
+  
   const createCategorey = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -71,15 +85,17 @@ const Page: React.FC = () => {
         setNameOfcateGorey("");
         setTimeout(() => {
           setHidden(true);
-        }, 500); 
+        }, 500);
+        toast({
+          title: "Success",
+          description: "Category submitted successfull",
+        });
       } else {
         throw new Error(data.message || "Error while creating category");
       }
     } catch (error) {
       console.error("Error in page while creating category:", error);
     }
-
-   
   };
 
   useEffect(() => {
@@ -89,14 +105,37 @@ const Page: React.FC = () => {
     );
     setFilteredTransactions(newResult);
   }, [searchBox, selectType, Transactions]);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const response = await fetch(`/api/get-category`);
+        const result = await response.json();
+        if (result && Array.isArray(result.getAllCateGories)) {
+          setCategoryGroup(result.getAllCateGories);
+        } else {
+          console.error("Unexpected API response structure for categories");
+          setError("Failed to fetch categories.");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setError("An error occurred while fetching categories.");
+      }
+    };
+
+    getCategory();
+  }, []);
+
   const totalAmount = FilteredTransactions.reduce(
     (total, item) => total + item.amount,
     0
   );
+
+
   return (
     <div className="w-full">
-      <div className="p-4 flex justify-center flex-col">
-        <Button className="w-40" onClick={() => setHidden(false)}>
+      <div className="p-4 flex justify-start gap-3 flex-1">
+        <Button className="w-40" onClick={() => setHidden(!hidden)}>
           ADD CATEGORY
         </Button>
         <form
@@ -109,39 +148,34 @@ const Page: React.FC = () => {
             value={nameOfcateGorey}
             name="cateGory"
             onChange={(e) => setNameOfcateGorey(e.target.value)}
-            className="h-8 w-64 px-4 rounded-lg text-zinc-800 "
+            className="w-64 p-2 rounded-lg text-zinc-800 "
           />
-          <Button type="submit" className="h-8 w">
-            Submit
-          </Button>
         </form>
       </div>
       <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 ">
-        <div className="flex items-center gap-3 max-sm:justify-between max-sm:flex-col">
-          <label
-            htmlFor="searchCategory"
-            className="font-semibold text-lg text-zinc-800"
-          >
+        <div className="flex items-center gap-3 max-sm:justify-between flex-col">
+          <label htmlFor="category" className="text-xl leading-none">
             Category
           </label>
           <select
             onChange={(e) => setSearchBox(e.target.value)}
+            name="category"
+            id="category"
+            className="border h-10 rounded-sm text-black w-full"
             value={searchBox}
-            className="w-60 max-sm:w-36 max-sm:text-sm border-2 rounded-md border-green-200 p-2 text-lg font-semibold text-zinc-800"
-            id="searchCategory"
           >
             <option value="" disabled>
-              Select an option
+              Select a Category
             </option>
-            <option value="car">Car</option>
-            <option value="petrol">Petrol</option>
-            <option value="food">Food</option>
-            <option value="freelance">Freelance</option>
-            <option value="pocketMoney">Pocket Money</option>
-            <option value="other">Other</option>
+
+            {categoryGroup.map((cate, index) => (
+              <option key={index} value={cate.nameOfCategorey}>
+                {cate.nameOfCategorey}
+              </option>
+            ))}
           </select>
         </div>
-        <div className="flex items-center gap-3  max-sm:flex-col">
+        <div className="flex items-center gap-3 flex-col">
           <label
             htmlFor="transactionTypeSearch"
             className="font-semibold text-lg text-zinc-800"
@@ -162,13 +196,42 @@ const Page: React.FC = () => {
             <option value="loan">loan</option>
           </select>
         </div>
+        <div className="flex items-center gap-3 flex-col">
+          <label
+            htmlFor="start"
+            className="font-semibold text-lg text-zinc-800"
+          >
+            From
+          </label>
+          <input
+            type="date"
+            name="start"
+            id="start"
+            value={startDate ? startDate.toISOString().split("T")[0] : ""}
+            onChange={(e) => setStartDate(new Date(e.target.value))}
+            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+          />
+        </div>
+        <div className="flex items-center gap-3 flex-col">
+          <label htmlFor="end" className="font-semibold text-lg text-zinc-800">
+            TO
+          </label>
+          <input
+            type="date"
+            name="end"
+            id="end"
+            value={endDate ? endDate.toISOString().split("T")[0] : ""}
+            onChange={(e) => setEndDate(new Date(e.target.value))}
+            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+          />
+        </div>
       </div>
 
-      {selectType === "" && searchBox === "" ? null : (
+      {Transactions.length ===0 ? null : (
         <div className="w-full border-2">
           <Table>
             <TableCaption className="text-green-700 text-center max-sm:hidden">
-              Here are all your transactions`
+              Here are all your transactions
             </TableCaption>
             <TableHeader>
               <TableRow>

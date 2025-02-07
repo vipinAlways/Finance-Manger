@@ -34,8 +34,7 @@ export async function GET(req: Request) {
       ? { user:dbuser._id, budgetFor: from }
       : { user: dbuser._id };
 
-    console.log("Filter User ID:", filter.user);
-    console.log("Current Date:", new Date());
+    
     const currentdate = new Date()
     const amount = await amountModel.find({
       user: filter.user,

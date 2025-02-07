@@ -5,7 +5,7 @@ import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { BudgetName } from "@/types";
 
-const AddAmount = () => {
+const AddAmount = ({hidden}:{hidden:string}) => {
   const [budgetFor, setBudgetFor] = useState("");
   const [amount, setAmount] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date>();
@@ -67,7 +67,7 @@ const AddAmount = () => {
     };
     getbudgetname();
   }, []);
-  console.log(budgetName, "ye hain ");
+
   return (
     <div className="border w-full h-full flex items-center py-4 px-2 bg-green-500 rounded-xl">
       <form

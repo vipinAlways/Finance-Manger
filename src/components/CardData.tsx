@@ -139,7 +139,7 @@ function Data({ forWhich }: { forWhich: string }) {
          
         </div>
         <p className="lg:text-xl max-sm:text-sm max-md:text-lg">
-          {balance.amount}
+          {balance.amount.toFixed(2)}
         </p>
       </Link>
       ))

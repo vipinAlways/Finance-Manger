@@ -10,7 +10,7 @@ function AddTransaction({ className }: { className: string }) {
   const [note, setNote] = useState("");
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Date | null>();
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
@@ -49,7 +49,7 @@ function AddTransaction({ className }: { className: string }) {
         setAmount("");
         setNote("");
         setCategory("");
-        setDate("");
+        setDate(null);
         setMethod("");
         setTransactionType("");
         setDisable(true);
@@ -162,11 +162,11 @@ function AddTransaction({ className }: { className: string }) {
             </label>
             <input
               type="date"
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => setDate(new Date(e.target.value))}
               name="date"
               id="date"
               className="border h-10 rounded-sm text-black w-full"
-              value={date}
+              value={date && date.toLocaleString().split("T")[0] || ''}
             />
           </div>
 

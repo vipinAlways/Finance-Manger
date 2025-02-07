@@ -80,18 +80,19 @@ function PieGraph({forWhich}: {forWhich: string}) {
   const filteredTransactions = transactions.filter((item) => {
     return new Date(item.date) >= from! && new Date(item.date) <= to!;
   });
-
   const categoryTotals: { [key: string]: number } = filteredTransactions.reduce(
     (acc: { [key: string]: number }, curr: Transaction) => {
+      const categoryKey = curr.category.toUpperCase();
       if (curr.transactionType === "earn") {
-        acc[curr.category.toUpperCase()] = (acc[curr.category] || 0) + curr.amount;
+        acc[categoryKey] = (acc[categoryKey] || 0) + curr.amount;
       } else if (curr.transactionType === "spend") {
-        acc[curr.category.toUpperCase()] = (acc[curr.category] || 0) - curr.amount;
+        acc[categoryKey] = (acc[categoryKey] || 0) - curr.amount;
       }
       return acc;
     },
     {}
   );
+  
   
 
   const allCategory = Object.keys(categoryTotals);

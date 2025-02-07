@@ -110,7 +110,7 @@ const Page = () => {
       {!hidden && (
         <div className="w-4/5 absolute top-1/2 left-[55%] h-full -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-50 bg-opacity-10  bg-green-600">
           <div className="w-96 h-[25rem] mx-4">
-            <AddAmount />
+            <AddAmount hidden="" />
           </div>
         </div>
       )}

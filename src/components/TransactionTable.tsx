@@ -18,7 +18,7 @@ import AddTransaction from "./AddTransaction";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [from, setFrom] = useState("");
   const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
@@ -36,10 +36,14 @@ function TransactionTable() {
           `/api/get-transaction?page=${page}&perpage=20&from=${from}`
         );
         const result = await response.json();
-
+  
         if (Array.isArray(result.transactions)) {
-          setTransactions(result.transactions);
-          setHasMore(result.transactions.length > 0);
+          if (page === 1) {
+            setTransactions(result.transactions);
+          } else {
+            setTransactions((prev) => [...prev, ...result.transactions]);
+          }
+          setHasMore(result.hasMore); // Use hasMore from API
         } else {
           console.error("Unexpected API response structure");
         }
@@ -47,9 +51,10 @@ function TransactionTable() {
         console.error("Error fetching transactions:", error);
       }
     };
-
+  
     fetchTransactions();
   }, [page, from]);
+  
 
   useEffect(() => {
     const initializePage = setTimeout(() => {
