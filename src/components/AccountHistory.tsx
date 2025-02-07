@@ -38,7 +38,7 @@ const  AccountHistory = ({ accountId }: { accountId: string }) => {
           {bud.budgetFor}
           {bud.amount}
 
-          <DeleteAmountId={bud._id} />
+         
         </div>
       )
     );
