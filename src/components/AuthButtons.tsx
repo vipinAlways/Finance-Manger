@@ -1,30 +1,36 @@
-import React from 'react'
-import { Button } from './ui/button'
-import Link from 'next/link'
-import { getKindeServerSession, LogoutLink,LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
+"use client";
 
-async function  AuthButtons() {
+import React from "react";
+import { Button } from "./ui/button";
+import { LogoutLink, LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Loader2 } from "lucide-react";
 
-    const {getUser} = getKindeServerSession()
+function AuthButtons() {
+  const { user, isLoading } = useKindeBrowserClient(); 
 
-    const user = await getUser()
+  if (isLoading) return <Loader2 className="animate-spin"/>; 
+
   return (
-    
-    <div className='flex justify-center items-center'>
-       {user ? <div>
-           <Button className=''><LogoutLink >Log out</LogoutLink></Button>
-       </div> :<div className='flex justify-center items-center gap-2'>
-       <Button>
-            <LoginLink className='p-2 text-base'>Sign in</LoginLink>
-        </Button>
-       <Button>
-            <RegisterLink className='p-2 text-base'>Sign up</RegisterLink>
-        </Button>
-        </div>}  
-       
-       
+    <div className="flex justify-center items-center">
+      {user ? (
+        <div>
+          <Button>
+            <LogoutLink>Log out</LogoutLink>
+          </Button>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center gap-2">
+          <Button>
+            <LoginLink className="p-2 text-base">Sign in</LoginLink>
+          </Button>
+          <Button>
+            <RegisterLink className="p-2 text-base">Sign up</RegisterLink>
+          </Button>
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default AuthButtons
+export default AuthButtons;

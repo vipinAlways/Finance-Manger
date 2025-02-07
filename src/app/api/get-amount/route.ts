@@ -5,7 +5,8 @@ import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function GET(req:Request) {
+
+export async function GET(req: Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -14,10 +15,7 @@ export async function GET(req:Request) {
 
   if (!user || !user.email) {
     return NextResponse.json(
-      {
-        success: false,
-        message: "User not found or not authenticated",
-      },
+      { success: false, message: "User not found or not authenticated" },
       { status: 404 }
     );
   }
@@ -31,21 +29,25 @@ export async function GET(req:Request) {
         { status: 404 }
       );
     }
-    const filter = from ? { user: dbuser._id, budgetFor: from } : { user: dbuser._id };
+
+    const filter = from
+      ? { user:dbuser._id, budgetFor: from }
+      : { user: dbuser._id };
+
+    console.log("Filter User ID:", filter.user);
+    console.log("Current Date:", new Date());
+    const currentdate = new Date()
     const amount = await amountModel.find({
-        user :filter.user,
-        endDate:{$exists:true,$lte:new Date()}
+      user: filter.user,
+      endDate: {$gte:currentdate}
     });
-    
+
     return NextResponse.json({ amount, ok: true }, { status: 200 });
-    
+
   } catch (error) {
     console.error("Error fetching amounts:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "An error occurred while fetching amounts",
-      },
+      { success: false, message: "An error occurred while fetching amounts" },
       { status: 500 }
     );
   }

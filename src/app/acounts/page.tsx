@@ -46,12 +46,13 @@ const Page = () => {
     getbudgets();
   }, []);
 
+
   const AddBudgetName = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await fetch("/api/post-budgetName", {
         method: "POST",
-        body: JSON.stringify({ nameOfBudget }), // ✅ Wrapped in object
+        body: JSON.stringify({ nameOfBudget }), 
         headers: { "Content-Type": "application/json" },
       });
 
@@ -102,7 +103,6 @@ const Page = () => {
         <Button
           className="text-sm p-1  w-full"
           onClick={() => setHidden(hidden ? false : true)}
-         
         >
           Another budget
         </Button>
@@ -116,7 +116,11 @@ const Page = () => {
       )}
       <div className="w-full h-[30rem] flex items-center justify-center text-5xl relative">
         <div className="absolute top-0 left-5 h-24 flex flex-col items-start gap-2 w-64">
-          <Button  disabled={!hidden} onClick={() => setHidden2(!hidden2)} className="h-10">
+          <Button
+            disabled={!hidden}
+            onClick={() => setHidden2(!hidden2)}
+            className="h-10"
+          >
             ADD NAME
           </Button>
           <form

@@ -9,6 +9,9 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from") || "";
+
+  const startDate = searchParams.get("start") || "";
+  const endDate = searchParams.get("end") || "";
   try {
     await dbConnect();
 
@@ -43,7 +46,7 @@ export async function GET(req: Request) {
 
     const transactions = await transactionModel
       .find(
-       from !== "" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
+        from !== "" ? !startDate ? { user: dbUser._id, from: from } : {user:dbUser._id ,date:{$lte:startDate,$gte:endDate}}: { user: dbUser._id }
       )
       .skip((page - 1) * perpage)
       .limit(perpage)
