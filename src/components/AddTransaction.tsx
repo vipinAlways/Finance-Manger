@@ -10,7 +10,7 @@ function AddTransaction({ className }: { className: string }) {
   const [note, setNote] = useState("");
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
-  const [date, setDate] = useState<Date | null>();
+  const [dateAt, setDate] = useState<Date | null>();
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ function AddTransaction({ className }: { className: string }) {
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount || !category || !method || !date || !transactionType || !from) {
+    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
       setError("All fields are required.");
       return;
     }
@@ -35,7 +35,7 @@ function AddTransaction({ className }: { className: string }) {
         },
         body: JSON.stringify({
           amount,
-          date,
+          dateAt,
           note,
           method,
           category,
@@ -162,11 +162,13 @@ function AddTransaction({ className }: { className: string }) {
             </label>
             <input
               type="date"
-              onChange={(e) => setDate(new Date(e.target.value))}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setDate(new Date(e.target.value))
+                          }
               name="date"
               id="date"
               className="border h-10 rounded-sm text-black w-full"
-              value={date && date.toLocaleString().split("T")[0] || ''}
+              value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
             />
           </div>
 

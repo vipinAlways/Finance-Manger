@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     });
 
     if (isNameAlready) {
-      console.log("hain ye pehle");
+     
       return NextResponse.json(
         {
           ok: false,

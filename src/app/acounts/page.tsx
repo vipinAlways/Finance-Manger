@@ -67,7 +67,14 @@ const Page = () => {
         setNameOfBudget("");
         setHidden2(true);
       } else {
-        throw new Error("Failed to add budget name");
+        toast({
+          title: "Budget Added Successfully",
+          description: `${data.message}`,
+          variant:"destructive"
+        });
+
+        setNameOfBudget("");
+        setHidden2(true);
       }
     } catch (error: any) {
       console.error("Error while adding budget name:", error);
@@ -82,8 +89,8 @@ const Page = () => {
 
   return (
     <div className="h-full w-full relative py-3 flex ">
-      <aside className="h-[30rem]  w-36 p-1 sticky top-2 flex flex-col items-center justify-between">
-        <h1 className="w-full text-lg bg-zinc-600 text-center rounded-lg text-green-100 ">
+      <aside className="h-[31rem]  w-36 sticky top-2 flex flex-col items-center justify-between  rounded-lg bg-green-200 py-3 px-2">
+        <h1 className="w-full text-lg tracking-tight py-1 px-0.5 bg-[#16a34a] text-center rounded-lg text-green-100 ">
           Your budgets
         </h1>
 
@@ -95,7 +102,7 @@ const Page = () => {
                 key={bud.budgetFor + index}
                 className="text-xl cursor-pointer"
               >
-                {bud.budgetFor}
+                {bud.budgetFor.toUpperCase()}
               </Link>
             ))}
         </div>
@@ -138,6 +145,12 @@ const Page = () => {
           </form>
         </div>
         <h1>Your Budget</h1>
+      </div>
+
+      <div className="w-full h-full p-2">
+        <div className="flex overflow-hidden">
+          
+        </div>
       </div>
     </div>
   );
