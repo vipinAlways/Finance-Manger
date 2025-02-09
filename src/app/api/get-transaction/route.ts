@@ -7,6 +7,11 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const from = searchParams.get("from") || "";
+
+  const startDate = searchParams.get("start") || "";
+  const endDate = searchParams.get("end") || "";
   try {
     await dbConnect();
 
@@ -15,10 +20,20 @@ export async function GET(req: Request) {
 
     if (!user || !user.id) {
       return NextResponse.json(
-        { success: false, message: "User not found or not authenticated" },
+        {
+          success: false,
+          message: "User not found or not authenticated",
+        },
         { status: 404 }
       );
     }
+
+    const url = new URL(req.url);
+    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
+    const perpage = Math.max(
+      parseInt(url.searchParams.get("perpage") || "6", 10),
+      1
+    );
 
     const dbUser = await userModel.findOne({ id: user.id });
 
@@ -29,37 +44,18 @@ export async function GET(req: Request) {
       );
     }
 
-    const { searchParams } = new URL(req.url);
-    const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
-    const perpage = Math.max(
-      parseInt(searchParams.get("perpage") || "6", 10),
-      1
-    );
-    const from = searchParams.get("from") || "";
-    const startDate = searchParams.get("start") || null;
-    const endDate = searchParams.get("end") || null;
-
-    const filter: any = { user: dbUser._id };
-    if (from) filter.from = from;
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-
-      if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-        filter.date = { $gte: start, $lte: end };
-      } else {
-        console.error("Invalid date format:", startDate, endDate);
-      }
-    }
-
     const transactions = await transactionModel
-      .find(filter)
+      .find(
+        from !== "" ? startDate==='' ? { user: dbUser._id, from: from } : {user:dbUser._id ,date:{$lte:startDate,$gte:endDate}}: { user: dbUser._id }
+      )
       .skip((page - 1) * perpage)
       .limit(perpage)
       .sort({ date: -1 });
 
-    const totalTransactions = await transactionModel.countDocuments(filter); // Ensure the count respects filters
-
+    const totalTransactions = await transactionModel.countDocuments({
+      user: dbUser._id,
+    });
+    console.log(transactions,"server");
     return NextResponse.json({
       success: true,
       transactions,
@@ -69,6 +65,7 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.error("Error in GET /api/transactions:", error);
+
     return NextResponse.json(
       {
         success: false,

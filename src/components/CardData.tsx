@@ -18,7 +18,9 @@ function Data({ forWhich }: { forWhich: string }) {
   useEffect(() => {
     async function fetchTransactions() {
       try {
-        const response = await fetch(`/api/get-transaction`);
+        const response = await fetch(
+          `/api/get-transaction?page=1&perpage=20&from=${forWhich}`
+        );
         const result = await response.json();
 
         if (result.transactions) {
@@ -34,7 +36,7 @@ function Data({ forWhich }: { forWhich: string }) {
     }
 
     fetchTransactions();
-  }, [transactions.length]);
+  }, [forWhich]);
 
   useEffect(() => {
     const calculateTotalAmount = (type: string) =>
@@ -85,7 +87,9 @@ function Data({ forWhich }: { forWhich: string }) {
   useEffect(() => {
     if (budget.length > 0) {
       budget.forEach((data) => {
+        console.log(new Date(data.endDate) > new Date(),"data hain");
         if (new Date(data.endDate) > new Date()) {
+          console.log(data.amount,"amount hain ");
           setAmount(data.amount);
           setEndDate(new Date(data.endDate).toLocaleDateString());
           setStartDate(new Date(data.startDate).toLocaleDateString());
@@ -99,12 +103,14 @@ function Data({ forWhich }: { forWhich: string }) {
      console.log(total,"check that");
       setAmount(total);
     }
+
+    console.log(budget,"ye hain");
   }, [forWhich,budget.length,budget]);
 
   const blances =  [
     {
       name:"Remaining Balance",
-      amount:amount + earnAmount - spendAmount,
+      amount:amount + (earnAmount - spendAmount),
       color:"bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400"
     },
     {

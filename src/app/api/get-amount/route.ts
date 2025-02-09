@@ -1,10 +1,9 @@
-"use server"
+"use server";
 import dbConnect from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
-
 
 export async function GET(req: Request) {
   await dbConnect();
@@ -30,19 +29,20 @@ export async function GET(req: Request) {
       );
     }
 
-    const filter = from
-      ? { user:dbuser._id, budgetFor: from }
-      : { user: dbuser._id };
-
-    
-    const currentdate = new Date()
-    const amount = await amountModel.find({
-      user: filter.user,
-      endDate: {$gte:currentdate}
-    });
+    const currentdate = new Date();
+    const amount =
+      from !== ""
+        ? await amountModel.find({
+            user: dbuser._id,
+            budgetFor: from,
+            endDate: { $gte: currentdate },
+          })
+        : await amountModel.find({
+            user: dbuser._id,
+            endDate: { $gte: currentdate },
+          });
 
     return NextResponse.json({ amount, ok: true }, { status: 200 });
-
   } catch (error) {
     console.error("Error fetching amounts:", error);
     return NextResponse.json(
