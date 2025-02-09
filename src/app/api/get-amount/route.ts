@@ -44,7 +44,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ amount, ok: true }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching amounts:", error);
+    console.error("Error fetching amounts:", error); 
     return NextResponse.json(
       { success: false, message: "An error occurred while fetching amounts" },
       { status: 500 }

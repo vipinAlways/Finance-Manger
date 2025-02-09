@@ -46,13 +46,12 @@ const Page = () => {
     getbudgets();
   }, []);
 
-
   const AddBudgetName = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await fetch("/api/post-budgetName", {
         method: "POST",
-        body: JSON.stringify({ nameOfBudget }), 
+        body: JSON.stringify({ nameOfBudget }),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -70,7 +69,7 @@ const Page = () => {
         toast({
           title: "Budget Added Successfully",
           description: `${data.message}`,
-          variant:"destructive"
+          variant: "destructive",
         });
 
         setNameOfBudget("");
@@ -88,7 +87,7 @@ const Page = () => {
   };
 
   return (
-    <div className="h-full w-full relative py-3 flex ">
+    <div className="h-full w-full relative py-3 flex items-start">
       <aside className="h-[31rem]  w-36 sticky top-2 flex flex-col items-center justify-between  rounded-lg bg-green-200 py-3 px-2">
         <h1 className="w-full text-lg tracking-tight py-1 px-0.5 bg-[#16a34a] text-center rounded-lg text-green-100 ">
           Your budgets
@@ -113,16 +112,16 @@ const Page = () => {
         >
           Another budget
         </Button>
-      </aside>
-      {!hidden && (
-        <div className="w-4/5 absolute top-1/2 left-[55%] h-full -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-50 bg-opacity-10  bg-green-600">
-          <div className="w-96 h-[25rem] mx-4">
-            <AddAmount hidden="" />
+        {!hidden && (
+          <div className="w-4/5 absolute top-1/2 left-[55%] h-full -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-50 bg-opacity-10  bg-green-600">
+            <div className="w-96 h-[25rem] mx-4">
+              <AddAmount hidden="" />
+            </div>
           </div>
-        </div>
-      )}
-      <div className="w-full h-[30rem] flex items-center justify-center text-5xl relative">
-        <div className="absolute top-0 left-5 h-24 flex flex-col items-start gap-2 w-64">
+        )}
+      </aside>
+      <div className="w-full text-5xl relative ">
+        <div className="p-2 h-24 flex flex-col items-start gap-2 w-64">
           <Button
             disabled={!hidden}
             onClick={() => setHidden2(!hidden2)}
@@ -144,13 +143,38 @@ const Page = () => {
             />
           </form>
         </div>
-        <h1>Your Budget</h1>
-      </div>
 
-      <div className="w-full h-full p-2">
-        <div className="flex overflow-hidden">
-          
-        </div>
+       
+      
+          <div className="h-full md:w-[10rem] w-1/3 mx-auto relative border-4 ">
+            <div className="h-64 flex items-center w-full overflow-x-auto card-container overflow-y-hidden scroll-smooth touch-pan-left">
+              <div className="flex space-x-4 scroll-item scroll-smooth touch-pan-left">
+                 { budget.map((show , index) => (
+                    <Link
+                      key={index}
+                      href={show.budgetFor}
+                      className={`md:w-48 md:h-56 max-md:w-40 max-md:h-44 border border-zinc-300 flex-shrink-0 flex flex-col items-center rounded-xl p-1.5 justify-between bg-textWhite duration-300 transition-all ease `}
+                    >
+                    
+
+                      <h1 className="md:text-xl text-zinc-700 group-hover:text-textWhite duration-300 ease">
+                       
+                      </h1>
+
+                      <div className="w-full flex items-start px-2.5 group-hover:text-textWhite duration-300 ease text-zinc-800">
+                        <p className="text-sm border-2 border-zinc-200 rounded-full p-2 flex items-center justify-center gap-3 text-center group-hover:border-white">
+                       
+                          <span className="text-sm rotate-45 transition group-hover:animate-shake">
+                            &uarr;
+                          </span>
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          </div>
+      
       </div>
     </div>
   );
