@@ -32,7 +32,6 @@ body::-webkit-scrollbar {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-
   }
 
   .dark {
@@ -158,10 +157,24 @@ input[type="number"] {
   -webkit-text-fill-color: transparent;
 }
 
-
-
 .card-container:hover > :not(:hover) {
   transform: scale(0.97);
   filter: blur(0.5px);
 }
 
+.budgetShow::-webkit-scrollbar {
+  display: none;
+}
+.gooff {
+  position: absolute;
+  top: 0;
+  animation: gooff 0.5 linear forwards;
+}
+@keyframes gooff {
+  0%{
+    left:0%
+  }
+  100%{
+    left: -100%;
+  }
+}

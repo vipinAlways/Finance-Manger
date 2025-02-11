@@ -146,14 +146,14 @@ const Page = () => {
 
        
       
-          <div className="h-full md:w-[10rem] w-1/3 mx-auto relative border-4 ">
-            <div className="h-64 flex items-center w-full overflow-x-auto card-container overflow-y-hidden scroll-smooth touch-pan-left">
-              <div className="flex space-x-4 scroll-item scroll-smooth touch-pan-left">
+          <div className="h-full mx-auto relative border-4 w-[25rem] budgetShow">
+            <div className="h-64 flex items-center w-full overflow-x-auto  overflow-y-hidden scroll-smooth touch-pan-left">
+              <div className="flex space-x-4 scroll-item scroll-smooth touch-pan-left ">
                  { budget.map((show , index) => (
                     <Link
                       key={index}
                       href={show.budgetFor}
-                      className={`md:w-48 md:h-56 max-md:w-40 max-md:h-44 border border-zinc-300 flex-shrink-0 flex flex-col items-center rounded-xl p-1.5 justify-between bg-textWhite duration-300 transition-all ease `}
+                      className={`md:w-96 md:h-60 max-md:w-40 max-md:h-44 border border-zinc-300 items-center`}
                     >
                     
 
@@ -161,8 +161,8 @@ const Page = () => {
                        
                       </h1>
 
-                      <div className="w-full flex items-start px-2.5 group-hover:text-textWhite duration-300 ease text-zinc-800">
-                        <p className="text-sm border-2 border-zinc-200 rounded-full p-2 flex items-center justify-center gap-3 text-center group-hover:border-white">
+                      <div className="w-full flex items-start px-2.5">
+                        <p className="text-sm border-2 border-zinc-200 rounded-full p-2 flex ">
                        
                           <span className="text-sm rotate-45 transition group-hover:animate-shake">
                             &uarr;
