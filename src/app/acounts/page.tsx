@@ -3,6 +3,7 @@ import AddAmount from "@/components/AddAmount";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -25,6 +26,7 @@ const Page = () => {
   const [hidden, setHidden] = useState(true);
   const [hidden2, setHidden2] = useState(true);
   const [nameOfBudget, setNameOfBudget] = useState("");
+  const [index, setIndex] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -85,6 +87,15 @@ const Page = () => {
       });
     }
   };
+  // useEffect(() => {
+  //   if (budget.length === 0) return;
+
+  //   const timeOut = setTimeout(() => {
+  //     setIndex((prev) => (prev < budget.length - 1 ? prev + 1 : 0));
+  //   }, 2000);
+
+  //   return () => clearTimeout(timeOut);
+  // }, [index, budget.length]);
 
   return (
     <div className="h-full w-full relative py-3 flex items-start">
@@ -144,37 +155,49 @@ const Page = () => {
           </form>
         </div>
 
-       
-      
-          <div className="h-full mx-auto relative border-4 w-[25rem] budgetShow">
-            <div className="h-64 flex items-center w-full overflow-x-auto  overflow-y-hidden scroll-smooth touch-pan-left">
-              <div className="flex space-x-4 scroll-item scroll-smooth touch-pan-left ">
-                 { budget.map((show , index) => (
+        <div className="h-full mx-auto relative border-4 w-[30rem] p-3">
+          <div className="h-64 flex items-center w-full overflow-x-auto  overflow-y-hidden scroll-smooth touch-pan-left ">
+            <div className="flex space-x-4 scroll-item scroll-smooth touch-pan-left relative w-full">
+              {budget.map((show, i) => {
+                if (i === index) {
+                  return (
                     <Link
-                      key={index}
+                      key={i}
                       href={show.budgetFor}
-                      className={`md:w-96 md:h-60 max-md:w-40 max-md:h-44 border border-zinc-300 items-center`}
+                      className={`md:w-[28rem] md:h-60 max-md:w-40 max-md:h-44 border border-zinc-300 flex items-center`}
                     >
-                    
+                      <div>
+                        <Image
+                          src={"/image1.jpg"}
+                          alt="Ye hai Logo"
+                          height={60}
+                          width={120}
+                          className="object-contain rounded-full"
+                        />
+                      </div>
+                      <div className=" flex justify-around border h-full w-full p-2 flex-col">
+                        <h1 className="md:text-4xl text-zinc-700 ">
+                          Name of Bugdet
+                        </h1>
+                        <h1 className={cn('flex justify-around border', show.budgetFor.split(' ').length < 4 ? "text-3xl" : "text-2xl")}>
+                          {show.budgetFor}
+                        </h1>
 
-                      <h1 className="md:text-xl text-zinc-700 group-hover:text-textWhite duration-300 ease">
-                       
-                      </h1>
-
-                      <div className="w-full flex items-start px-2.5">
-                        <p className="text-sm border-2 border-zinc-200 rounded-full p-2 flex ">
-                       
-                          <span className="text-sm rotate-45 transition group-hover:animate-shake">
-                            &uarr;
-                          </span>
-                        </p>
+                        <div className="w-full flex items-start px-2.5">
+                          <p className="text-sm border-2 border-zinc-200 rounded-full p-2 flex ">
+                            <span className="text-sm rotate-45 transition group-hover:animate-shake">
+                              &uarr;
+                            </span>
+                          </p>
+                        </div>
                       </div>
                     </Link>
-                  ))}
-              </div>
+                  );
+                }
+              })}
             </div>
           </div>
-      
+        </div>
       </div>
     </div>
   );
