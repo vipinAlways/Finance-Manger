@@ -1,5 +1,6 @@
 import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
+import BudgetNameModel from "@/Models/BudgetName.model";
 
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -9,16 +10,16 @@ import {  NextResponse } from "next/server";
 export async function POST(req: Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
-  const user1 = await getUser();
+  const user = await getUser();
 
-  if (!user1) {
+  if (!user) {
     return NextResponse.json(
       { success: false, message: "User not found" },
       { status: 404 }
     );
   }
 
-  const user = await userModel.findOne({ id: user1?.id });
+  const dbuser = await userModel.findOne({ id: user?.id });
 
   if (user) {
     try {
@@ -29,13 +30,18 @@ export async function POST(req: Request) {
         amount,
         startDate,
         endDate,
-        user:user._id
+        user:dbuser?._id
       });
 
       await newAmount.save();
       
    
+      const budgetNameForBudget = await BudgetNameModel.findOne({
+        user:dbuser?._id,
+        nameOfCategorey:budgetFor
+      })
 
+      budgetNameForBudget?.amount.push(newAmount._id)
       await dbDisconnect();
       return Response.json({
         success: true,
@@ -51,8 +57,7 @@ export async function POST(req: Request) {
       );
     }
   } else {
-    return NextResponse.json(
-      { success: false, message: "User not found" },
+    return NextResponse.json(      { success: false, message: "User not found" },
       { status: 404 }
     );
   }

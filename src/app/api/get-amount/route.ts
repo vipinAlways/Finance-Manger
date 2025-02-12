@@ -1,6 +1,7 @@
 "use server";
 import dbConnect from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
+import BudgetNameModel from "@/Models/BudgetName.model";
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
@@ -42,9 +43,14 @@ export async function GET(req: Request) {
             endDate: { $gte: currentdate },
           });
 
-    return NextResponse.json({ amount, ok: true }, { status: 200 });
+
+    const budgetNameForBudget = await BudgetNameModel.find({
+      user:dbuser
+    })
+
+    return NextResponse.json({ amount, budgetNameForBudget,ok: true }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching amounts:", error); 
+    console.error("Error fetching amounts:", error);
     return NextResponse.json(
       { success: false, message: "An error occurred while fetching amounts" },
       { status: 500 }

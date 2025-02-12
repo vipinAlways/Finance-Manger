@@ -36,7 +36,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    user.amount.pull(amountId);
+    
     await user.save();
 
     return NextResponse.json(

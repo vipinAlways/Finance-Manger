@@ -39,4 +39,5 @@ declare interface BudgetName extends Document {
   nameOfCategorey: string;
   user: mongoose.Schema.Types.ObjectId;
   _id: string;
+  amount:any
 }
