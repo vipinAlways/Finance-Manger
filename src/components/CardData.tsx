@@ -87,9 +87,7 @@ function Data({ forWhich }: { forWhich: string }) {
   useEffect(() => {
     if (budget.length > 0) {
       budget.forEach((data) => {
-        console.log(new Date(data.endDate) > new Date(),"data hain");
         if (new Date(data.endDate) > new Date()) {
-          console.log(data.amount,"amount hain ");
           setAmount(data.amount);
           setEndDate(new Date(data.endDate).toLocaleDateString());
           setStartDate(new Date(data.startDate).toLocaleDateString());
@@ -100,11 +98,9 @@ function Data({ forWhich }: { forWhich: string }) {
     }
     if (forWhich === "") {
      const total =  budget.reduce((total, data) => total + data.amount, 0)
-     console.log(total,"check that");
       setAmount(total);
     }
 
-    console.log(budget,"ye hain");
   }, [forWhich,budget.length,budget]);
 
   const blances =  [

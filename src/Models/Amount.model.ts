@@ -17,6 +17,10 @@ const amountSchema: Schema<Amount> = new Schema({
     type: Number,
     required: true,
   },
+  saving:{
+    type:Number,
+    
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

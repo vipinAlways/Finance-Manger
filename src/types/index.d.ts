@@ -16,6 +16,7 @@ declare interface Amount extends Document {
   budgetFor: string;
   startDate: Date;
   amount: number;
+  saving: number;
   endDate: Date;
   user?: mongoose.Schema.Types.ObjectId;
   _id: string;

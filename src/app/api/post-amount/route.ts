@@ -30,6 +30,7 @@ export async function POST(req: Request) {
         amount,
         startDate,
         endDate,
+        saving:0,
         user:dbuser?._id
       });
 

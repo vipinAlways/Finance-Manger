@@ -3,6 +3,7 @@ import AddAmount from "@/components/AddAmount";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -17,27 +18,14 @@ export interface AmountGet {
 
 const Page = () => {
   const [budget, setBudget] = useState<AmountGet[]>([]);
+
   const [hidden, setHidden] = useState(true);
   const [hidden2, setHidden2] = useState(true);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
   const { toast } = useToast();
 
- 
-  const getBudgets = async () => {
-    try {
-      const response = await fetch("/api/get-amount", { cache: "no-store" });
-      const result = await response.json();
-      console.log(result.budgetNameForBudget,"budgetNAme");
-      if (Array.isArray(result.amount)) setBudget(result.amount);
-    } catch (error) {
-      console.error("Error fetching budgets:", error);
-    }
-  };
 
-  useEffect(() => {
-    getBudgets();
-  }, []);
 
   const AddBudgetName = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +49,6 @@ const Page = () => {
       if (data.ok) {
         setNameOfBudget("");
         setHidden2(true);
-        getBudgets(); 
       }
     } catch (error: any) {
       console.error("Error while adding budget name:", error);
@@ -73,6 +60,19 @@ const Page = () => {
     }
   };
 
+  useEffect(() => {
+    const getBudgets = async () => {
+      try {
+        const response = await fetch("/api/get-amount", { cache: "no-store" });
+        const result = await response.json();
+
+        if (Array.isArray(result.amount)) setBudget(result.amount);
+      } catch (error) {
+        console.error("Error fetching budgets:", error);
+      }
+    };
+    getBudgets();
+  }, [AddBudgetName]);
 
   useEffect(() => {
     if (!budget.length) return;
@@ -83,9 +83,11 @@ const Page = () => {
 
     return () => clearInterval(interval);
   }, [budget]);
- 
+
+
+
   return (
-    <div className="h-full w-full relative py-3 flex items-start">
+    <div className="h-full w-full relative py-3 flex items-start gap-4 ">
       <aside className="h-[31rem] w-36 sticky top-2 flex flex-col items-center justify-between rounded-lg bg-green-200 py-3 px-2">
         <h1 className="w-full text-lg tracking-tight py-1 px-0.5 bg-[#16a34a] text-center rounded-lg text-green-100">
           Your Budgets
@@ -166,7 +168,7 @@ const Page = () => {
                             Name of Budget
                           </h1>
                           <h1
-                            className={cn( 
+                            className={cn(
                               "flex justify-around capitalize font-serif",
                               show.budgetFor.split(" ").length < 4
                                 ? "text-5xl"
@@ -180,7 +182,9 @@ const Page = () => {
                           <p className="text-xl rounded-full p-2 flex w-full items-center justify-center gap-3 text-[#0F766E]/80">
                             <span className="w-fit flex">Till :</span>
                             <span className="text-lg w-fit">
-                              {new Date(show.endDate).toString().replace("GMT+0530 (India Standard Time)","")}
+                              {new Date(show.endDate)
+                                .toString()
+                                .replace("GMT+0530 (India Standard Time)", "")}
                             </span>
                           </p>
                         </div>
@@ -190,6 +194,26 @@ const Page = () => {
               )}
             </div>
           </div>
+        </div>
+        <div className="flex w-full items-start flex-col">
+          <h1 className="w-full flex-col flex items-start gap-1.5">
+            Last Month's Savings
+            <span>Summary</span>
+          </h1>
+          <ul>
+            {budget.map((bud: AmountGet, index) => (
+              <li
+                key={index.toString() + bud.budgetFor}
+                className="flex items-center gap-10"
+              >
+                <h1>{bud.budgetFor}</h1>
+                <div className="flex items-center gap-6">
+                  <h1>{bud.amount}</h1>
+                  <h1>{bud.budgetFor}</h1>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
