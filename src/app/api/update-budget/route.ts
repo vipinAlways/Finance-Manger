@@ -1,5 +1,6 @@
 "use server"
 import dbConnect from "@/lib/dbconnects";
+import amountModel from "@/Models/Amount.model";
 import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -23,7 +24,9 @@ export async function POST(req:Request) {
 
         const {saving,amount} = await req.json()
 
-        
+        const amountUpdate = await amountModel.updateOne({
+            budgetFor://mem
+        })
         
 
     } catch (error) {
