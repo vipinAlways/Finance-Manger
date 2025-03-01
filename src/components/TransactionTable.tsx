@@ -43,7 +43,7 @@ function TransactionTable() {
           } else {
             setTransactions((prev) => [...prev, ...result.transactions]);
           }
-          setHasMore(result.hasMore); // Use hasMore from API
+          setHasMore(result.hasMore);
         } else {
           console.error("Unexpected API response structure");
         }
@@ -68,6 +68,7 @@ function TransactionTable() {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
+        console.log("transaction table");
         const result = await response.json();
         if (result && Array.isArray(result.amount)) {
           setGetAmountFor(result.amount);
@@ -80,7 +81,7 @@ function TransactionTable() {
     };
 
     getAmount();
-  }, [from]);
+  });
 
 
   const handleShowMore = () => {

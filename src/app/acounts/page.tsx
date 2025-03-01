@@ -1,9 +1,8 @@
 "use client";
-import AddAmount from "@/components/AddAmount";
+
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -18,14 +17,12 @@ export interface AmountGet {
 
 const Page = () => {
   const [budget, setBudget] = useState<AmountGet[]>([]);
-
+  const [budgetUpdated, setBudgetUpdated] = useState(false);
   const [hidden, setHidden] = useState(true);
   const [hidden2, setHidden2] = useState(true);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
   const { toast } = useToast();
-
-
 
   const AddBudgetName = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +46,7 @@ const Page = () => {
       if (data.ok) {
         setNameOfBudget("");
         setHidden2(true);
+        setBudgetUpdated((prev) => !prev);
       }
     } catch (error: any) {
       console.error("Error while adding budget name:", error);
@@ -64,6 +62,7 @@ const Page = () => {
     const getBudgets = async () => {
       try {
         const response = await fetch("/api/get-amount", { cache: "no-store" });
+        console.log("page-acounts");
         const result = await response.json();
 
         if (Array.isArray(result.amount)) setBudget(result.amount);
@@ -72,7 +71,7 @@ const Page = () => {
       }
     };
     getBudgets();
-  }, [AddBudgetName]);
+  }, [budgetUpdated]);
 
   useEffect(() => {
     if (!budget.length) return;
@@ -84,43 +83,8 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [budget]);
 
-
-
   return (
     <div className="h-full w-full relative py-3 flex items-start gap-4 ">
-      <aside className="h-[31rem] w-36 sticky top-2 flex flex-col items-center justify-between rounded-lg bg-green-200 py-3 px-2">
-        <h1 className="w-full text-lg tracking-tight py-1 px-0.5 bg-[#16a34a] text-center rounded-lg text-green-100">
-          Your Budgets
-        </h1>
-
-        <div className="h-96 w-full flex flex-col items-center overflow-y-auto gap-3 pt-1">
-          {budget.map((bud) => (
-            <Link
-              href={`/acounts/${bud._id}`}
-              key={bud._id}
-              className="text-2xl cursor-pointer capitalize text-[#052e2a] hover:bg-green-300/55 rounded-full  w-full  p-1 text-center"
-            >
-              {bud.budgetFor}
-            </Link>
-          ))}
-        </div>
-
-        <Button
-          className="text-sm p-1 w-full"
-          onClick={() => setHidden(!hidden)}
-        >
-          Another Budget
-        </Button>
-
-        {!hidden && (
-          <div className="w-4/5 absolute top-1/2 left-[55%] h-full -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-50 bg-opacity-10 bg-green-600">
-            <div className="w-96 h-[25rem] mx-4">
-              <AddAmount hidden="" />
-            </div>
-          </div>
-        )}
-      </aside>
-
       <div className="w-full text-5xl relative flex flex-col gap-3 font-sans">
         <div className="p-2 flex flex-col items-start gap-2 w-64">
           <Button

@@ -61,6 +61,7 @@ function Data({ forWhich }: { forWhich: string }) {
     const fetchBudget = async () => {
       try {
         const response = await fetch(`/api/get-amount?from=${forWhich}`);
+        console.log("carddata");
         const result = await response.json();
 
         if (result.ok) {

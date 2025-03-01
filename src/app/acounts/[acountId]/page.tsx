@@ -1,9 +1,10 @@
+"use client"
 import AccountHistory from "@/components/AccountHistory"
+import { use } from "react"
 
 
-const page = async({params}:{params:Promise<{acountId :string}>}) => {
-
-    const acountId  = (await params).acountId
+const page = ({params}:{params:Promise<{acountId :string}>}) => {
+  const {acountId} = use(params)
   return (
     <div>
         <AccountHistory accountId ={acountId}/>

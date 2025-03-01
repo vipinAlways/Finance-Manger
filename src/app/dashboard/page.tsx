@@ -41,6 +41,7 @@ function Home() {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
+        console.log("page-dashboard");
         const result = await response.json();
         if (result && Array.isArray(result.amount)) {
           setGetAmountFor(result.amount);
@@ -53,10 +54,10 @@ function Home() {
     };
 
     getAmount();
-  }, []);
+  });
 
   return (
-    <div className=" flex  flex-col items-center flex-1  w-full max-md:p-4  gap-10">
+    <div className=" flex  flex-col items-center flex-1  w-full max-md:p-4  gap-7">
     <div className="relative w-full h-10">
     <div className="flex items-center justify-evenly w-full gap-4  max-md:flex-col  md:absolute top-12 z-50  md:-translate-y-20">
         <div className="w-fit py-5 px-2 h-full flex items-end max-md:items-center max-md:justify-center">

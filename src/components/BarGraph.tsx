@@ -33,6 +33,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
     const fetchBudget = async () => {
       try {
         const response = await fetch(`/api/get-amount?from=${forWhich}`);
+        console.log("bar graph");
         const result = await response.json();
 
         if (result?.ok && Array.isArray(result.amount)) {
