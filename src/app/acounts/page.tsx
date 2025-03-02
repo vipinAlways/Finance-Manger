@@ -17,6 +17,7 @@ export interface AmountGet {
 
 const Page = () => {
   const [budget, setBudget] = useState<AmountGet[]>([]);
+  const [budgetName, setBudgetName] = useState<[]>([]);
   const [budgetUpdated, setBudgetUpdated] = useState(false);
   const [hidden, setHidden] = useState(true);
   const [hidden2, setHidden2] = useState(true);
@@ -62,10 +63,10 @@ const Page = () => {
     const getBudgets = async () => {
       try {
         const response = await fetch("/api/get-amount", { cache: "no-store" });
-        console.log("page-acounts");
         const result = await response.json();
-
         if (Array.isArray(result.amount)) setBudget(result.amount);
+        if (Array.isArray(result.budgetNameForBudget))
+          setBudgetName(result.budgetNameForBudget);
       } catch (error) {
         console.error("Error fetching budgets:", error);
       }
@@ -83,6 +84,46 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [budget]);
 
+  if (budgetName.length === 0) {
+    return (
+      <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
+        <h1 className="text-4xl flex flex-col items-start gap-1 px-2 font-light ">
+          You have not added any budget name.
+          <span> Please add a budget name to continue.</span>
+        </h1>
+        <div className="p-2 flex flex-col items-start gap-2 w-64 h-40">
+          <Button
+            disabled={!hidden}
+            onClick={() => setHidden2(!hidden2)}
+            className="h-10"
+          >
+            ADD NAME
+          </Button>
+          <form
+            onSubmit={AddBudgetName}
+            className={cn("flex items-center gap-3", hidden2 && "hidden")}
+          >
+            <input
+              type="text"
+              value={nameOfBudget}
+              onChange={(e) => setNameOfBudget(e.target.value)}
+              className="h-10 w-60 rounded-lg text-lg px-3"
+              placeholder="Enter the name..."
+            />
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+
+  if (budget.length === 0) {
+    return (
+      <div className="w-full py-3 flex items-start gap-4 h-[30rem] flex-col">
+        dslj
+      </div>
+    )
+  }
   return (
     <div className="h-full w-full relative py-3 flex items-start gap-4 ">
       <div className="w-full text-5xl relative flex flex-col gap-3 font-sans">

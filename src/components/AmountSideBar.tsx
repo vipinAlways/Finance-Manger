@@ -25,6 +25,7 @@ const AmountSideBar = () => {
       startDate: new Date(),
     },
   ]);
+  const [haveBudgetName , setHaveBudgetName] = useState(false);
   useEffect(() => {
     const getbudgets = async () => {
       try {
@@ -34,6 +35,12 @@ const AmountSideBar = () => {
 
         if (Array.isArray(result.amount)) {
           setBudget(result.amount);
+
+          if (Array.isArray(result.budgetNameForBudget) && result.budgetNameForBudget.length > 0) {
+            setHaveBudgetName(true);
+          
+            
+          }
         } else {
           console.log("some error while fetching in array checking");
         }
@@ -45,9 +52,9 @@ const AmountSideBar = () => {
     getbudgets();
   },[]);
   return (
-    <div className=" w-full  py-3 flex ">
-      <aside className="h-[30rem] border w-36 p-1 flex flex-col sticky top-0 items-center justify-between">
-        <h1 className="w-full text-lg bg-zinc-600 text-center rounded-lg text-green-100 ">
+    <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-green-500 rounded-md">
+      <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between">
+        <h1 className="w-full text-xl text-center rounded-lg text-green-100 ">
           Your budgets
         </h1>
 
@@ -66,14 +73,15 @@ const AmountSideBar = () => {
         <AlertDialog>
 
           <AlertDialogTrigger asChild>
-            <Button variant="outline">Show Dialog</Button>
+            <Button variant="outline">Add Budget</Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="min-h-96 min-w-96 ">
             <AlertDialogTitle className="w-full text-center">ADD BUDGET</AlertDialogTitle>
              {
-              
+              haveBudgetName ? <AddAmount /> : <p>please add budget name first</p>
              }
             <AlertDialogCancel>Cancel</AlertDialogCancel>
+            
           </AlertDialogContent>
         </AlertDialog>
       </aside>

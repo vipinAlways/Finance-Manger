@@ -25,6 +25,8 @@ export async function POST(req: Request) {
     try {
       const { amount,startDate , endDate,budgetFor } = await req.json();
 
+      
+
       let newAmount = new amountModel({
         budgetFor,
         amount,
