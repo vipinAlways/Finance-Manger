@@ -49,6 +49,8 @@ const AddAmount = () => {
     } catch (error) {
       console.log("error while adding budget client ", error);
     }
+
+    window.location.reload();
   };
 
   useEffect(() => {

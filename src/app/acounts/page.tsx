@@ -57,6 +57,8 @@ const Page = () => {
         variant: "destructive",
       });
     }
+
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -116,18 +118,17 @@ const Page = () => {
     );
   }
 
-
   if (budget.length === 0) {
     return (
       <div className="w-full py-3 flex items-start gap-4 h-[30rem] flex-col">
         dslj
       </div>
-    )
+    );
   }
   return (
     <div className="h-full w-full relative py-3 flex items-start gap-4 ">
-      <div className="w-full text-5xl relative flex flex-col gap-3 font-sans">
-        <div className="p-2 flex flex-col items-start gap-2 w-64">
+      <div className="w-full text-5xl relative flex flex-col gap-8 font-sans">
+        <div className="p-2 flex flex-col items-start gap-2 w-64 h-28">
           <Button
             disabled={!hidden}
             onClick={() => setHidden2(!hidden2)}
@@ -137,7 +138,7 @@ const Page = () => {
           </Button>
           <form
             onSubmit={AddBudgetName}
-            className={cn("flex items-center gap-3", hidden2 && "hidden")}
+            className={cn("flex", hidden2 && "hidden")}
           >
             <input
               type="text"
@@ -149,7 +150,7 @@ const Page = () => {
           </form>
         </div>
 
-        <div className="h-full mx-auto relative border-2 border-[#10B981] w-[30rem] p-3 rounded-md">
+        <div className="h-full mx-auto relative bg-green-600 text-green-50 w-[30rem] p-3 rounded-md">
           <div className="h-56 flex items-center w-full overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left">
             <div className="flex space-x-4 relative w-full">
               {budget.map(
@@ -158,7 +159,7 @@ const Page = () => {
                     <Link
                       key={i}
                       href={`/acounts/${show._id}`}
-                      className="md:w-[28rem] md:h-52 max-md:w-40 max-md:h-44 flex items-center text-[#0F766E]"
+                      className="md:w-[28rem] md:h-52 max-md:w-40 max-md:h-44 flex items-center "
                     >
                       <Image
                         src={"/image1.jpg"}
@@ -168,7 +169,7 @@ const Page = () => {
                         className="object-contain rounded-full"
                       />
                       <div className="flex justify-around h-full w-full p-2 flex-col">
-                        <div className="flex flex-col items-center gap-2 border-b pb-5 border-[#047857]">
+                        <div className="flex flex-col items-center gap-2 border-b pb-5 border-green-50">
                           <h1 className="md:text-4xl font-bold">
                             Name of Budget
                           </h1>
@@ -184,9 +185,9 @@ const Page = () => {
                           </h1>
                         </div>
                         <div className="w-full flex items-center justify-center font-serif">
-                          <p className="text-xl rounded-full p-2 flex w-full items-center justify-center gap-3 text-[#0F766E]/80">
+                          <p className="text-2xl rounded-full p-2 flex w-full items-center justify-center gap-3">
                             <span className="w-fit flex">Till :</span>
-                            <span className="text-lg w-fit">
+                            <span className="text-xl w-fit text-start">
                               {new Date(show.endDate)
                                 .toString()
                                 .replace("GMT+0530 (India Standard Time)", "")}
@@ -202,7 +203,7 @@ const Page = () => {
         </div>
         <div className="flex w-full items-start flex-col">
           <h1 className="w-full flex-col flex items-start gap-1.5">
-            Last Month's Savings
+            <span className=" text-zinc-700 ">Last Month's Savings</span>
             <span>Summary</span>
           </h1>
           <ul>

@@ -6,12 +6,8 @@ import AddAmount from "./AddAmount";
 import Link from "next/link";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
@@ -25,7 +21,7 @@ const AmountSideBar = () => {
       startDate: new Date(),
     },
   ]);
-  const [haveBudgetName , setHaveBudgetName] = useState(false);
+  const [haveBudgetName, setHaveBudgetName] = useState(false);
   useEffect(() => {
     const getbudgets = async () => {
       try {
@@ -36,10 +32,11 @@ const AmountSideBar = () => {
         if (Array.isArray(result.amount)) {
           setBudget(result.amount);
 
-          if (Array.isArray(result.budgetNameForBudget) && result.budgetNameForBudget.length > 0) {
+          if (
+            Array.isArray(result.budgetNameForBudget) &&
+            result.budgetNameForBudget.length > 0
+          ) {
             setHaveBudgetName(true);
-          
-            
           }
         } else {
           console.log("some error while fetching in array checking");
@@ -50,38 +47,40 @@ const AmountSideBar = () => {
     };
 
     getbudgets();
-  },[]);
+  }, []);
   return (
     <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-green-500 rounded-md">
       <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between">
-        <h1 className="w-full text-xl text-center rounded-lg text-green-100 ">
-          Your budgets
+        <h1 className="w-full text-2xl leading-none text-center text-zinc-800 font-bold  font-serif ">
+          Budgets
         </h1>
 
-        <div className="h-96 w-full flex flex-col items-center">
+        <div className="h-96 w-full flex flex-col items-center text-green-100 py-4">
           {budget.length > 0 &&
             budget.map((bud, index) => (
               <Link
                 href={`/acounts/${bud._id}`}
                 key={bud.budgetFor + index}
-                className="text-xl cursor-pointer"
+                className="text-2xl capitalize cursor-pointer font-mono font-semibold"
               >
                 {bud.budgetFor}
               </Link>
             ))}
         </div>
         <AlertDialog>
-
           <AlertDialogTrigger asChild>
             <Button variant="outline">Add Budget</Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="min-h-96 min-w-96 ">
-            <AlertDialogTitle className="w-full text-center">ADD BUDGET</AlertDialogTitle>
-             {
-              haveBudgetName ? <AddAmount /> : <p>please add budget name first</p>
-             }
+            <AlertDialogTitle className="w-full text-center">
+              ADD BUDGET
+            </AlertDialogTitle>
+            {haveBudgetName ? (
+              <AddAmount />
+            ) : (
+              <p>please add budget name first</p>
+            )}
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            
           </AlertDialogContent>
         </AlertDialog>
       </aside>
