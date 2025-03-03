@@ -66,6 +66,7 @@ const Page = () => {
       try {
         const response = await fetch("/api/get-amount", { cache: "no-store" });
         const result = await response.json();
+        console.log("amount");
         if (Array.isArray(result.amount)) setBudget(result.amount);
         if (Array.isArray(result.budgetNameForBudget))
           setBudgetName(result.budgetNameForBudget);
@@ -203,7 +204,7 @@ const Page = () => {
         </div>
         <div className="flex w-full items-start flex-col">
           <h1 className="w-full flex-col flex items-start gap-1.5">
-            <span className=" text-zinc-700 ">Last Month's Savings</span>
+            <span className=" text-zinc-700 ">Last Month&#39;s Savings</span>
             <span>Summary</span>
           </h1>
           <ul>

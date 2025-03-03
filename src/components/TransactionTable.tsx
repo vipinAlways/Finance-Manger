@@ -36,6 +36,7 @@ function TransactionTable() {
           `/api/get-transaction?page=${page}&perpage=20&from=${from}`
         );
         const result = await response.json();
+        console.log("transaction");
   
         if (Array.isArray(result.transactions)) {
           if (page === 1) {
@@ -68,8 +69,8 @@ function TransactionTable() {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
-        console.log("transaction table");
         const result = await response.json();
+        console.log("transaction table");
         if (result && Array.isArray(result.amount)) {
           setGetAmountFor(result.amount);
         } else {
@@ -81,7 +82,7 @@ function TransactionTable() {
     };
 
     getAmount();
-  });
+  },[page,from]);
 
 
   const handleShowMore = () => {

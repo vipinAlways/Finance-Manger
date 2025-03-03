@@ -83,13 +83,13 @@ function AddTransaction({ className }: { className: string }) {
     };
 
     getCategory();
-  }, []);
+  }, [setCategory,setError]);
 
   useEffect(() => {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
-        console.log("add transaction");
+        
         const result = await response.json();
         if (result && Array.isArray(result.amount)) {
           setGetAmountFor(result.amount);
@@ -104,7 +104,7 @@ function AddTransaction({ className }: { className: string }) {
     };
 
     getAmount();
-  });
+  },[]);
 
   return (
     <div
