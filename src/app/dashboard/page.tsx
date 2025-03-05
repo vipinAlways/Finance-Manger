@@ -20,7 +20,7 @@ function Home() {
         });
 
         const data = await response.json();
-        console.log("API response:", data);
+        
 
         if (data.success && data.redirect) {
           window.location.href = data.redirect;
@@ -37,14 +37,23 @@ function Home() {
     postUser();
   }, []);
 
+
+
   useEffect(() => {
+    let isMounted = true; 
+
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
-        console.log("page-dashboard");
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+
         const result = await response.json();
+
         if (result && Array.isArray(result.amount)) {
-          setGetAmountFor(result.amount);
+          if (isMounted) setGetAmountFor(result.amount);
         } else {
           console.error("Unexpected API response structure for amounts");
         }
@@ -54,7 +63,11 @@ function Home() {
     };
 
     getAmount();
-  });
+
+    return () => {
+      isMounted = false; // Cleanup function
+    };
+  }, []);
 
   return (
     <div className=" flex  flex-col items-center flex-1  w-full max-md:p-4  gap-7">

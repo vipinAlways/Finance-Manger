@@ -22,8 +22,14 @@ export async function POST(req: Request) {
 
   if (user) {
     try {
-      const { amount, dateAt, note, method, category, transactionType,from } =
+      let { amount, dateAt, note, method, category, transactionType,from } =
         await req.json();
+
+
+        if(transactionType === "spend" ){
+          amount = -amount
+        }
+
 
       let newTransaction = await transactionModel.create({
         amount,

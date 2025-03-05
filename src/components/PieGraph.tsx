@@ -87,7 +87,7 @@ function PieGraph({forWhich}: {forWhich: string}) {
       if (curr.transactionType === "earn") {
         acc[categoryKey] = (acc[categoryKey] || 0) + curr.amount;
       } else if (curr.transactionType === "spend") {
-        acc[categoryKey] = (acc[categoryKey] || 0) - curr.amount;
+        acc[categoryKey] = (acc[categoryKey] || 0) + curr.amount;
       }
       return acc;
     },

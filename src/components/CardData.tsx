@@ -19,7 +19,7 @@ function Data({ forWhich }: { forWhich: string }) {
     async function fetchTransactions() {
       try {
         const response = await fetch(
-          `/api/get-transaction?page=1&perpage=20&from=${forWhich}`
+          `/api/get-transaction?from=${forWhich}`
         );
         const result = await response.json();
 
@@ -79,6 +79,7 @@ function Data({ forWhich }: { forWhich: string }) {
     };
 
     fetchBudget();
+    
   }, [forWhich]);
 
 
@@ -107,7 +108,7 @@ function Data({ forWhich }: { forWhich: string }) {
   const blances =  [
     {
       name:"Remaining Balance",
-      amount:amount + (earnAmount - spendAmount),
+      amount:amount + (earnAmount + spendAmount),
       color:"bg-gradient-to-tr from-green-400 via-red-300 to-yellow-400"
     },
     {

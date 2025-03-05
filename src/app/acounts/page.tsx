@@ -1,8 +1,10 @@
 "use client";
 
+import CircularProgress from "@/components/CircularProgress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -17,13 +19,18 @@ export interface AmountGet {
 
 const Page = () => {
   const [budget, setBudget] = useState<AmountGet[]>([]);
-  const [budgetName, setBudgetName] = useState<[]>([]);
+  const [budgetName, setBudgetName] = useState<string[]>([]);
   const [budgetUpdated, setBudgetUpdated] = useState(false);
   const [hidden, setHidden] = useState(true);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [hidden2, setHidden2] = useState(true);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
   const { toast } = useToast();
+  const [progress, setProgress] = useState(0);
+  const [earnAmount, setEarnAmount] = useState<number>(0);
+  const [spendAmount, setSpendAmount] = useState<number>(0);
+  const [loanAmount, setLoanAmount] = useState<number>(0);
 
   const AddBudgetName = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +84,8 @@ const Page = () => {
     getBudgets();
   }, [budgetUpdated]);
 
+  console.log(budget[index]?.budgetFor, "check");
+
   useEffect(() => {
     if (!budget.length) return;
 
@@ -86,6 +95,64 @@ const Page = () => {
 
     return () => clearInterval(interval);
   }, [budget]);
+
+  useEffect(() => {
+    async function fetchTransactions() {
+      if (!budget[index]) return; // Prevent fetching if budget[index] is undefined
+
+      try {
+        const response = await fetch(
+          `/api/get-transaction?from=${budget[index]?.budgetFor}`
+        );
+        const result = await response.json();
+
+        if (result.transactions) {
+          setTransactions(result.transactions);
+        } else if (Array.isArray(result)) {
+          setTransactions(result);
+        } else {
+          console.error("Error in transaction response");
+        }
+      } catch (error) {
+        console.error("Transaction fetch error:", error);
+        alert("Currently our servers are not working, please try again later.");
+      }
+    }
+
+    fetchTransactions();
+
+    const interval = setInterval(fetchTransactions, 10000);
+
+    return () => clearInterval(interval);
+  }, [index, budget]);
+
+  useEffect(() => {
+    if (!transactions.length || !budget[index]) return;
+
+    const calculateTotalAmount = (type: string) =>
+      transactions
+        .filter((transaction) => transaction.transactionType === type)
+        .reduce((total, transaction) => {
+          const transactionDate = new Date(transaction.date);
+          const startDate = new Date(budget[index]?.startDate);
+          const endDate = new Date(budget[index]?.endDate);
+
+          if (transactionDate >= startDate && transactionDate <= endDate) {
+            return total + transaction.amount;
+          }
+          return total;
+        }, 0);
+
+    setEarnAmount(calculateTotalAmount("earn"));
+    setLoanAmount(calculateTotalAmount("loan"));
+    setSpendAmount(calculateTotalAmount("spend"));
+  }, [transactions, budget, index]);
+
+  useEffect(() => {
+    if (!budget[index]) return;
+    const totalSpent = Math.abs(earnAmount + spendAmount);
+    setProgress((totalSpent / budget[index]?.amount) * 100);
+  }, [transactions, index, earnAmount, spendAmount]);
 
   if (budgetName.length === 0) {
     return (
@@ -151,8 +218,8 @@ const Page = () => {
           </form>
         </div>
 
-        <div className="h-full mx-auto relative bg-green-600 text-green-50 w-[30rem] p-3 rounded-md">
-          <div className="h-56 flex items-center w-full overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left">
+        <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center">
+          <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[30rem] p-3 rounded-md">
             <div className="flex space-x-4 relative w-full">
               {budget.map(
                 (show, i) =>
@@ -199,6 +266,28 @@ const Page = () => {
                     </Link>
                   )
               )}
+            </div>
+          </div>
+          <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
+              {/* <CircularProgress percentage={progress} size={120} color="blue" />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={progress}
+                onChange={(e) => setProgress(Number(e.target.value))}
+              />
+              <p>{progress}%</p> */}
+
+              <p>{progress}</p>
             </div>
           </div>
         </div>
