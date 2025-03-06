@@ -20,7 +20,14 @@ function AddTransaction({ className }: { className: string }) {
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
+    if (
+      !amount ||
+      !category ||
+      !method ||
+      !dateAt ||
+      !transactionType ||
+      !from
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -83,13 +90,13 @@ function AddTransaction({ className }: { className: string }) {
     };
 
     getCategory();
-  }, [setCategory,setError]);
+  }, [setCategory, setError]);
 
   useEffect(() => {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
-        
+
         const result = await response.json();
         if (result && Array.isArray(result.amount)) {
           setGetAmountFor(result.amount);
@@ -104,7 +111,7 @@ function AddTransaction({ className }: { className: string }) {
     };
 
     getAmount();
-  },[]);
+  }, []);
 
   return (
     <div
@@ -163,9 +170,9 @@ function AddTransaction({ className }: { className: string }) {
             </label>
             <input
               type="date"
-               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setDate(new Date(e.target.value))
-                          }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setDate(new Date(e.target.value))
+              }
               name="date"
               id="date"
               className="border h-10 rounded-sm text-black w-full"
@@ -271,11 +278,11 @@ function AddTransaction({ className }: { className: string }) {
           {getAmountFor.length === 0 && categoryGroup.length === 0 ? (
             <div className="flex flex-col items-center gap-5 relative">
               <Button
-                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
-                    onClick={() => window.location.reload()}
-                  >
-                    X
-                  </Button>
+                className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
+                onClick={() => window.location.reload()}
+              >
+                X
+              </Button>
               <h1 className="text-center text-3xl text-zinc-100 ">
                 Opps ! Looks like You Haven&#39;t Asign any budget and Category
               </h1>
@@ -318,7 +325,7 @@ function AddTransaction({ className }: { className: string }) {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-5 relative">
-                   <Button
+                  <Button
                     className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
                     onClick={() => window.location.reload()}
                   >

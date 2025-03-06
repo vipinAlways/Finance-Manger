@@ -84,8 +84,6 @@ const Page = () => {
     getBudgets();
   }, [budgetUpdated]);
 
-  console.log(budget[index]?.budgetFor, "check");
-
   useEffect(() => {
     if (!budget.length) return;
 
@@ -95,10 +93,9 @@ const Page = () => {
 
     return () => clearInterval(interval);
   }, [budget]);
-
   useEffect(() => {
     async function fetchTransactions() {
-      if (!budget[index]) return; // Prevent fetching if budget[index] is undefined
+      if (!budget[index]) return;
 
       try {
         const response = await fetch(
@@ -108,6 +105,30 @@ const Page = () => {
 
         if (result.transactions) {
           setTransactions(result.transactions);
+          if (!transactions.length || !budget[index]) return;
+
+          const calculateTotalAmount = (type: string) =>
+            transactions
+              .filter((transaction) => transaction.transactionType === type)
+              .reduce((total, transaction) => {
+                const transactionDate = new Date(transaction.date);
+                const startDate = new Date(budget[index]?.startDate);
+                const endDate = new Date(budget[index]?.endDate);
+                if (
+                  transactionDate >= startDate &&
+                  transactionDate <= endDate
+                ) {
+                  return total + transaction.amount;
+                }
+                return total;
+              }, 0);
+
+          setEarnAmount(calculateTotalAmount("earn"));
+          setLoanAmount(calculateTotalAmount("loan"));
+          setSpendAmount(calculateTotalAmount("spend"));
+
+          const totalSpent = Math.abs(earnAmount + spendAmount);
+          setProgress((totalSpent / budget[index]?.amount) * 100);
         } else if (Array.isArray(result)) {
           setTransactions(result);
         } else {
@@ -121,38 +142,14 @@ const Page = () => {
 
     fetchTransactions();
 
-    const interval = setInterval(fetchTransactions, 10000);
+    // const interval = setInterval(fetchTransactions, 1000);
 
-    return () => clearInterval(interval);
-  }, [index, budget]);
-
-  useEffect(() => {
-    if (!transactions.length || !budget[index]) return;
-
-    const calculateTotalAmount = (type: string) =>
-      transactions
-        .filter((transaction) => transaction.transactionType === type)
-        .reduce((total, transaction) => {
-          const transactionDate = new Date(transaction.date);
-          const startDate = new Date(budget[index]?.startDate);
-          const endDate = new Date(budget[index]?.endDate);
-
-          if (transactionDate >= startDate && transactionDate <= endDate) {
-            return total + transaction.amount;
-          }
-          return total;
-        }, 0);
-
-    setEarnAmount(calculateTotalAmount("earn"));
-    setLoanAmount(calculateTotalAmount("loan"));
-    setSpendAmount(calculateTotalAmount("spend"));
-  }, [transactions, budget, index]);
+    // return () => clearInterval(interval);
+  }, [index, budget, setTransactions]);
 
   useEffect(() => {
     if (!budget[index]) return;
-    const totalSpent = Math.abs(earnAmount + spendAmount);
-    setProgress((totalSpent / budget[index]?.amount) * 100);
-  }, [transactions, index, earnAmount, spendAmount]);
+  }, [earnAmount, spendAmount, budget, index, setProgress]);
 
   if (budgetName.length === 0) {
     return (
@@ -288,6 +285,7 @@ const Page = () => {
               <p>{progress}%</p> */}
 
               <p>{progress}</p>
+              <p>{earnAmount + spendAmount}</p>
             </div>
           </div>
         </div>

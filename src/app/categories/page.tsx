@@ -161,7 +161,7 @@ const Page: React.FC = () => {
             onChange={(e) => setSearchBox(e.target.value)}
             name="category"
             id="category"
-            className="border h-10 rounded-sm text-black w-full"
+             className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
             value={searchBox}
           >
             <option value="" disabled>
