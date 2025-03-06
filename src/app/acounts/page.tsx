@@ -93,6 +93,25 @@ const Page = () => {
 
     return () => clearInterval(interval);
   }, [budget]);
+
+  useEffect(() => {
+    const calculateTotalAmount = (type: string) =>
+      transactions
+        .filter((transaction) => transaction.transactionType === type)
+        .reduce((total, transaction) => {
+          const transactionDate = new Date(transaction.date);
+          const startDate = new Date(budget[index]?.startDate);
+          const endDate = new Date(budget[index]?.endDate);
+          if (transactionDate >= startDate && transactionDate <= endDate) {
+            return total + transaction.amount;
+          }
+          return total;
+        }, 0);
+
+    setEarnAmount(calculateTotalAmount("earn"));
+    setLoanAmount(calculateTotalAmount("loan"));
+    setSpendAmount(calculateTotalAmount("spend"));
+  }, [budgetUpdated, budgetName, transactions]);
   useEffect(() => {
     async function fetchTransactions() {
       if (!budget[index]) return;
@@ -106,29 +125,6 @@ const Page = () => {
         if (result.transactions) {
           setTransactions(result.transactions);
           if (!transactions.length || !budget[index]) return;
-
-          const calculateTotalAmount = (type: string) =>
-            transactions
-              .filter((transaction) => transaction.transactionType === type)
-              .reduce((total, transaction) => {
-                const transactionDate = new Date(transaction.date);
-                const startDate = new Date(budget[index]?.startDate);
-                const endDate = new Date(budget[index]?.endDate);
-                if (
-                  transactionDate >= startDate &&
-                  transactionDate <= endDate
-                ) {
-                  return total + transaction.amount;
-                }
-                return total;
-              }, 0);
-
-          setEarnAmount(calculateTotalAmount("earn"));
-          setLoanAmount(calculateTotalAmount("loan"));
-          setSpendAmount(calculateTotalAmount("spend"));
-
-          const totalSpent = Math.abs(earnAmount + spendAmount);
-          setProgress((totalSpent / budget[index]?.amount) * 100);
         } else if (Array.isArray(result)) {
           setTransactions(result);
         } else {
@@ -142,14 +138,21 @@ const Page = () => {
 
     fetchTransactions();
 
-    // const interval = setInterval(fetchTransactions, 1000);
+    const interval = setInterval(fetchTransactions, 10000);
 
-    // return () => clearInterval(interval);
-  }, [index, budget, setTransactions]);
+    return () => clearInterval(interval);
+  }, [index, budget, setTransactions, budgetUpdated]);
+
+  useEffect(() => {
+    if (!budget[index] || budget[index]?.amount === 0) return;
+
+    const totalSpent = Math.abs(earnAmount + spendAmount);
+    setProgress((totalSpent / budget[index]?.amount) * 100);
+  }, [earnAmount, spendAmount, budget, index]);
 
   useEffect(() => {
     if (!budget[index]) return;
-  }, [earnAmount, spendAmount, budget, index, setProgress]);
+  }, [budget, index, budgetUpdated]);
 
   if (budgetName.length === 0) {
     return (
@@ -190,6 +193,7 @@ const Page = () => {
       </div>
     );
   }
+
   return (
     <div className="h-full w-full relative py-3 flex items-start gap-4 ">
       <div className="w-full text-5xl relative flex flex-col gap-8 font-sans">
@@ -215,7 +219,7 @@ const Page = () => {
           </form>
         </div>
 
-        <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center">
+        <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4">
           <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[30rem] p-3 rounded-md">
             <div className="flex space-x-4 relative w-full">
               {budget.map(
@@ -266,26 +270,14 @@ const Page = () => {
             </div>
           </div>
           <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              {/* <CircularProgress percentage={progress} size={120} color="blue" />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={(e) => setProgress(Number(e.target.value))}
-              />
-              <p>{progress}%</p> */}
+            <div>
+              <div className="relative">
+                <CircularProgress percentage={progress} size={200} />
 
-              <p>{progress}</p>
-              <p>{earnAmount + spendAmount}</p>
+                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-mono">
+                  {progress}%
+                </p>
+              </div>
             </div>
           </div>
         </div>

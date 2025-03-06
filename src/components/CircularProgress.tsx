@@ -6,8 +6,8 @@ interface CircularProgressProps {
   strokeWidth?: number;
   color?: string;
 }
-const CircularProgress: React.FC<CircularProgressProps>  = ({ percentage, size = 100, strokeWidth = 8, color = "blue" }) => {
-  const radius = (size - strokeWidth) / 2; // Adjust radius based on stroke width
+const CircularProgress: React.FC<CircularProgressProps>  = ({ percentage, size = 400, strokeWidth = 32 }) => {
+  const radius = (size - strokeWidth) / 2; 
   const circumference = 2 * Math.PI * radius; // Full circumference of the circle
   const offset = circumference * (1 - percentage / 100); // Calculate stroke offset
 
@@ -19,16 +19,16 @@ const CircularProgress: React.FC<CircularProgressProps>  = ({ percentage, size =
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="#ddd"
+        stroke="#fff"
         strokeWidth={strokeWidth}
       />
-      {/* Progress Circle */}
+      
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke={color}
+        stroke="#86efac "
         strokeWidth={strokeWidth}
         strokeDasharray={circumference}
         strokeDashoffset={offset}
