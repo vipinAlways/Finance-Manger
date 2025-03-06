@@ -7,6 +7,233 @@ import { cn } from "@/lib/utils";
 import { Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+
+export interface AmountGet {
+  budgetFor: string;
+  startDate: Date;
+  amount: number;
+  endDate: Date;
+  _id?: string;
+}
+
+const Page = () => {
+  const [budget, setBudget] = useState<AmountGet[]>([]);
+  const [budgetName, setBudgetName] = useState<string[]>([]);
+  const [budgetUpdated, setBudgetUpdated] = useState(false);
+  const [hidden2, setHidden2] = useState(true);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [nameOfBudget, setNameOfBudget] = useState("");
+  const [index, setIndex] = useState(0);
+  const { toast } = useToast();
+  const [progress, setProgress] = useState(0);
+  
+  const calculateTotalAmount = useCallback(
+    (type: string) =>
+      transactions.reduce((total, transaction) => {
+        if (transaction.transactionType === type) {
+          const transactionDate = new Date(transaction.date);
+          const startDate = new Date(budget[index]?.startDate);
+          const endDate = new Date(budget[index]?.endDate);
+          if (transactionDate >= startDate && transactionDate <= endDate) {
+            return total + transaction.amount;
+          }
+        }
+        return total;
+      }, 0),
+    [transactions, budget, index]
+  );
+
+  const fetchBudgets = useCallback(async () => {
+    try {
+      const response = await fetch("/api/get-amount", { cache: "no-store" });
+      const result = await response.json();
+      setBudget(Array.isArray(result.amount) ? result.amount : []);
+      setBudgetName(Array.isArray(result.budgetNameForBudget) ? result.budgetNameForBudget : []);
+    } catch (error) {
+      console.error("Error fetching budgets:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBudgets();
+  }, [budgetUpdated, fetchBudgets]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev < budget.length - 1 ? prev + 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [budget]);
+
+  useEffect(() => {
+    setProgress(
+      budget[index]?.amount > 0
+        ? (Math.abs(calculateTotalAmount("earn") + calculateTotalAmount("spend")) / budget[index]?.amount) * 100
+        : 0
+    );
+  }, [budget, index, transactions, calculateTotalAmount]);
+
+  const fetchTransactions = useCallback(async () => {
+    if (!budget[index]) return;
+    try {
+      const response = await fetch(`/api/get-transaction?from=${budget[index]?.budgetFor}`);
+      const result = await response.json();
+      setTransactions(Array.isArray(result.transactions) ? result.transactions : result);
+    } catch (error) {
+      console.error("Transaction fetch error:", error);
+      alert("Currently our servers are not working, please try again later.");
+    }
+  }, [index, budget]);
+
+  useEffect(() => {
+    fetchTransactions();
+    const interval = setInterval(fetchTransactions, 10000);
+    return () => clearInterval(interval);
+  }, [fetchTransactions]);
+
+  const AddBudgetName = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/post-budgetName", {
+        method: "POST",
+        body: JSON.stringify({ nameOfBudget }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      toast({
+        title: data.ok ? "Budget Added Successfully" : "Error",
+        description: data.ok ? `Your budget for "${nameOfBudget}" has been added.` : data.message,
+        variant: data.ok ? "default" : "destructive",
+      });
+      if (data.ok) {
+        setNameOfBudget("");
+        setHidden2(true);
+        setBudgetUpdated((prev) => !prev);
+      }
+    } catch (error) {
+      console.error("Error while adding budget name:", error);
+      toast({ title: "Error", description: "Something went wrong!", variant: "destructive" });
+    }
+  };
+
+  if (budgetName.length === 0) {
+    return (
+      <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
+        <h1 className="text-4xl font-light">You have not added any budget name. Please add one to continue.</h1>
+        <Button onClick={() => setHidden2(!hidden2)}>ADD NAME</Button>
+        {!hidden2 && (
+          <form onSubmit={AddBudgetName} className="flex gap-3">
+            <input
+              type="text"
+              value={nameOfBudget}
+              onChange={(e) => setNameOfBudget(e.target.value)}
+              className="h-10 w-60 rounded-lg px-3"
+              placeholder="Enter the name..."
+            />
+          </form>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-full w-full py-3 flex flex-col gap-4">
+    <div className="w-full h-32 flex flex-col items-start gap-4">
+    <Button onClick={() => setHidden2(!hidden2)} className="w-32">ADD NAME</Button>
+      {!hidden2 && (
+        <form onSubmit={AddBudgetName} className="flex gap-3">
+          <input
+            type="text"
+            value={nameOfBudget}
+            onChange={(e) => setNameOfBudget(e.target.value)}
+            className="h-10 w-60 rounded-lg px-3"
+            placeholder="Enter the name..."
+          />
+        </form>
+      )}
+    </div>
+        <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4">
+          <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[34rem] p-3 rounded-md">
+            <div className="flex space-x-4 relative w-full">
+              {budget.map(
+                (show, i) =>
+                  i === index && (
+                    <Link
+                      key={i}
+                      href={`/acounts/${show._id}`}
+                      className="md:w-[28rem] md:h-52 max-md:w-40 max-md:h-44 flex items-center "
+                    >
+                      <Image
+                        src={"/image1.jpg"}
+                        alt="Budget Image"
+                        height={60}
+                        width={120}
+                        className="object-contain rounded-full"
+                      />
+                      <div className="flex justify-around h-full w-full p-2 flex-col">
+                        <div className="flex flex-col items-center gap-2 border-b pb-5 border-green-50">
+                          <h1 className="md:text-4xl font-bold">
+                            Name of Budget
+                          </h1>
+                          <h1
+                            className={cn(
+                              "flex justify-around capitalize font-serif",
+                              show.budgetFor.split(" ").length < 4
+                                ? "text-5xl"
+                                : "text-3xl"
+                            )}
+                          >
+                            {show.budgetFor}
+                          </h1>
+                        </div>
+                        <div className="w-full flex items-center justify-center font-serif">
+                          <p className="text-2xl rounded-full p-2 flex w-full items-center justify-center gap-3">
+                            <span className="w-fit flex">Till :</span>
+                            <span className="text-xl w-fit text-start">
+                              {new Date(show.endDate)
+                                .toString()
+                                .replace("GMT+0530 (India Standard Time)", "")}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+              )}
+            </div>
+          </div>
+          <div>
+            <div>
+              <div className="relative">
+                <CircularProgress percentage={progress} size={200} />
+
+                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-mono">
+                  {progress}%
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  );
+};
+
+export default Page;
+
+
+
+{
+  /*
+  "use client";
+
+import CircularProgress from "@/components/CircularProgress";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { Transaction } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export interface AmountGet {
@@ -220,7 +447,7 @@ const Page = () => {
         </div>
 
         <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4">
-          <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[30rem] p-3 rounded-md">
+          <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[34rem] p-3 rounded-md">
             <div className="flex space-x-4 relative w-full">
               {budget.map(
                 (show, i) =>
@@ -307,3 +534,7 @@ const Page = () => {
 };
 
 export default Page;
+
+  
+  */
+}
