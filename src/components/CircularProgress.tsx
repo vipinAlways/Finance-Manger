@@ -12,23 +12,21 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   strokeWidth = 32,
 }) => {
   const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius; // Full circumference of the circle
-  const offset = circumference * (1 - percentage / 100); // Calculate stroke offset
+  const circumference = 2 * Math.PI * radius; 
+  const offset = circumference * (1 - percentage / 100);
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      {/* Background Circle */}
       <circle
         cx={size / 2}
         cy={size / 2}
-        r={radius} // Adjusted Radius
+        r={radius}
         fill="none"
         stroke="#fff"
         strokeWidth={strokeWidth}
         opacity="0.5"
       />
 
-      {/* Gradient Definition */}
       <defs>
         <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#4ade80" />
@@ -36,11 +34,10 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
         </linearGradient>
       </defs>
 
-      {/* Animated Progress Circle */}
       <circle
         cx={size / 2}
         cy={size / 2}
-        r={radius} // Centered at New Radius
+        r={radius}
         fill="none"
         stroke="url(#progressGradient)"
         strokeWidth={strokeWidth / 1.1}

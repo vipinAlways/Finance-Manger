@@ -52,8 +52,8 @@ function Home() {
 
         const result = await response.json();
 
-        if (result && Array.isArray(result.amount)) {
-          if (isMounted) setGetAmountFor(result.amount);
+        if (result && Array.isArray(result.budgetCurrent)) {
+          if (isMounted) setGetAmountFor(result.budgetCurrent);
         } else {
           console.error("Unexpected API response structure for amounts");
         }

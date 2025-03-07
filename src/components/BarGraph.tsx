@@ -36,8 +36,8 @@ function BarGraph({ forWhich }: { forWhich: string }) {
         console.log("bar graph");
         const result = await response.json();
 
-        if (result?.ok && Array.isArray(result.amount)) {
-          setBudget(result.amount);
+        if (result?.ok && Array.isArray(result.budgetCurrent)) {
+          setBudget(result.budgetCurrent);
         } else {
           console.error("Unexpected API response structure for budget data.");
         }

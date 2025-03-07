@@ -47,8 +47,8 @@ function PieGraph({forWhich}: {forWhich: string}) {
           const result = await response.json();
           console.log("piegraph");
     
-          if (result?.ok && Array.isArray(result.amount)) {
-            setBudget(result.amount);
+          if (result?.ok && Array.isArray(result.budgetCurrent)) {
+            setBudget(result.budgetCurrent);
           } else {
             console.error("Unexpected API response structure for budget data.");
           }

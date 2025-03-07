@@ -65,8 +65,8 @@ function Data({ forWhich }: { forWhich: string }) {
         const result = await response.json();
 
         if (result.ok) {
-          if (Array.isArray(result.amount)) {
-            setBudget(result.amount);
+          if (Array.isArray(result.budgetCurrent)) {
+            setBudget(result.budgetCurrent);
           } else {
             console.error("Unexpected API response structure from amount");
           }

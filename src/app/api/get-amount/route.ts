@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     }
 
     const currentdate = new Date();
-    const amount =
+    const budgetCurrent =
       from !== ""
         ? await amountModel.find({
             user: dbuser._id,
@@ -43,12 +43,32 @@ export async function GET(req: Request) {
             endDate: { $gte: currentdate },
           });
 
-
     const budgetNameForBudget = await BudgetNameModel.find({
-      user:dbuser
-    })
+      user: dbuser,
+    });
 
-    return NextResponse.json({ amount, budgetNameForBudget,ok: true }, { status: 200 });
+    const budgetall = [];
+
+    for (let i = 0; i < budgetNameForBudget.length; i++) {
+      from !== ""
+        ? budgetall.push(
+            await amountModel.find({
+              user: dbuser._id,
+              budgetFor: from,
+            })
+          )
+        : budgetall.push(
+            await amountModel.find({
+              user: dbuser._id,
+              budgetFor: budgetNameForBudget[i].nameOfCategorey,
+            })
+          );
+    }
+
+    return NextResponse.json(
+      { budgetCurrent, budgetNameForBudget, budgetall, ok: true },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching amounts:", error);
     return NextResponse.json(

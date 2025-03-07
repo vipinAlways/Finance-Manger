@@ -55,7 +55,7 @@ export async function GET(req: Request) {
     const totalTransactions = await transactionModel.countDocuments({
       user: dbUser._id,
     });
-    console.log(transactions,"server");
+    
     return NextResponse.json({
       success: true,
       transactions,
