@@ -98,8 +98,8 @@ function AddTransaction({ className }: { className: string }) {
         const response = await fetch(`/api/get-amount`);
 
         const result = await response.json();
-        if (result && Array.isArray(result.amount)) {
-          setGetAmountFor(result.amount);
+        if (result && Array.isArray(result.budgetCurrent)) {
+          setGetAmountFor(result.budgetCurrent);
         } else {
           console.error("Unexpected API response structure for amounts");
           setError("Failed to fetch amounts.");

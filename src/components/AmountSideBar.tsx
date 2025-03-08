@@ -29,8 +29,8 @@ const AmountSideBar = () => {
         console.log("sidebar");
         const result = await response.json();
 
-        if (Array.isArray(result.amount)) {
-          setBudget(result.amount);
+        if (Array.isArray(result.budgetCurrent)) {
+          setBudget(result.budgetCurrent);
 
           if (
             Array.isArray(result.budgetNameForBudget) &&

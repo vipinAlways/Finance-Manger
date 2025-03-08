@@ -14,7 +14,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
         const result = await response.json();
 
         if (result.ok) {
-          setBudget(result.amount);
+          setBudget(result.budgetCurrent);
         } else {
           console.error("Error while getting amounts client-side");
         }
