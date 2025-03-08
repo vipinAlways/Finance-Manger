@@ -50,7 +50,7 @@ const AmountSideBar = () => {
   }, []);
   return (
     <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-green-500 rounded-md">
-      <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between">
+      <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between max-md:hidden">
         <h1 className="w-full text-2xl leading-none text-center text-zinc-800 font-bold  font-serif ">
           Budgets
         </h1>

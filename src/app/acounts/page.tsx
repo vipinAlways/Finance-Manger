@@ -184,8 +184,8 @@ const Page = () => {
           </form>
         )}
       </div>
-      <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4">
-        <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 w-[34rem] p-3 rounded-md">
+      <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-md:flex-col">
+        <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem] w-80 p-3 rounded-md">
           <div className="flex space-x-4 relative w-full">
             {budgetCurrect.map(
               (show, i) =>

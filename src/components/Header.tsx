@@ -11,7 +11,7 @@ function Header() {
   return (
     <header
       className={cn(
-        "bg-gradient-to-b from-green-700 to-green-300 px-4 py-4 lg:px-14 h-fit z-50 md:sticky top-0 w-full overflow-hidden "
+        "bg-gradient-to-b from-green-700 to-green-300 px-4 py-4 lg:px-14 h-fit z-50 md:sticky top-0 w-full overflow-hidden max-w-full "
       )}
     >
       <div className="max-w-screen-2xl mx-auto">
