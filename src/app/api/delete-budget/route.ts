@@ -18,7 +18,7 @@ export async function DELETE(req: Request) {
   }
 
   try {
-    const amount = await amountModel.findById(amountId);
+    const amount = await amountModel.findByIdAndDelete(amountId);
     if (!amount) {
       return NextResponse.json(
         { success: false, message: "Amount not found" },
@@ -26,7 +26,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    await amountModel.deleteOne({ _id: amountId });
+    
 
     if (amount.user) {
       const budgetName = await BudgetNameModel.findById(
