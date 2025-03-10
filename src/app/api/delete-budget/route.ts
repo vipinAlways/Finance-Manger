@@ -1,9 +1,9 @@
 "use server";
 import dbConnect from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
-import userModel from "@/Models/User.model";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
+import BudgetNameModel from "@/Models/BudgetName.model";
 
 export async function DELETE(req: Request) {
   await dbConnect();
@@ -28,22 +28,29 @@ export async function DELETE(req: Request) {
 
     await amountModel.deleteOne({ _id: amountId });
 
-    const user = await userModel.findById(amount.user);
-    if (!user) {
-      return NextResponse.json(
-        { success: false, message: "User not found" },
-        { status: 404 }
+    if (amount.user) {
+      const budgetName = await BudgetNameModel.findById(
+        {
+          userId:amount.user
+        }
       );
+      if (!budgetName) {
+        return NextResponse.json(
+          { success: false, message: "Related budget not found" },
+          { status: 404 }
+        );
+      }
+      budgetName.amount.pull(amountId);
     }
 
     
-    await user.save();
+    
 
     return NextResponse.json(
       {
         success: true,
         message: "Transaction has been deleted",
-        ok:true
+        ok: true,
       },
       { status: 200 }
     );
