@@ -17,6 +17,12 @@ export async function GET(req: Request) {
 
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+    
+
+   
+
+    console.log(getUser, "check user");
+    console.log(getKindeServerSession, "check session");
 
     if (!user || !user.id) {
       return NextResponse.json(
@@ -46,7 +52,11 @@ export async function GET(req: Request) {
 
     const transactions = await transactionModel
       .find(
-        from !== "" ? startDate==='' ? { user: dbUser._id, from: from } : {user:dbUser._id ,date:{$lte:startDate,$gte:endDate}}: { user: dbUser._id }
+        from !== ""
+          ? startDate === ""
+            ? { user: dbUser._id, from: from }
+            : { user: dbUser._id, date: { $lte: startDate, $gte: endDate } }
+          : { user: dbUser._id }
       )
       .skip((page - 1) * perpage)
       .limit(perpage)
@@ -55,7 +65,7 @@ export async function GET(req: Request) {
     const totalTransactions = await transactionModel.countDocuments({
       user: dbUser._id,
     });
-    
+
     return NextResponse.json({
       success: true,
       transactions,

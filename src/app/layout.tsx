@@ -4,6 +4,7 @@ import "./globals.css";
 import MarginOfBody from "@/components/MarginOfBody";
 import Header from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster"
+import AuthProvider from "@/components/AuthProvider";
 
 
 const recursive= Recursive({ subsets: ["latin"] });
@@ -22,13 +23,15 @@ export const metadata: Metadata = {
 
   return (
     <html lang="en">
-      <body className={`${recursive.className} relative bg-green-100  `}>
+     <AuthProvider>
+     <body className={`${recursive.className} relative bg-green-100  `}>
         <Header/>
         <MarginOfBody>
         {children}
         <Toaster/>
         </MarginOfBody>
         </body>
+     </AuthProvider>
     </html>
   );
 }

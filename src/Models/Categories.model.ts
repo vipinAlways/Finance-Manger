@@ -1,7 +1,7 @@
 import mongoose, { Model, Schema } from "mongoose";
 import { Category } from "../types";
 
-export const categorySchema = new Schema({
+export const categorySchema:Schema<Category> = new Schema({
   nameOfCategorey: {
     type: String,
     require: true,
