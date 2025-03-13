@@ -6,51 +6,46 @@ const cardData = [
   {
     url: "/dashboard",
     description: "You can monitor journey with graph.",
-    imageUrl:'/image1.jpg'
+    imageUrl: "/image1.jpg",
   },
   {
-    url: "/transation",
+    url: "/transaction",
     description: " You can add transactions",
-    imageUrl:'/image4.jpg'
+    imageUrl: "/image4.jpg",
   },
   {
     url: "/categories",
     description: "  Make your financial management easy.",
-    imageUrl:'/image3.jpg'
+    imageUrl: "/image3.jpg",
   },
   {
     url: "/accounts",
     description: " Let software handle your small tasks.",
-    imageUrl:'/image5.jpg'
+    imageUrl: "/image5.jpg",
   },
 ];
 
 function WelcomePageCard() {
   return (
-    <div className="w-full grid grid-cols-2 rounded-lg mt-4 gap-6 card-container">
-  {cardData.map((item, index) => (
-    <Link
-      href={item.url}
-      className="flex items-center border w-full rounded-xl h-40 p-1 hover:scale-105 transition-all ease-in-out duration-300 card"
-      key={index}
-    >
-     <div className="w-52 h-36">
-     <Image
-        src={item.imageUrl}
-        alt="hello"
-        className=" rounded-lg object-contain border-r-2"
-        width={145}
-        height={176}
-      />
-     </div>
-      <h1 className="flex-grow text-xl text-center">
-        {item.description}
-      </h1>
-    </Link>
-  ))}
-</div>
-
-  
+    <div className="w-full flex flex-wrap  justify-around rounded-lg mt-4 gap-6 lg:card-container ">
+      {cardData.map((item, index) => (
+        <Link
+          href={item.url}
+          className="flex items-center border max-lg:w-4/5 w-2/5 rounded-xl sm:h-40  h-72 p-1 lg:hover:scale-105 transition-all ease-in-out duration-300 card max-sm:flex-col"
+          key={index}
+        >
+          <div className="w-full h-64 sm:h-36 sm:w-52 relative">
+            <Image
+              src={item.imageUrl}
+              alt="hello"
+              className="rounded-lg object-cover  object-center border-r-2"
+              fill
+            />
+          </div>
+          <h1 className="flex-grow text-2xl sm:text-xl text-center">{item.description}</h1>
+        </Link>
+      ))}
+    </div>
   );
 }
 

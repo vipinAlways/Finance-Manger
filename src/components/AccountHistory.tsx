@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AmountGet } from "@/app/acounts/page";
+import { AmountGet } from "@/app/accounts/page";
 
 const AccountHistory = ({ accountId }: { accountId: string }) => {
   const [budget, setBudget] = useState<AmountGet[] | null>(null);

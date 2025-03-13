@@ -14,7 +14,7 @@ function Header() {
         "bg-gradient-to-b from-green-700 to-green-300 px-4 py-4 lg:px-14 h-fit z-50 md:sticky top-0 w-full overflow-hidden max-w-full "
       )}
     >
-      <div className="max-w-screen-2xl mx-auto">
+      <div className="max-w-screen-2xl mx-auto max-sm:py-4 max-sm:px-2">
         <div className="w-full flex items-center justify-between mb-6">
           <div className="flex items-center lg:gap-16">
             <HeaderLogo />

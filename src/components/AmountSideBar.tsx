@@ -1,5 +1,5 @@
 "use client";
-import { AmountGet } from "@/app/acounts/page";
+import { AmountGet } from "@/app/accounts/page";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import AddAmount from "./AddAmount";

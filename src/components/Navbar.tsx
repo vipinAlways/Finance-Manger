@@ -15,7 +15,7 @@ import { Menu } from "lucide-react";
 const routes = [
   { href: "/dashboard", label: "Overview" },
   { href: "/transaction", label: "Transactions" },
-  { href: "/acounts", label: "Acounts" },
+  { href: "/accounts", label: "Accounts" },
   { href: "/categories", label: "Categories" },
 ];
 function Navbar() {
@@ -34,7 +34,7 @@ function Navbar() {
         ))}
       </nav>
       <Sheet>
-        <SheetTrigger className="text-zinc-100 hidden max-md:flex">
+        <SheetTrigger className="text-zinc-100 hidden max-lg:flex">
           <Menu />
         </SheetTrigger>
         <SheetContent side={"left"} className="w-60 bg-zinc-800 text-zinc-100">
