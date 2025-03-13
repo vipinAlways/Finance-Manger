@@ -33,7 +33,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     if (!startDate || !endDate) {
-      setTransactions([]); // Clear transactions if no dates are selected
+      setTransactions([]); 
       return;
     }
   
@@ -101,7 +101,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     const newResult = Transactions.filter(
       (item) =>
-        item.category == searchBox && item.transactionType === selectType
+        item.category == searchBox && item.transactionType === selectType && new Date(item.date) <= new Date(endDate!) && new Date(item.date) >= new Date(startDate!) 
     );
     setFilteredTransactions(newResult);
   }, [searchBox, selectType, Transactions]);
@@ -236,6 +236,7 @@ const Page: React.FC = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px] text-green-500">Date</TableHead>
+                <TableHead className="w-[100px] text-green-500">From</TableHead>
                 <TableHead className="text-green-500"> Amount</TableHead>
                 <TableHead className="text-green-500">Method</TableHead>
                 <TableHead className="text-green-500">Category</TableHead>
@@ -250,6 +251,9 @@ const Page: React.FC = () => {
                 <TableRow key={[transaction._id].toLocaleString()}>
                   <TableCell>
                     {new Date(transaction.date).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {transaction.from}
                   </TableCell>
                   <TableCell
                     className={cn(
