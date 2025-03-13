@@ -17,11 +17,6 @@ export interface AmountGet {
   _id?: string;
 }
 
-// type Amount = {
-//   budgetFor: string;
-//   amount: number;
-//   endDate: string;
-// };
 
 const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
@@ -78,17 +73,15 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [budgetCurrect]);
 
+  const totalEarned = useMemo(() => calculateTotalAmount("earn"), [transactions, budgetCurrect, index]);
+  const totalSpent = useMemo(() => calculateTotalAmount("spend"), [transactions, budgetCurrect, index]);
+  
   useEffect(() => {
     setProgress(
-      budgetCurrect[index]?.amount > 0
-        ? (Math.abs(
-            calculateTotalAmount("earn") + calculateTotalAmount("spend")
-          ) /
-            budgetCurrect[index]?.amount) *
-            100
-        : 0
+      budgetCurrect[index]?.amount > 0 ? (Math.abs(totalEarned + totalSpent) / budgetCurrect[index]?.amount) * 100 : 0
     );
-  }, [budgetCurrect, index, transactions, calculateTotalAmount]);
+  }, [budgetCurrect, index, totalEarned, totalSpent]);
+  
 
   const fetchTransactions = useCallback(async () => {
     if (!budgetCurrect[index]) return;
