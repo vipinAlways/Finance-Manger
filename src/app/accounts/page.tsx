@@ -8,6 +8,15 @@ import { Amount, Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export interface AmountGet {
   budgetFor: string;
@@ -16,7 +25,6 @@ export interface AmountGet {
   endDate: Date;
   _id?: string;
 }
-
 
 const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
@@ -73,15 +81,23 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [budgetCurrect]);
 
-  const totalEarned = useMemo(() => calculateTotalAmount("earn"), [transactions, budgetCurrect, index]);
-  const totalSpent = useMemo(() => calculateTotalAmount("spend"), [transactions, budgetCurrect, index]);
-  
+  const totalEarned = useMemo(
+    () => calculateTotalAmount("earn"),
+    [transactions, budgetCurrect, index]
+  );
+  const totalSpent = useMemo(
+    () => calculateTotalAmount("spend"),
+    [transactions, budgetCurrect, index]
+  );
+
   useEffect(() => {
     setProgress(
-      budgetCurrect[index]?.amount > 0 ? (Math.abs(totalEarned + totalSpent) / budgetCurrect[index]?.amount) * 100 : 0
+      budgetCurrect[index]?.amount > 0
+        ? (Math.abs(totalEarned + totalSpent) / budgetCurrect[index]?.amount) *
+            100
+        : 0
     );
   }, [budgetCurrect, index, totalEarned, totalSpent]);
-  
 
   const fetchTransactions = useCallback(async () => {
     if (!budgetCurrect[index]) return;
@@ -142,18 +158,34 @@ const Page = () => {
         <h1 className="text-4xl font-light">
           You have not added any budget name. Please add one to continue.
         </h1>
-        <Button onClick={() => setHidden2(!hidden2)}>ADD NAME</Button>
-        {!hidden2 && (
-          <form onSubmit={AddBudgetName} className="flex gap-3">
-            <input
-              type="text"
-              value={nameOfBudget}
-              onChange={(e) => setNameOfBudget(e.target.value)}
-              className="h-10 w-60 rounded-lg px-3"
-              placeholder="Enter the name..."
-            />
-          </form>
-        )}
+        <div className="w-full h-32 flex flex-col items-start gap-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-40">ADD NAME</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add CateGory</DialogTitle>
+                <DialogDescription>
+                  Add the categories what you want to have
+                </DialogDescription>
+              </DialogHeader>
+              <form
+                action="POST"
+                onSubmit={AddBudgetName}
+                className={cn("flex gap-2 items-center flex-1")}
+              >
+                <input
+                  type="text"
+                  value={nameOfBudget}
+                  name="cateGory"
+                  onChange={(e) => setNameOfBudget(e.target.value)}
+                  className="w-64 p-2 rounded-lg text-zinc-800 "
+                />
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     );
   }
@@ -162,20 +194,32 @@ const Page = () => {
   return (
     <div className="h-full w-full py-3 flex flex-col gap-4">
       <div className="w-full h-32 flex flex-col items-start gap-4">
-        <Button onClick={() => setHidden2(!hidden2)} className="w-32">
-          ADD NAME
-        </Button>
-        {!hidden2 && (
-          <form onSubmit={AddBudgetName} className="flex gap-3">
-            <input
-              type="text"
-              value={nameOfBudget}
-              onChange={(e) => setNameOfBudget(e.target.value)}
-              className="h-10 w-60 rounded-lg px-3"
-              placeholder="Enter the name..."
-            />
-          </form>
-        )}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-40">ADD NAME</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add CateGory</DialogTitle>
+              <DialogDescription>
+                Add the categories what you want to have
+              </DialogDescription>
+            </DialogHeader>
+            <form
+              action="POST"
+              onSubmit={AddBudgetName}
+              className={cn("flex gap-2 items-center flex-1")}
+            >
+              <input
+                type="text"
+                value={nameOfBudget}
+                name="cateGory"
+                onChange={(e) => setNameOfBudget(e.target.value)}
+                className="w-64 p-2 rounded-lg text-zinc-800 "
+              />
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-md:flex-col">
         <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem] w-80 p-3 rounded-md">

@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
@@ -135,13 +136,22 @@ const Page: React.FC = () => {
   return (
     <div className="w-full">
       <div className="p-4 flex justify-start gap-3 flex-1">
-        <Button className="w-40" onClick={() => setHidden(!hidden)}>
-          ADD CATEGORY
-        </Button>
+      
+        <Dialog>
+      <DialogTrigger asChild>
+        <Button className="w-40">ADD CATEGORY</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add CateGory</DialogTitle>
+          <DialogDescription>
+           Add the categories what you want to have 
+          </DialogDescription>
+        </DialogHeader>
         <form
           action="POST"
           onSubmit={createCategorey}
-          className={cn("flex gap-2 items-center flex-1", hidden && "hidden")}
+          className={cn("flex gap-2 items-center flex-1")}
         >
           <input
             type="text"
@@ -151,6 +161,10 @@ const Page: React.FC = () => {
             className="w-64 p-2 rounded-lg text-zinc-800 "
           />
         </form>
+      
+      </DialogContent>
+    </Dialog>
+      
       </div>
       <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 ">
         <div className="flex items-center gap-3 max-sm:justify-between flex-col">
