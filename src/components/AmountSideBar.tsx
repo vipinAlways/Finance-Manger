@@ -59,7 +59,7 @@ const AmountSideBar = () => {
           {budget.length > 0 &&
             budget.map((bud, index) => (
               <Link
-                href={`/acounts/${bud._id}`}
+                href={`/accounts/${bud._id}`}
                 key={bud.budgetFor + index}
                 className="text-2xl capitalize cursor-pointer font-mono font-semibold"
               >

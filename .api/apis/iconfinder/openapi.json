@@ -1,0 +1,1314 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Iconfinder API",
+    "version": "unknown"
+  },
+  "servers": [
+    {
+      "url": "https://api.iconfinder.com/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "x-default": "X0vjEUN6KRlxbp2DoUkyHeM0VOmxY91rA6BbU5j3Xu6wDodwS0McmilLPBWDUcJ1",
+        "x-bearer-format": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/vundefined/iconsets": {
+      "get": {
+        "summary": "List all public icon sets",
+        "description": "List all public icon sets in descending order of when they were published.",
+        "operationId": "getting-started-with-your-api-1",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of icon sets to include in the result. Accepted values are between 1 and 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Icon set ID of the last icon set received. If empty, the count most recently published icon sets are returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "premium",
+            "in": "query",
+            "description": "Filter premium icon sets. all or empty value - Include all icon sets no matter if they are premium or not. 0 or false - Only include icon sets that are not premium, ie. may require purchasing a license for specific use cases but are not sold directly on the Iconfinder marketplace. 1 or true - Only include premium icon sets, that are sold directly on the Iconfinder marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vector",
+            "in": "query",
+            "description": "Filter vector icon sets. all or empty value - Include all icon sets no matter if they are vector or raster icon sets. 0 or false - Only include raster icon sets in the result. 1 or true - Only include vector icon sets in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Filter by license scope. none or empty value - Include all icon sets no matter the license. commercial - Only include icon sets that can be used commercially, but may require attribution or be restricted by other licensing concerns. commercial-nonattribution - Only include icon sets that be used commercially without any attribution requirements.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"iconsets\": [\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Insurance\",\n      \"published_at\": \"2020-06-29T11:37:05.491Z\",\n      \"iconset_id\": 195129,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"insurance-101\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Nature And Farming\",\n      \"published_at\": \"2020-06-29T11:37:05.476Z\",\n      \"iconset_id\": 195130,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"nature-and-farming-5\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Transport\",\n      \"published_at\": \"2020-06-29T11:37:00.333Z\",\n      \"iconset_id\": 195119,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"transport-178\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Crowdfunding\",\n      \"published_at\": \"2020-06-29T11:33:45.311Z\",\n      \"iconset_id\": 195132,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"crowdfunding-13\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Transport\",\n      \"published_at\": \"2020-06-29T11:33:45.284Z\",\n      \"iconset_id\": 195116,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"transport-177\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 50,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Video Production\",\n      \"published_at\": \"2020-06-29T11:33:43.346Z\",\n      \"iconset_id\": 195123,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"video-production-23\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Crowdfunding\",\n      \"published_at\": \"2020-06-29T11:30:03.404Z\",\n      \"iconset_id\": 195122,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"crowdfunding-9\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Crowdfunding\",\n      \"published_at\": \"2020-06-29T11:30:01.795Z\",\n      \"iconset_id\": 195126,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"crowdfunding-11\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"Insurance\",\n      \"published_at\": \"2020-06-29T11:27:27.801Z\",\n      \"iconset_id\": 195124,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"insurance-99\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 50,\n      \"author\": {\n        \"company\": \"1DollarIcon\",\n        \"username\": \"1DollarIcon\",\n        \"name\": \"Rizwan Abbasi\",\n        \"is_designer\": true,\n        \"iconsets_count\": 648,\n        \"user_id\": 1188405\n      },\n      \"name\": \"User Interface\",\n      \"published_at\": \"2020-06-29T11:27:23.778Z\",\n      \"iconset_id\": 195108,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"user-interface-575\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    }\n  ],\n  \"total_count\": 123537\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iconsets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "categories": {
+                            "type": "array"
+                          },
+                          "icons_count": {
+                            "type": "integer",
+                            "example": 25,
+                            "default": 0
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "company": {
+                                "type": "string",
+                                "example": "1DollarIcon"
+                              },
+                              "username": {
+                                "type": "string",
+                                "example": "1DollarIcon"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Rizwan Abbasi"
+                              },
+                              "is_designer": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "iconsets_count": {
+                                "type": "integer",
+                                "example": 648,
+                                "default": 0
+                              },
+                              "user_id": {
+                                "type": "integer",
+                                "example": 1188405,
+                                "default": 0
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Insurance"
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2020-06-29T11:37:05.491Z"
+                          },
+                          "iconset_id": {
+                            "type": "integer",
+                            "example": 195129,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "vector"
+                          },
+                          "styles": {
+                            "type": "array"
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "insurance-101"
+                          },
+                          "is_premium": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "prices": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price": {
+                                  "type": "integer",
+                                  "example": 25,
+                                  "default": 0
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "example": "USD"
+                                },
+                                "license": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "example": "Basic license"
+                                    },
+                                    "scope": {
+                                      "type": "string",
+                                      "example": "free"
+                                    },
+                                    "license_id": {
+                                      "type": "integer",
+                                      "example": 71,
+                                      "default": 0
+                                    },
+                                    "url": {
+                                      "type": "string",
+                                      "example": "https://www.iconfinder.com/licenses/basic"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "are_all_icons_glyph": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 123537,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vundefined/categories/{category_identifier}/iconsets": {
+      "get": {
+        "summary": "List icon sets in a category",
+        "description": "List public icon sets in a category in descending order of when they were published.",
+        "operationId": "list-icon-sets-in-a-category",
+        "parameters": [
+          {
+            "name": "category_identifier",
+            "in": "path",
+            "description": "The category identifier",
+            "schema": {
+              "type": "string",
+              "default": "arrow"
+            },
+            "required": true
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of icon sets to include in the result. Accepted values are between 1 and 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Icon set ID of the last icon set received. If empty, the count most recently published icon sets are returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "premium",
+            "in": "query",
+            "description": "Filter premium icon sets. all or empty value - Include all icon sets no matter if they are premium or not. 0 or false - Only include icon sets that are not premium, ie. may require purchasing a license for specific use cases but are not sold directly on the Iconfinder marketplace. 1 or true - Only include premium icon sets, that are sold directly on the Iconfinder marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vector",
+            "in": "query",
+            "description": "Filter vector icon sets. all or empty value - Include all icon sets no matter if they are vector or raster icon sets. 0 or false - Only include raster icon sets in the result. 1 or true - Only include vector icon sets in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Filter by license scope. none or empty value - Include all icon sets no matter the license. commercial - Only include icon sets that can be used commercially, but may require attribution or be restricted by other licensing concerns. commercial-nonattribution - Only include icon sets that be used commercially without any attribution requirements.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"iconsets\": [\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 50,\n      \"author\": {\n        \"company\": \"Cornucopia\",\n        \"username\": \"BaconTaco\",\n        \"name\": \"Jesus Chavarria\",\n        \"is_designer\": true,\n        \"iconsets_count\": 64,\n        \"user_id\": 1111996\n      },\n      \"name\": \"Arrows\",\n      \"published_at\": \"2020-05-07T19:19:47.667Z\",\n      \"iconset_id\": 183079,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrows-305\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 25,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 122,\n      \"author\": {\n        \"name\": \"wahyakup .\",\n        \"user_id\": 1207977,\n        \"is_designer\": true,\n        \"iconsets_count\": 36,\n        \"username\": \"wahya\"\n      },\n      \"name\": \"Arrows vol 1a (Badge)\",\n      \"published_at\": \"2020-05-07T12:53:44.694Z\",\n      \"iconset_id\": 186091,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrows-vol-1a-badge\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 15,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 21,\n      \"author\": {\n        \"name\": \"Tinti Nodarse\",\n        \"user_id\": 1231839,\n        \"is_designer\": true,\n        \"iconsets_count\": 20,\n        \"username\": \"Tin_Marin\"\n      },\n      \"name\": \"Download filled outline\",\n      \"published_at\": \"2020-05-06T10:53:25.054Z\",\n      \"iconset_id\": 185167,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"download-filled-outline\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 14,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        },\n        {\n          \"name\": \"User interface optimal\",\n          \"identifier\": \"user-interface-optimal\"\n        }\n      ],\n      \"icons_count\": 19,\n      \"author\": {\n        \"company\": \"Graphixs Art\",\n        \"username\": \"HmizzPro\",\n        \"name\": \"Hamza Mehtab\",\n        \"is_designer\": true,\n        \"iconsets_count\": 3,\n        \"user_id\": 1190090\n      },\n      \"name\": \"03 - Arrows\",\n      \"published_at\": \"2020-05-04T10:29:21.030Z\",\n      \"iconset_id\": 183152,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"03-arrows\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 35,\n      \"author\": {\n        \"name\": \"Irfan Setiawan\",\n        \"user_id\": 1230450,\n        \"is_designer\": true,\n        \"iconsets_count\": 13,\n        \"username\": \"ims_icon\"\n      },\n      \"name\": \"Arrows\",\n      \"published_at\": \"2020-05-03T21:36:24.222Z\",\n      \"iconset_id\": 183027,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrows-304\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 12,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 106,\n      \"author\": {\n        \"name\": \"Alpár-Etele Méder\",\n        \"user_id\": 490671,\n        \"is_designer\": true,\n        \"iconsets_count\": 722,\n        \"username\": \"pocike\"\n      },\n      \"name\": \"Arrows\",\n      \"published_at\": \"2020-04-28T12:00:52.658Z\",\n      \"iconset_id\": 183897,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrows-307\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 50,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        },\n        {\n          \"name\": \"User interface optimal\",\n          \"identifier\": \"user-interface-optimal\"\n        }\n      ],\n      \"icons_count\": 40,\n      \"author\": {\n        \"name\": \"Nicolas LEULIET\",\n        \"user_id\": 1205031,\n        \"is_designer\": true,\n        \"iconsets_count\": 7,\n        \"username\": \"NLeuliet\"\n      },\n      \"name\": \"Arrow - Outline\",\n      \"published_at\": \"2020-04-16T11:30:59.237Z\",\n      \"iconset_id\": 181188,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrow-outline-15\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 45,\n      \"author\": {\n        \"company\": \"Ranah Pixel Studio\",\n        \"username\": \"ranahpixel.co\",\n        \"name\": \"Suryadi -\",\n        \"is_designer\": true,\n        \"iconsets_count\": 128,\n        \"user_id\": 1061080\n      },\n      \"name\": \"Arrows Ver. 3 (Glyph 32 px)\",\n      \"published_at\": \"2020-04-15T10:39:52.216Z\",\n      \"iconset_id\": 180452,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrows-ver-3-glyph-32-px\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        },\n        {\n          \"name\": \"Signs & symbols\",\n          \"identifier\": \"sign-symbol\"\n        }\n      ],\n      \"icons_count\": 11,\n      \"author\": {\n        \"name\": \"Haru Kun\",\n        \"user_id\": 890541,\n        \"is_designer\": true,\n        \"iconsets_count\": 1,\n        \"username\": \"Bahar7k\"\n      },\n      \"name\": \"General Basic\",\n      \"published_at\": \"2020-04-15T10:38:07.703Z\",\n      \"iconset_id\": 180288,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"general-basic-1\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 11,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Arrows\",\n          \"identifier\": \"arrow\"\n        }\n      ],\n      \"icons_count\": 20,\n      \"author\": {\n        \"company\": \"Broccolicon\",\n        \"username\": \"broccolicon25\",\n        \"name\": \"Ali Masykur Musa\",\n        \"is_designer\": true,\n        \"iconsets_count\": 28,\n        \"user_id\": 691758\n      },\n      \"name\": \"Arrow\",\n      \"published_at\": \"2020-04-13T10:57:44.505Z\",\n      \"iconset_id\": 180607,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"arrow-150\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    }\n  ],\n  \"total_count\": 1114\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iconsets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Arrows"
+                                },
+                                "identifier": {
+                                  "type": "string",
+                                  "example": "arrow"
+                                }
+                              }
+                            }
+                          },
+                          "icons_count": {
+                            "type": "integer",
+                            "example": 50,
+                            "default": 0
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "company": {
+                                "type": "string",
+                                "example": "Cornucopia"
+                              },
+                              "username": {
+                                "type": "string",
+                                "example": "BaconTaco"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Jesus Chavarria"
+                              },
+                              "is_designer": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "iconsets_count": {
+                                "type": "integer",
+                                "example": 64,
+                                "default": 0
+                              },
+                              "user_id": {
+                                "type": "integer",
+                                "example": 1111996,
+                                "default": 0
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Arrows"
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2020-05-07T19:19:47.667Z"
+                          },
+                          "iconset_id": {
+                            "type": "integer",
+                            "example": 183079,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "vector"
+                          },
+                          "styles": {
+                            "type": "array"
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "arrows-305"
+                          },
+                          "is_premium": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "prices": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price": {
+                                  "type": "integer",
+                                  "example": 25,
+                                  "default": 0
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "example": "USD"
+                                },
+                                "license": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "example": "Basic license"
+                                    },
+                                    "scope": {
+                                      "type": "string",
+                                      "example": "free"
+                                    },
+                                    "license_id": {
+                                      "type": "integer",
+                                      "example": 71,
+                                      "default": 0
+                                    },
+                                    "url": {
+                                      "type": "string",
+                                      "example": "https://www.iconfinder.com/licenses/basic"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "are_all_icons_glyph": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 1114,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vundefined/users/{user_id}/iconsets": {
+      "get": {
+        "summary": "List a user’s icon sets",
+        "description": "List all public icon sets owned by a specific user in descending order of when they were published.",
+        "operationId": "list-a-users-icon-sets",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The id of the user",
+            "schema": {
+              "type": "string",
+              "default": "14"
+            },
+            "required": true
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of icon sets to include in the result. Accepted values are between 1 and 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Icon set ID of the last icon set received. If empty, the count most recently published icon sets are returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "premium",
+            "in": "query",
+            "description": "Filter premium icon sets. all or empty value - Include all icon sets no matter if they are premium or not. 0 or false - Only include icon sets that are not premium, ie. may require purchasing a license for specific use cases but are not sold directly on the Iconfinder marketplace. 1 or true - Only include premium icon sets, that are sold directly on the Iconfinder marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vector",
+            "in": "query",
+            "description": "Filter vector icon sets. all or empty value - Include all icon sets no matter if they are vector or raster icon sets. 0 or false - Only include raster icon sets in the result. 1 or true - Only include vector icon sets in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Filter by license scope. none or empty value - Include all icon sets no matter the license. commercial - Only include icon sets that can be used commercially, but may require attribution or be restricted by other licensing concerns. commercial-nonattribution - Only include icon sets that be used commercially without any attribution requirements.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"iconsets\": [\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"name\": \"Women and Men\",\n      \"published_at\": \"2020-04-07T12:02:27.164Z\",\n      \"iconset_id\": 181335,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"women-and-men-1\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Animals\",\n          \"identifier\": \"animal\"\n        }\n      ],\n      \"icons_count\": 25,\n      \"name\": \"Wild Animals\",\n      \"published_at\": \"2020-04-07T11:58:31.016Z\",\n      \"iconset_id\": 181332,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"wild-animal-6\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Weather\",\n          \"identifier\": \"weather\"\n        }\n      ],\n      \"icons_count\": 25,\n      \"name\": \"Weather\",\n      \"published_at\": \"2020-04-07T11:56:21.094Z\",\n      \"iconset_id\": 181331,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"weather-647\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"name\": \"VR\",\n      \"published_at\": \"2020-04-07T11:49:38.554Z\",\n      \"iconset_id\": 181327,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"vr\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"name\": \"Video\",\n      \"published_at\": \"2020-04-07T11:46:57.921Z\",\n      \"iconset_id\": 181324,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"video-38\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 24,\n      \"name\": \"Victory Day\",\n      \"published_at\": \"2020-04-07T11:45:21.719Z\",\n      \"iconset_id\": 181323,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"victory-day\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Agriculture, farming, & gardening\",\n          \"identifier\": \"agriculture-farming-gardening\"\n        }\n      ],\n      \"icons_count\": 25,\n      \"name\": \"Vegetables\",\n      \"published_at\": \"2020-04-07T11:43:35.015Z\",\n      \"iconset_id\": 181321,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"vegetables-83\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Love & romance\",\n          \"identifier\": \"love-romance\"\n        }\n      ],\n      \"icons_count\": 25,\n      \"name\": \"Valentine\",\n      \"published_at\": \"2020-04-07T11:42:02.582Z\",\n      \"iconset_id\": 181319,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"valentine-2104\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 25,\n      \"name\": \"USA\",\n      \"published_at\": \"2020-04-07T11:39:00.636Z\",\n      \"iconset_id\": 181316,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"usa-20\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Education, school & learning\",\n          \"identifier\": \"education-school-learning\"\n        }\n      ],\n      \"icons_count\": 24,\n      \"name\": \"University\",\n      \"published_at\": \"2020-04-07T11:37:03.750Z\",\n      \"iconset_id\": 181315,\n      \"type\": \"vector\",\n      \"styles\": [],\n      \"identifier\": \"university-19\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    }\n  ],\n  \"total_count\": 306\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iconsets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "categories": {
+                            "type": "array"
+                          },
+                          "icons_count": {
+                            "type": "integer",
+                            "example": 25,
+                            "default": 0
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Women and Men"
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2020-04-07T12:02:27.164Z"
+                          },
+                          "iconset_id": {
+                            "type": "integer",
+                            "example": 181335,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "vector"
+                          },
+                          "styles": {
+                            "type": "array"
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "women-and-men-1"
+                          },
+                          "is_premium": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "prices": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price": {
+                                  "type": "integer",
+                                  "example": 10,
+                                  "default": 0
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "example": "USD"
+                                },
+                                "license": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "example": "Basic license"
+                                    },
+                                    "scope": {
+                                      "type": "string",
+                                      "example": "free"
+                                    },
+                                    "license_id": {
+                                      "type": "integer",
+                                      "example": 71,
+                                      "default": 0
+                                    },
+                                    "url": {
+                                      "type": "string",
+                                      "example": "https://www.iconfinder.com/licenses/basic"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "are_all_icons_glyph": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 306,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vundefined/styles/{style_identifier}/iconsets": {
+      "get": {
+        "summary": "List icon sets of a specific style",
+        "description": "List public icon sets of a specific style in descending order of when they were published.",
+        "operationId": "list-icon-sets-of-a-specific-style-1",
+        "parameters": [
+          {
+            "name": "style_identifier",
+            "in": "path",
+            "description": "The style identifier. Available style identifiers can be retrieved with the `/styles` endpoint.",
+            "schema": {
+              "type": "string",
+              "default": "outline"
+            },
+            "required": true
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of icon sets to include in the result. Accepted values are between 1 and 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Icon set ID of the last icon set received. If empty, the count most recently published icon sets are returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "premium",
+            "in": "query",
+            "description": "Filter premium icon sets. all or empty value - Include all icon sets no matter if they are premium or not. 0 or false - Only include icon sets that are not premium, ie. may require purchasing a license for specific use cases but are not sold directly on the Iconfinder marketplace. 1 or true - Only include premium icon sets, that are sold directly on the Iconfinder marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vector",
+            "in": "query",
+            "description": "Filter vector icon sets. all or empty value - Include all icon sets no matter if they are vector or raster icon sets. 0 or false - Only include raster icon sets in the result. 1 or true - Only include vector icon sets in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Filter by license scope. none or empty value - Include all icon sets no matter the license. commercial - Only include icon sets that can be used commercially, but may require attribution or be restricted by other licensing concerns. commercial-nonattribution - Only include icon sets that be used commercially without any attribution requirements.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"iconsets\": [\n    {\n      \"categories\": [\n        {\n          \"name\": \"Business & management\",\n          \"identifier\": \"business-management\"\n        }\n      ],\n      \"icons_count\": 111,\n      \"author\": {\n        \"company\": \"Rank Sol\",\n        \"username\": \"promotionking\",\n        \"name\": \"Rank Sol\",\n        \"is_designer\": true,\n        \"iconsets_count\": 702,\n        \"user_id\": 863131\n      },\n      \"name\": \"Trade and Finance\",\n      \"published_at\": \"2020-06-12T12:33:38.047Z\",\n      \"iconset_id\": 163187,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"trade-and-finance-1\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 19,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [],\n      \"icons_count\": 20,\n      \"author\": {\n        \"name\": \"Irpan Ramdhani\",\n        \"user_id\": 1216517,\n        \"is_designer\": true,\n        \"iconsets_count\": 2,\n        \"username\": \"Irpan_\"\n      },\n      \"name\": \"Home\",\n      \"published_at\": \"2020-06-04T08:36:51.601Z\",\n      \"iconset_id\": 189679,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"home-99\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Electronic devices & appliances\",\n          \"identifier\": \"electronic-devices-appliances\"\n        }\n      ],\n      \"icons_count\": 100,\n      \"author\": {\n        \"name\": \"shashank singh\",\n        \"user_id\": 425262,\n        \"is_designer\": true,\n        \"iconsets_count\": 245,\n        \"username\": \"rshashank19\"\n      },\n      \"name\": \"Electronics 1.4\",\n      \"published_at\": \"2020-05-28T20:34:23.297Z\",\n      \"iconset_id\": 174919,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"electronics-1-4-1\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Other holidays\",\n          \"identifier\": \"other-holidays\"\n        },\n        {\n          \"name\": \"Family & home\",\n          \"identifier\": \"family-home\"\n        }\n      ],\n      \"icons_count\": 20,\n      \"author\": {\n        \"name\": \"Muhammad Tajudin\",\n        \"user_id\": 952495,\n        \"is_designer\": true,\n        \"iconsets_count\": 70,\n        \"username\": \"tajudinartworks\"\n      },\n      \"name\": \"Father's Day\",\n      \"published_at\": \"2020-04-29T11:54:05.870Z\",\n      \"iconset_id\": 184462,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"father-day-6\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 9,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Other holidays\",\n          \"identifier\": \"other-holidays\"\n        },\n        {\n          \"name\": \"Family & home\",\n          \"identifier\": \"family-home\"\n        }\n      ],\n      \"icons_count\": 20,\n      \"author\": {\n        \"name\": \"Muhammad Tajudin\",\n        \"user_id\": 952495,\n        \"is_designer\": true,\n        \"iconsets_count\": 70,\n        \"username\": \"tajudinartworks\"\n      },\n      \"name\": \"Mother's Day\",\n      \"published_at\": \"2020-04-27T08:54:11.251Z\",\n      \"iconset_id\": 182581,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"mother-day-12\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 9,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Tools & construction\",\n          \"identifier\": \"tools-construction\"\n        }\n      ],\n      \"icons_count\": 44,\n      \"author\": {\n        \"name\": \"Ricardo Ruiz\",\n        \"user_id\": 697053,\n        \"is_designer\": true,\n        \"iconsets_count\": 223,\n        \"username\": \"Myart\"\n      },\n      \"name\": \"Tools & Utensils\",\n      \"published_at\": \"2020-04-22T18:12:16.199Z\",\n      \"iconset_id\": 182700,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"tools-utensils\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 18,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Shipping, Delivery, & Fulfillment\",\n          \"identifier\": \"shipping-delivery-and-fulfillment\"\n        }\n      ],\n      \"icons_count\": 97,\n      \"author\": {\n        \"name\": \"Ricardo Ruiz\",\n        \"user_id\": 697053,\n        \"is_designer\": true,\n        \"iconsets_count\": 223,\n        \"username\": \"Myart\"\n      },\n      \"name\": \"Shipping Logistics\",\n      \"published_at\": \"2020-04-20T11:58:15.619Z\",\n      \"iconset_id\": 182739,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"shipping-logistics-5\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 39,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Weather\",\n          \"identifier\": \"weather\"\n        }\n      ],\n      \"icons_count\": 32,\n      \"author\": {\n        \"company\": \"culombio\",\n        \"username\": \"CulombioArt\",\n        \"name\": \"Francisco Couto\",\n        \"is_designer\": true,\n        \"iconsets_count\": 24,\n        \"user_id\": 1226632\n      },\n      \"name\": \"Weather\",\n      \"published_at\": \"2020-04-20T10:06:48.302Z\",\n      \"iconset_id\": 183289,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"weather-654\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Nature, outdoors & adventure\",\n          \"identifier\": \"nature-outdoor-adventure\"\n        },\n        {\n          \"name\": \"Spring\",\n          \"identifier\": \"spring\"\n        }\n      ],\n      \"icons_count\": 32,\n      \"author\": {\n        \"company\": \"culombio\",\n        \"username\": \"CulombioArt\",\n        \"name\": \"Francisco Couto\",\n        \"is_designer\": true,\n        \"iconsets_count\": 24,\n        \"user_id\": 1226632\n      },\n      \"name\": \"Spring\",\n      \"published_at\": \"2020-04-20T10:05:46.299Z\",\n      \"iconset_id\": 183283,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"spring-125\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Animals\",\n          \"identifier\": \"animal\"\n        }\n      ],\n      \"icons_count\": 32,\n      \"author\": {\n        \"company\": \"culombio\",\n        \"username\": \"CulombioArt\",\n        \"name\": \"Francisco Couto\",\n        \"is_designer\": true,\n        \"iconsets_count\": 24,\n        \"user_id\": 1226632\n      },\n      \"name\": \"Wild Animals\",\n      \"published_at\": \"2020-04-20T10:05:42.237Z\",\n      \"iconset_id\": 183290,\n      \"type\": \"vector\",\n      \"styles\": [\n        {\n          \"name\": \"Outline\",\n          \"identifier\": \"outline\"\n        }\n      ],\n      \"identifier\": \"wild-animals-6\",\n      \"is_premium\": true,\n      \"prices\": [\n        {\n          \"price\": 10,\n          \"currency\": \"USD\",\n          \"license\": {\n            \"name\": \"Basic license\",\n            \"scope\": \"free\",\n            \"license_id\": 71,\n            \"url\": \"https://www.iconfinder.com/licenses/basic\"\n          }\n        }\n      ],\n      \"are_all_icons_glyph\": false\n    }\n  ],\n  \"total_count\": 37127\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iconsets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Business & management"
+                                },
+                                "identifier": {
+                                  "type": "string",
+                                  "example": "business-management"
+                                }
+                              }
+                            }
+                          },
+                          "icons_count": {
+                            "type": "integer",
+                            "example": 111,
+                            "default": 0
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "company": {
+                                "type": "string",
+                                "example": "Rank Sol"
+                              },
+                              "username": {
+                                "type": "string",
+                                "example": "promotionking"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Rank Sol"
+                              },
+                              "is_designer": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "iconsets_count": {
+                                "type": "integer",
+                                "example": 702,
+                                "default": 0
+                              },
+                              "user_id": {
+                                "type": "integer",
+                                "example": 863131,
+                                "default": 0
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Trade and Finance"
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2020-06-12T12:33:38.047Z"
+                          },
+                          "iconset_id": {
+                            "type": "integer",
+                            "example": 163187,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "vector"
+                          },
+                          "styles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Outline"
+                                },
+                                "identifier": {
+                                  "type": "string",
+                                  "example": "outline"
+                                }
+                              }
+                            }
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "trade-and-finance-1"
+                          },
+                          "is_premium": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "prices": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price": {
+                                  "type": "integer",
+                                  "example": 19,
+                                  "default": 0
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "example": "USD"
+                                },
+                                "license": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "example": "Basic license"
+                                    },
+                                    "scope": {
+                                      "type": "string",
+                                      "example": "free"
+                                    },
+                                    "license_id": {
+                                      "type": "integer",
+                                      "example": 71,
+                                      "default": 0
+                                    },
+                                    "url": {
+                                      "type": "string",
+                                      "example": "https://www.iconfinder.com/licenses/basic"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "are_all_icons_glyph": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 37127,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vundefined/authors/{author_id}/iconsets": {
+      "get": {
+        "summary": "List an author’s icon sets",
+        "description": "List all public icon sets owned by a specific author in descending order of when they were published.",
+        "operationId": "list-an-authors-icon-sets",
+        "parameters": [
+          {
+            "name": "author_id",
+            "in": "path",
+            "description": "The author id",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "required": true
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of icon sets to include in the result. Accepted values are between 1 and 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Icon set ID of the last icon set received. If empty, the count most recently published icon sets are returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "premium",
+            "in": "query",
+            "description": "Filter premium icon sets. all or empty value - Include all icon sets no matter if they are premium or not. 0 or false - Only include icon sets that are not premium, ie. may require purchasing a license for specific use cases but are not sold directly on the Iconfinder marketplace. 1 or true - Only include premium icon sets, that are sold directly on the Iconfinder marketplace.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vector",
+            "in": "query",
+            "description": "Filter vector icon sets. all or empty value - Include all icon sets no matter if they are vector or raster icon sets. 0 or false - Only include raster icon sets in the result. 1 or true - Only include vector icon sets in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Filter by license scope. none or empty value - Include all icon sets no matter the license. commercial - Only include icon sets that can be used commercially, but may require attribution or be restricted by other licensing concerns. commercial-nonattribution - Only include icon sets that be used commercially without any attribution requirements.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"iconsets\": [\n    {\n      \"categories\": [\n        {\n          \"name\": \"Mixed\",\n          \"identifier\": \"mixed\"\n        }\n      ],\n      \"icons_count\": 278,\n      \"name\": \"Nuove\",\n      \"published_at\": \"2009-11-29T13:33:46Z\",\n      \"iconset_id\": 2,\n      \"type\": \"raster\",\n      \"license\": {\n        \"name\": \"LGPL\",\n        \"scope\": \"free\",\n        \"license_id\": 21,\n        \"url\": \"http://www.gnu.org/licenses/lgpl.html\"\n      },\n      \"styles\": [\n        {\n          \"name\": \"3D\",\n          \"identifier\": \"3d\"\n        }\n      ],\n      \"identifier\": \"nuove\",\n      \"website_url\": \"http://www.kde-look.org/content/show.php/nuoveXT+2?content=62630\",\n      \"is_premium\": false,\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"Mixed\",\n          \"identifier\": \"mixed\"\n        }\n      ],\n      \"icons_count\": 220,\n      \"name\": \"Vista Inspirate\",\n      \"published_at\": \"2009-11-29T12:40:15Z\",\n      \"iconset_id\": 7,\n      \"type\": \"raster\",\n      \"license\": {\n        \"name\": \"GPL\",\n        \"scope\": \"free\",\n        \"license_id\": 20,\n        \"url\": \"http://www.gnu.org/copyleft/gpl.html\"\n      },\n      \"styles\": [\n        {\n          \"name\": \"Smooth\",\n          \"identifier\": \"smooth\"\n        }\n      ],\n      \"identifier\": \"Vista_Inspirate_1_0\",\n      \"website_url\": \"http://www.kde-look.org/content/show.php?content=31585\",\n      \"is_premium\": false,\n      \"are_all_icons_glyph\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"name\": \"User interface optimal\",\n          \"identifier\": \"user-interface-optimal\"\n        }\n      ],\n      \"icons_count\": 157,\n      \"name\": \"Snowish\",\n      \"published_at\": \"2009-11-29T12:40:09Z\",\n      \"iconset_id\": 281,\n      \"type\": \"raster\",\n      \"license\": {\n        \"name\": \"GPL\",\n        \"scope\": \"free\",\n        \"license_id\": 20,\n        \"url\": \"http://www.gnu.org/copyleft/gpl.html\"\n      },\n      \"styles\": [\n        {\n          \"name\": \"Smooth\",\n          \"identifier\": \"smooth\"\n        }\n      ],\n      \"identifier\": \"snowish\",\n      \"website_url\": \"http://www.gnome-look.org/content/show.php?content=32599\",\n      \"is_premium\": false,\n      \"are_all_icons_glyph\": false\n    }\n  ],\n  \"total_count\": 3\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iconsets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Mixed"
+                                },
+                                "identifier": {
+                                  "type": "string",
+                                  "example": "mixed"
+                                }
+                              }
+                            }
+                          },
+                          "icons_count": {
+                            "type": "integer",
+                            "example": 278,
+                            "default": 0
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Nuove"
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2009-11-29T13:33:46Z"
+                          },
+                          "iconset_id": {
+                            "type": "integer",
+                            "example": 2,
+                            "default": 0
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "raster"
+                          },
+                          "license": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "LGPL"
+                              },
+                              "scope": {
+                                "type": "string",
+                                "example": "free"
+                              },
+                              "license_id": {
+                                "type": "integer",
+                                "example": 21,
+                                "default": 0
+                              },
+                              "url": {
+                                "type": "string",
+                                "example": "http://www.gnu.org/licenses/lgpl.html"
+                              }
+                            }
+                          },
+                          "styles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "3D"
+                                },
+                                "identifier": {
+                                  "type": "string",
+                                  "example": "3d"
+                                }
+                              }
+                            }
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "nuove"
+                          },
+                          "website_url": {
+                            "type": "string",
+                            "example": "http://www.kde-look.org/content/show.php/nuoveXT+2?content=62630"
+                          },
+                          "is_premium": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          },
+                          "are_all_icons_glyph": {
+                            "type": "boolean",
+                            "example": false,
+                            "default": true
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 3,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/vundefined/iconsets/{iconset_id}": {
+      "get": {
+        "summary": "Get icon set details",
+        "description": "Get details about a specific icon set.",
+        "operationId": "get-icon-set-details",
+        "parameters": [
+          {
+            "name": "iconset_id",
+            "in": "path",
+            "description": "The icon set id",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1761
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"categories\": [\n    {\n      \"name\": \"Mixed\",\n      \"identifier\": \"mixed\"\n    }\n  ],\n  \"icons_count\": 6,\n  \"author\": {\n    \"company\": \"Iconfinder\",\n    \"username\": \"iconfinder\",\n    \"name\": \"Martin LeBlanc\",\n    \"is_designer\": true,\n    \"iconsets_count\": 306,\n    \"user_id\": 14\n  },\n  \"name\": \"Iconfinder logo\",\n  \"published_at\": \"2017-05-30T10:49:05.325\",\n  \"iconset_id\": 1761,\n  \"type\": \"vector\",\n  \"license\": {\n    \"name\": \"Free for commercial use (Do not redistribute)\",\n    \"scope\": \"free\",\n    \"license_id\": 12\n  },\n  \"readme\": \"<p>Copyright Iconfinder ApS</p>\\n\\n<p>You may only use these images if they are related to Iconfinder.</p>\\n\",\n  \"styles\": [\n    {\n      \"name\": \"Glyph\",\n      \"identifier\": \"glyph\"\n    }\n  ],\n  \"identifier\": \"iconfinder-logo\",\n  \"website_url\": \"http://www.iconfinder.com/\",\n  \"is_premium\": false,\n  \"are_all_icons_glyph\": false\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Mixed"
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "mixed"
+                          }
+                        }
+                      }
+                    },
+                    "icons_count": {
+                      "type": "integer",
+                      "example": 6,
+                      "default": 0
+                    },
+                    "author": {
+                      "type": "object",
+                      "properties": {
+                        "company": {
+                          "type": "string",
+                          "example": "Iconfinder"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "iconfinder"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Martin LeBlanc"
+                        },
+                        "is_designer": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "iconsets_count": {
+                          "type": "integer",
+                          "example": 306,
+                          "default": 0
+                        },
+                        "user_id": {
+                          "type": "integer",
+                          "example": 14,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Iconfinder logo"
+                    },
+                    "published_at": {
+                      "type": "string",
+                      "example": "2017-05-30T10:49:05.325"
+                    },
+                    "iconset_id": {
+                      "type": "integer",
+                      "example": 1761,
+                      "default": 0
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "vector"
+                    },
+                    "license": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Free for commercial use (Do not redistribute)"
+                        },
+                        "scope": {
+                          "type": "string",
+                          "example": "free"
+                        },
+                        "license_id": {
+                          "type": "integer",
+                          "example": 12,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "readme": {
+                      "type": "string",
+                      "example": "<p>Copyright Iconfinder ApS</p>\n\n<p>You may only use these images if they are related to Iconfinder.</p>\n"
+                    },
+                    "styles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Glyph"
+                          },
+                          "identifier": {
+                            "type": "string",
+                            "example": "glyph"
+                          }
+                        }
+                      }
+                    },
+                    "identifier": {
+                      "type": "string",
+                      "example": "iconfinder-logo"
+                    },
+                    "website_url": {
+                      "type": "string",
+                      "example": "http://www.iconfinder.com/"
+                    },
+                    "is_premium": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    },
+                    "are_all_icons_glyph": {
+                      "type": "boolean",
+                      "example": false,
+                      "default": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": []
+  },
+  "x-readme-fauxas": true
+}

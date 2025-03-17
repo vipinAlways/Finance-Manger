@@ -148,7 +148,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
     },
   };
 
-  return <Bar options={options} data={data} className="h-full w-full" />;
+  return <Bar options={options} data={data} className="h-96 w-full" />;
 }
 
 export default BarGraph;

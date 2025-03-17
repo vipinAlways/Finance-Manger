@@ -12,7 +12,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -37,6 +36,7 @@ const Page = () => {
   const [index, setIndex] = useState(0);
   const { toast } = useToast();
   const [progress, setProgress] = useState(0);
+ 
 
   const calculateTotalAmount = useCallback(
     (type: string) =>
@@ -152,6 +152,9 @@ const Page = () => {
     }
   };
 
+  
+  
+
   if (budgetName.length === 0) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
@@ -189,7 +192,8 @@ const Page = () => {
       </div>
     );
   }
-  
+
+
 
   return (
     <div className="h-full w-full py-3 flex flex-col gap-4">
@@ -218,6 +222,7 @@ const Page = () => {
                 className="w-64 p-2 rounded-lg text-zinc-800 "
               />
             </form>
+           
           </DialogContent>
         </Dialog>
       </div>
@@ -229,7 +234,7 @@ const Page = () => {
                 i === index && (
                   <Link
                     key={i}
-                    href={`/acounts/${show._id}`}
+                    href={`/accounts/${show._id}`}
                     className="md:w-[28rem] md:h-52 max-md:w-40 max-md:h-44 flex items-center "
                   >
                     <Image

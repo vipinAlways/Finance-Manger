@@ -20,7 +20,6 @@ function Home() {
         });
 
         const data = await response.json();
-        
 
         if (data.success && data.redirect) {
           window.location.href = data.redirect;
@@ -37,17 +36,17 @@ function Home() {
     postUser();
   }, []);
 
-
-
   useEffect(() => {
-    let isMounted = true; 
+    let isMounted = true;
 
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
 
         if (!response.ok) {
-          throw new Error(`API error: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `API error: ${response.status} ${response.statusText}`
+          );
         }
 
         const result = await response.json();
@@ -65,38 +64,38 @@ function Home() {
     getAmount();
 
     return () => {
-      isMounted = false; // Cleanup function
+      isMounted = false;
     };
   }, []);
 
   return (
-    <div>
-    <div className="relative w-full">
-    <div className="flex items-center justify-evenly w-full gap-4  max-lg:flex-col py-4  ">
-        <div className="w-fit py-5 px-2 h-full flex items-end max-md:items-center max-md:justify-center">
-          <select
-            name="from"
-            id="from"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            className="xl:w-56 w-40   h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
-          >
-            <option value="">All</option>2
-            {getAmountFor.map((amount, index) => (
-              <option value={amount.budgetFor} key={index}>
-                {amount.budgetFor}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex items-center  w-full flex-wrap">
-          <CardData forWhich={from} />
+    <div className="w-full flex flex-col items-center xl:gap-2 max-xl:gap-10 max-md:gap-5">
+      <div className="relative w-full py-4 flex flex-col items-center h-fit">
+        <div className="flex items-center justify-evenly w-full gap-4 max-xl:flex-col h-fit">
+          <div className="w-fit py-5 px-2 h-fit flex items-end max-md:items-center max-md:justify-center">
+            <select
+              name="from"
+              id="from"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="xl:w-56 w-40   h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
+            >
+              <option value="">All</option>2
+              {getAmountFor.map((amount, index) => (
+                <option value={amount.budgetFor} key={index}>
+                  {amount.budgetFor}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center  w-full flex-wrap">
+            <CardData forWhich={from} />
+          </div>
         </div>
       </div>
-    </div>
       <div className="flex items-center gap-5 w-full justify-around max-lg:flex-col xl:mt-5 h-96">
         <div className="flex items-center flex-col max-sm:w-80 gap-1">
-          <div className="w-[55vw] max-md:w-[23rem] mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400 lg:mt-20 max-sm:h-fit lg:h-[55vh] h-80 ">
+          <div className="w-[55vw] max-md:w-[23rem] mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400 max-sm:h-fit lg:h-[55vh] h-80 ">
             <BarGraph forWhich={from} />
           </div>
           <h1 className="text-2xl text-slate-700">
@@ -107,7 +106,7 @@ function Home() {
           <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-sm:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 lg:mt-20"
+              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-sm:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
             >
               <PieGraph forWhich={from} />
             </Link>
