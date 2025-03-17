@@ -64,13 +64,13 @@ function Home() {
     getAmount();
 
     return () => {
-      isMounted = false;
+      isMounted = false; // Cleanup function
     };
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center xl:gap-2 max-xl:gap-10 max-md:gap-5">
-      <div className="relative w-full py-4 flex flex-col items-center h-fit">
+    <div>
+      <div className="relative w-full py-4 flex flex-col items-center gap-4">
         <div className="flex items-center justify-evenly w-full gap-4 max-xl:flex-col h-fit">
           <div className="w-fit py-5 px-2 h-fit flex items-end max-md:items-center max-md:justify-center">
             <select

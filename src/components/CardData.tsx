@@ -135,7 +135,7 @@ function Data({ forWhich }: { forWhich: string }) {
       blances.map((balance,index)=>(
         <Link
         href="/acounts"
-        className={`hover:scale-105 transition ease-out hover:duration-200 h-32 lg:w-52 w-28  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4  text-white font-semibold rounded-xl ${balance.color}`}
+        className={`hover:scale-105 transition ease-out hover:duration-200 h-32 lg:w-52 w-4/5  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4  text-white font-semibold rounded-xl ${balance.color}`}
         key={index}
       >
         <div>
