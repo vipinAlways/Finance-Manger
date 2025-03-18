@@ -105,7 +105,7 @@ const Page: React.FC = () => {
         item.category == searchBox && item.transactionType === selectType && new Date(item.date) <= new Date(endDate!) && new Date(item.date) >= new Date(startDate!) 
     );
     setFilteredTransactions(newResult);
-  }, [searchBox, selectType, Transactions]);
+  }, [searchBox, selectType, Transactions,endDate,startDate]);
 
   useEffect(() => {
     const getCategory = async () => {

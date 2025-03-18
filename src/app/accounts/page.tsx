@@ -83,11 +83,11 @@ const Page = () => {
 
   const totalEarned = useMemo(
     () => calculateTotalAmount("earn"),
-    [transactions, budgetCurrect, index]
+    [calculateTotalAmount]
   );
   const totalSpent = useMemo(
     () => calculateTotalAmount("spend"),
-    [transactions, budgetCurrect, index]
+    [calculateTotalAmount]
   );
 
   useEffect(() => {
