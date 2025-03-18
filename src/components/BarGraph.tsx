@@ -136,19 +136,53 @@ function BarGraph({ forWhich }: { forWhich: string }) {
         backgroundColor: "rgba(241, 241, 4, 0.248)",
         borderColor: "yellow",
         borderWidth: 1,
+        
+        options: {
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  size: 20, // Set the font size for the labels
+                },
+                color: "blue", // Optional: Set the color of the labels
+              },
+            },
+          },}
       },
     ],
   };
 
   const options = {
+    responsive: true, // Enables responsiveness
+    maintainAspectRatio: false, // Allows flexibility
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: window.innerWidth < 600 ? 12 : 16, // Adjust legend label size based on screen width
+          },
+        },
+      },
+    },
     scales: {
+      x: {
+        ticks: {
+          font: {
+            size: window.innerWidth < 600 ? 10 : 14, // Adjust X-axis label size dynamically
+          },
+        },
+      },
       y: {
-        beginAtZero: true,
+        ticks: {
+          font: {
+            size: window.innerWidth < 600 ? 10 : 14, // Adjust Y-axis label size dynamically
+          },
+        },
       },
     },
   };
-
-  return <Bar options={options} data={data} className="h-full w-full" />;
+  
+  return <Bar options={options} data={data} className="h-full w-full text-xl" />;
 }
 
 export default BarGraph;

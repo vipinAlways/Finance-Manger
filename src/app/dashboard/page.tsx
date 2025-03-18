@@ -64,7 +64,7 @@ function Home() {
     getAmount();
 
     return () => {
-      isMounted = false; // Cleanup function
+      isMounted = false;
     };
   }, []);
 
@@ -93,24 +93,24 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-5 w-full justify-around max-lg:flex-col xl:mt-5 h-96">
-        <div className="flex items-center flex-col max-sm:w-80 gap-1">
-          <div className="w-[55vw] max-md:w-[23rem] mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400 max-sm:h-fit lg:h-[55vh] h-80 ">
+      <div className="flex items-center gap-5 w-full justify-around max-lg:flex-col xl:mt-5 h-96 max-md:gap-3">
+        <div className="flex items-center flex-col max-sm:w-80 gap-1 w-full">
+          <div className="w-[55vw] max-lg:w-[90%] max-sm:w-full mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400  lg:h-[55vh] h-96 max-sm:h-60">
             <BarGraph forWhich={from} />
           </div>
-          <h1 className="text-2xl text-slate-700">
+          <h1 className="text-2xl max-sm:text-xl text-slate-700 text-center">
             Your Transaction via graph
           </h1>
         </div>
-        <div className="p-4 flex justify-evenly items-center max-sm:w-full lg:gap-2 md:gap-3 max-md:w-full">
-          <div className="flex flex-col  h-full lg:text-xl max-md:text-lg max-sm:text-sm">
+        <div className="p-4 flex justify-center items-center w-full">
+          <div className="flex flex-col w-full items-center justify-center h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-sm:w-80 justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
+              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-lg:w-[90%] max-sm:w-[95%] justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
             >
               <PieGraph forWhich={from} />
             </Link>
-            <h1 className="text-center text-2xl text-slate-700">
+            <h1 className="text-center text-2xl max-sm:text-xl text-slate-700">
               Chart Category Wise
             </h1>
           </div>

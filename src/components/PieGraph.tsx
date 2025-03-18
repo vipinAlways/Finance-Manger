@@ -114,11 +114,21 @@ function PieGraph({forWhich}: {forWhich: string}) {
     ],
   };
 
-
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: window.innerWidth < 600 ? 12 : 16, 
+          },
+        },
+      },
+    },
+  };
   
 
 
- return <Doughnut data={data}  className="h-96 p-3 w-full"   />;
+ return <Doughnut data={data}  options={options} className="h-96 p-3 w-full"   />;
 }
 
 export default PieGraph;
