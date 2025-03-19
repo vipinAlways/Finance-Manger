@@ -11,7 +11,6 @@ function Page() {
 
   const onclick = () => {
     if (block) setBlock(false);
-
     setBlock(true);
   };
 
@@ -21,11 +20,11 @@ function Page() {
     }, 1000);
   }, []);
 
+
   useEffect(() => {
     const preventDefault = (e: Event) => {
       e.preventDefault();
     };
-
     const toggleScroll = () => {
       if (block) {
         window.addEventListener("scroll", preventDefault, { passive: false });
@@ -44,9 +43,9 @@ function Page() {
   }, [block]);
 
   return (
-    <div className="max-lg:p-4">
+    <div className="max-lg:p-4 flex flex-col gap-2">
       <div className="flex justify-end w-full mt-4 ">
-        <Button onClick={onclick}>Add Transaction</Button>
+        <Button onClick={onclick} className="text-xl max-md:text-lg">Add Transaction</Button>
       </div>
       <div className="w-full  ">
         <AddTransaction className={cn(!block && "hidden")} />

@@ -67,7 +67,7 @@ function Home() {
       isMounted = false;
     };
   }, []);
-
+ 
   return (
     <div>
       <div className="relative w-full py-4 flex flex-col items-center gap-4">
@@ -78,7 +78,7 @@ function Home() {
               id="from"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="xl:w-56 w-40   h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
+              className="xl:w-56 w-40 h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
             >
               <option value="">All</option>2
               {getAmountFor.map((amount, index) => (
@@ -93,9 +93,9 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-5 w-full justify-around max-lg:flex-col xl:mt-5 h-96 max-md:gap-3">
-        <div className="flex items-center flex-col max-sm:w-80 gap-1 w-full">
-          <div className="w-[55vw] max-lg:w-[90%] max-sm:w-full mt-2 flex flex-col md:p-3 rounded-xl p-2   bg-gradient-to-tr from-green-500 via-green-200 to-green-400  lg:h-[55vh] h-96 max-sm:h-60">
+      <div className="flex items-center gap-5 w-full justify-center max-lg:flex-col xl:mt-5 h-96 max-md:gap-3">
+        <div className="flex items-center flex-col max-sm:w-80 w-full">
+          <div className="w-[55vw] max-lg:w-[90%] max-sm:w-full mt-2 flex items-center justify-center md:p-3 rounded-xl p-2 bg-gradient-to-tr from-green-500 via-green-200 to-green-400  lg:h-[55vh] h-96 max-sm:h-60">
             <BarGraph forWhich={from} />
           </div>
           <h1 className="text-2xl max-sm:text-xl text-slate-700 text-center">
@@ -106,7 +106,7 @@ function Home() {
           <div className="flex flex-col w-full items-center justify-center h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-lg:w-[90%] max-sm:w-[95%] justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
+              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-lg:w-[90%] lg:w-96 max-sm:w-[95%] justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
             >
               <PieGraph forWhich={from} />
             </Link>
