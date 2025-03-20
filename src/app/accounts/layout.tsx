@@ -4,9 +4,9 @@ import React from "react";
 const layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="">
-      <div className="flex w-full relative h-full flex-1 gap-6">
+      <div className="flex w-full relative h-full flex-1 lg:gap-6 ">
         <AmountSideBar />
-        <div className="flex h-fit flex-1 flex-col min-h-screen">
+        <div className="flex h-fit flex-1 flex-col min-h-screen w-full">
           {children}
         </div>
       </div>

@@ -164,13 +164,13 @@ const Page = () => {
         <div className="w-full h-32 flex flex-col items-start gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-40">ADD NAME</Button>
+              <Button className="">ADD NAME</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Add CateGory</DialogTitle>
+                <DialogTitle>Add Name</DialogTitle>
                 <DialogDescription>
-                  Add the categories what you want to have
+                  Add the Name  what you want to have for your budget
                 </DialogDescription>
               </DialogHeader>
               <form
@@ -196,17 +196,17 @@ const Page = () => {
 
 
   return (
-    <div className="h-full w-full py-3 flex flex-col gap-4">
+    <div className="h-full w-full py-3 flex flex-col gap-4 max-md:gap-2 items-center justify-center">
       <div className="w-full h-32 flex flex-col items-start gap-4">
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="w-40">ADD NAME</Button>
+            <Button className="text-xl max-md:text-lg ">ADD NAME</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add CateGory</DialogTitle>
+              <DialogTitle>Add Name</DialogTitle>
               <DialogDescription>
-                Add the categories what you want to have
+              Add the Name  what you want to have for your budget
               </DialogDescription>
             </DialogHeader>
             <form
@@ -227,7 +227,7 @@ const Page = () => {
         </Dialog>
       </div>
       <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-lg:flex-col">
-        <div className="h-56 flex items-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem] w-80 p-3 rounded-md">
+        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem] w-80 p-3 rounded-md">
           <div className="flex space-x-4 relative w-full">
             {budgetCurrect.map(
               (show, i) =>

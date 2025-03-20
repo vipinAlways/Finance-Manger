@@ -81,12 +81,7 @@ function Data({ forWhich }: { forWhich: string }) {
     fetchBudget();
     
   }, [forWhich]);
-
-
-
- 
-
-  useEffect(() => {
+useEffect(() => {
     if (budget.length > 0) {
       budget.forEach((data) => {
         if (new Date(data.endDate) > new Date()) {
@@ -125,22 +120,20 @@ function Data({ forWhich }: { forWhich: string }) {
       name:"Loan Amount",
       amount:loanAmount ,
       color:"bg-yellow-500"
-    },
-    
+    },    
   ]
 
   return (
-    <div className="flex  justify-evenly w-full flex-1 gap-2 max-lg:gap-4 items-center h-full flex-wrap">
+    <div className="flex justify-evenly w-full flex-1 gap-2 max-lg:gap-4 items-center h-fit flex-wrap">
      {
       blances.map((balance,index)=>(
         <Link
         href="/acounts"
-        className={`hover:scale-105 transition ease-out hover:duration-200 h-32 lg:w-52 w-[90%]  flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4  text-white font-semibold rounded-xl ${balance.color}`}
+        className={`hover:scale-105 transition ease-out hover:duration-200 h-32 lg:w-52 w-[90%] flex items-center justify-around flex-col lg:text-lg max-sm:text-sm max-md:text-base p-2.5 py-4 text-white font-semibold rounded-xl ${balance.color}`}
         key={index}
       >
         <div>
           <h1 className="mb-2 underline">{balance.name}</h1>
-         
         </div>
         <p className="lg:text-xl max-sm:text-sm max-md:text-lg">
           {balance.amount.toFixed(2)}
@@ -148,8 +141,6 @@ function Data({ forWhich }: { forWhich: string }) {
       </Link>
       ))
      }
-
-    
     </div>
   );
 }

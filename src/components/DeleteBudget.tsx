@@ -16,7 +16,7 @@ useEffect(()=>{
       const response = await fetch(`/api/delete-budget?amountId=${amountId}`, { method: 'DELETE' });
       const data = await response.json();
       
-      if (data.ok) {
+      if (data.ok || data.success === true) {
         alert("Budget has been deleted");
         window.location.reload()
       } else {

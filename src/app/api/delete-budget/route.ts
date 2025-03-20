@@ -25,15 +25,11 @@ export async function DELETE(req: Request) {
         { status: 404 }
       );
     }
-
-    
-
+ 
     if (amount.user) {
-      const budgetName = await BudgetNameModel.findById(
-        {
-          userId:amount.user
-        }
-      );
+      const budgetName = await BudgetNameModel.findOne({
+        user: amount.user,
+      });
       if (!budgetName) {
         return NextResponse.json(
           { success: false, message: "Related budget not found" },
@@ -42,9 +38,6 @@ export async function DELETE(req: Request) {
       }
       budgetName.amount.pull(amountId);
     }
-
-    
-    
 
     return NextResponse.json(
       {

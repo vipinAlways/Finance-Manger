@@ -60,18 +60,16 @@ function Home() {
         console.error("Error fetching amounts:", error);
       }
     };
-
     getAmount();
-
     return () => {
-      isMounted = false;
+    isMounted = false;
     };
   }, []);
- 
+
   return (
-    <div>
-      <div className="relative w-full py-4 flex flex-col items-center gap-4">
-        <div className="flex items-center justify-evenly w-full gap-4 max-xl:flex-col h-fit">
+    <div className="w-full flex flex-col gap-1 py-3">
+      <div className="w-full flex flex-col items-center gap-2 h-fit">
+        <div className="flex items-center justify-evenly w-full gap-4 max-xl:flex-col">
           <div className="w-fit py-5 px-2 h-fit flex items-end max-md:items-center max-md:justify-center">
             <select
               name="from"
@@ -80,7 +78,7 @@ function Home() {
               onChange={(e) => setFrom(e.target.value)}
               className="xl:w-56 w-40 h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
             >
-              <option value="">All</option>2
+              <option value="">All</option>
               {getAmountFor.map((amount, index) => (
                 <option value={amount.budgetFor} key={index}>
                   {amount.budgetFor}
@@ -88,12 +86,12 @@ function Home() {
               ))}
             </select>
           </div>
-          <div className="flex items-center  w-full flex-wrap">
+          <div className="flex items-center  w-full flex-wrap h-full">
             <CardData forWhich={from} />
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-5 w-full justify-center max-lg:flex-col xl:mt-5 h-96 max-md:gap-3">
+      <div className="flex items-center gap-5 w-full justify-center max-lg:flex-col xl:mt-5 max-md:gap-3 max-sm:gap-1">
         <div className="flex items-center flex-col max-sm:w-80 w-full">
           <div className="w-[55vw] max-lg:w-[90%] max-sm:w-full mt-2 flex items-center justify-center md:p-3 rounded-xl p-2 bg-gradient-to-tr from-green-500 via-green-200 to-green-400  lg:h-[55vh] h-96 max-sm:h-60">
             <BarGraph forWhich={from} />

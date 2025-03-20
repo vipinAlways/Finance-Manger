@@ -27,18 +27,18 @@ const cardData = [
 
 function WelcomePageCard() {
   return (
-    <div className="w-full flex flex-wrap  justify-around rounded-lg mt-4 gap-6 lg:card-container ">
+    <div className="w-full flex flex-wrap justify-around rounded-lg mt-4 gap-6 lg:card-container">
       {cardData.map((item, index) => (
         <Link
           href={item.url}
-          className="flex items-center border max-lg:w-4/5 w-2/5 rounded-xl sm:h-40  h-72 p-1 lg:hover:scale-105 transition-all ease-in-out duration-300 card max-sm:flex-col"
+          className="flex items-center border max-lg:w-full  w-2/5 rounded-xl sm:h-40  h-72 p-1 lg:hover:scale-105 transition-all ease-in-out duration-300 card max-sm:flex-col"
           key={index}
         >
           <div className="w-full h-64 sm:h-36 sm:w-52 relative">
             <Image
               src={item.imageUrl}
               alt="hello"
-              className="rounded-lg object-cover  object-center border-r-2"
+              className="rounded-lg object-cover object-center border-r-2"
               fill
             />
           </div>

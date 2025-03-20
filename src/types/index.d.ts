@@ -4,7 +4,7 @@ declare interface Transaction extends Document {
   date: Date;
   category: string;
   method: string;
-  user: mongoose.Schema.Types.ObjectId;
+  user: any;
   amount: number;
   transactionType: string;
   _id: string;
@@ -18,7 +18,7 @@ declare interface Amount extends Document {
   amount: number;
   saving: number;
   endDate: Date;
-  user?: mongoose.Schema.Types.ObjectId;
+  user?: any;
   _id: string;
 }
 
@@ -33,12 +33,12 @@ declare interface User extends Document {
 }
 declare interface Category extends Document {
   nameOfCategorey: string;
-  user: mongoose.Schema.Types.ObjectId;
+  user: any;
   _id: string;
 }
 declare interface BudgetName extends Document {
   nameOfCategorey: string;
-  user: mongoose.Schema.Types.ObjectId;
+  user: any;
   _id: string;
   amount:any,
   icon:string
