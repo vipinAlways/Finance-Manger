@@ -42,7 +42,7 @@ function WelcomePageCard() {
               fill
             />
           </div>
-          <h1 className="flex-grow text-2xl sm:text-xl text-center">{item.description}</h1>
+          <h1 className="flex-grow    text-2xl sm:text-xl text-center">{item.description}</h1>
         </Link>
       ))}
     </div>
