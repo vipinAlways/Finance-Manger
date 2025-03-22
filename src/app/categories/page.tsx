@@ -137,11 +137,11 @@ const Page: React.FC = () => {
     <div className="w-full">
       <div className="p-4 flex justify-start gap-3 flex-1">
       
-        <Dialog>
+        <Dialog >
       <DialogTrigger asChild>
         <Button className="w-40">ADD CATEGORY</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-md:w-4/5 w-full h-40  flex items-center justify-center flex-col">
         <DialogHeader>
           <DialogTitle>Add CateGory</DialogTitle>
           <DialogDescription>
@@ -166,8 +166,8 @@ const Page: React.FC = () => {
     </Dialog>
       
       </div>
-      <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 ">
-        <div className="flex items-center gap-3 max-sm:justify-between flex-col">
+      <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 max-md:flex-col ">
+        <div className="flex items-center gap-3 w-full max-sm:justify-between flex-col">
           <label htmlFor="category" className="text-xl leading-none">
             Category
           </label>
@@ -175,7 +175,7 @@ const Page: React.FC = () => {
             onChange={(e) => setSearchBox(e.target.value)}
             name="category"
             id="category"
-             className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+             className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
             value={searchBox}
           >
             <option value="" disabled>
@@ -189,7 +189,7 @@ const Page: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="flex items-center gap-3 flex-col">
+        <div className="flex items-center gap-3 w-full flex-col">
           <label
             htmlFor="transactionTypeSearch"
             className="font-semibold text-lg text-zinc-800"
@@ -200,7 +200,7 @@ const Page: React.FC = () => {
             id="transactionTypeSearch"
             onChange={(e) => setSelectType(e.target.value)}
             value={selectType}
-            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
           >
             <option value="" disabled>
               Select an option
@@ -210,7 +210,7 @@ const Page: React.FC = () => {
             <option value="loan">loan</option>
           </select>
         </div>
-        <div className="flex items-center gap-3 flex-col">
+        <div className="flex items-center gap-3 w-full flex-col">
           <label
             htmlFor="start"
             className="font-semibold text-lg text-zinc-800"
@@ -223,10 +223,10 @@ const Page: React.FC = () => {
             id="start"
             value={startDate ? startDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setStartDate(new Date(e.target.value))}
-            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
           />
         </div>
-        <div className="flex items-center gap-3 flex-col">
+        <div className="flex items-center gap-3 w-full flex-col">
           <label htmlFor="end" className="font-semibold text-lg text-zinc-800">
             TO
           </label>
@@ -236,7 +236,7 @@ const Page: React.FC = () => {
             id="end"
             value={endDate ? endDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setEndDate(new Date(e.target.value))}
-            className="w-60 border-2 max-sm:w-36 max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
           />
         </div>
       </div>
