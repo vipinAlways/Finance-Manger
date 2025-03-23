@@ -226,16 +226,16 @@ const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-lg:flex-col">
-        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem] w-80 p-3 rounded-md">
-          <div className="flex space-x-4 relative w-full">
+      <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-lg:flex-col px-3">
+        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
+          <div className="flex space-x-4 relative w-full items-center justify-around p-2">
             {budgetCurrect.map(
               (show, i) =>
                 i === index && (
                   <Link
                     key={i}
                     href={`/accounts/${show._id}`}
-                    className="md:w-[28rem] md:h-52 max-md:w-40 max-md:h-44 flex items-center "
+                    className="md:w-[28rem] md:h-52  max-md:h-44 flex items-center "
                   >
                     <Image
                       src={"/image1.jpg"}
