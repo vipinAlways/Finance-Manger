@@ -180,6 +180,7 @@ const Page = () => {
  
 
   const handleAddBudgetName = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!nameOfBudget.trim()) return;
     mutate(nameOfBudget);
   };
