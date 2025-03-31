@@ -8,6 +8,7 @@ import { Amount, Transaction } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -29,15 +30,14 @@ const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
   const [budget, setBudget] = useState<[]>([]);
   const [budgetName, setBudgetName] = useState<string[]>([]);
-  const [budgetUpdated, setBudgetUpdated] = useState(false);
-  const [hidden2, setHidden2] = useState(true);
+  // const [budgetUpdated, setBudgetUpdated] = useState(false);
+  // const [hidden2, setHidden2] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
   const { toast } = useToast();
   const [progress, setProgress] = useState(0);
- 
-
+  const queryClient = useQueryClient();
   const calculateTotalAmount = useCallback(
     (type: string) =>
       transactions.reduce((total, transaction) => {
@@ -54,25 +54,81 @@ const Page = () => {
     [transactions, budgetCurrect, index]
   );
 
-  const fetchBudgets = useCallback(async () => {
+  const fetchBudgets = async () => {
     try {
       const response = await fetch("/api/get-amount", { cache: "no-store" });
       const result = await response.json();
-      setBudgetCurrent(
-        Array.isArray(result.budgetCurrent) && result.budgetCurrent
-      );
-      setBudgetName(
-        Array.isArray(result.budgetNameForBudget) && result.budgetNameForBudget
-      );
-      setBudget(Array.isArray(result.budgetall) && result.budgetall);
+      return {
+        budgetCurrent: Array.isArray(result.budgetCurrent)
+          ? result.budgetCurrent
+          : [],
+        budgetName: Array.isArray(result.budgetNameForBudget)
+          ? result.budgetNameForBudget
+          : [],
+        budgetAll: Array.isArray(result.budgetall) ? result.budgetall : [],
+      };
     } catch (error) {
       console.error("Error fetching budgets:", error);
+      throw new Error("Failed to fetch budgets");
     }
-  }, []);
+  };
+
+  const { data } = useQuery({
+    queryKey: ["budget"],
+    queryFn:async()=> fetchBudgets(),
+  });
 
   useEffect(() => {
-    fetchBudgets();
-  }, [budgetUpdated, fetchBudgets]);
+    if (data) {
+      setBudgetCurrent(data.budgetCurrent);
+      setBudgetName(data.budgetName);
+      setBudget(data.budgetAll);
+    }
+  }, [data]);
+
+  const AddBudgetName = async (name:string) => {
+    try {
+      const response = await fetch("/api/post-budgetName", {
+        method: "POST",
+        body: JSON.stringify({ nameOfBudget: name }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add budget");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error while adding budget name:", error);
+      throw error;
+    }
+  };
+
+  const { mutate } = useMutation({
+ 
+    mutationFn: AddBudgetName,
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Something went wrong!",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Budget Added Successfully",
+        description: `Your budget for "${nameOfBudget}" has been added.`,
+        variant: "default",
+      });
+      setNameOfBudget("");
+      // setHidden2(true);
+      // setBudgetUpdated((prev) => !prev);
+      queryClient.invalidateQueries({ queryKey: ["budget"] });
+    },
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -113,7 +169,7 @@ const Page = () => {
       console.error("Transaction fetch error:", error);
       alert("Currently our servers are not working, please try again later.");
     }
-  }, [index, budgetCurrect]);
+  }, [index, budgetCurrect,mutate]);
 
   useEffect(() => {
     fetchTransactions();
@@ -121,39 +177,12 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [fetchTransactions]);
 
-  const AddBudgetName = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/post-budgetName", {
-        method: "POST",
-        body: JSON.stringify({ nameOfBudget }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      toast({
-        title: data.ok ? "Budget Added Successfully" : "Error",
-        description: data.ok
-          ? `Your budget for "${nameOfBudget}" has been added.`
-          : data.message,
-        variant: data.ok ? "default" : "destructive",
-      });
-      if (data.ok) {
-        setNameOfBudget("");
-        setHidden2(true);
-        setBudgetUpdated((prev) => !prev);
-      }
-    } catch (error) {
-      console.error("Error while adding budget name:", error);
-      toast({
-        title: "Error",
-        description: "Something went wrong!",
-        variant: "destructive",
-      });
-    }
-  };
+ 
 
-  
-  
+  const handleAddBudgetName = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!nameOfBudget.trim()) return;
+    mutate(nameOfBudget);
+  };
 
   if (budgetName.length === 0) {
     return (
@@ -170,12 +199,12 @@ const Page = () => {
               <DialogHeader>
                 <DialogTitle>Add Name</DialogTitle>
                 <DialogDescription>
-                  Add the Name  what you want to have for your budget
+                  Add the Name what you want to have for your budget
                 </DialogDescription>
               </DialogHeader>
               <form
                 action="POST"
-                onSubmit={AddBudgetName}
+                onSubmit={handleAddBudgetName}
                 className={cn("flex gap-2 items-center flex-1")}
               >
                 <input
@@ -193,8 +222,6 @@ const Page = () => {
     );
   }
 
-
-
   return (
     <div className="h-full w-full py-3 flex flex-col gap-4 max-md:gap-2 items-center justify-center">
       <div className="w-full h-32 flex flex-col items-start gap-4">
@@ -206,12 +233,12 @@ const Page = () => {
             <DialogHeader>
               <DialogTitle>Add Name</DialogTitle>
               <DialogDescription>
-              Add the Name  what you want to have for your budget
+                Add the Name what you want to have for your budget
               </DialogDescription>
             </DialogHeader>
             <form
               action="POST"
-              onSubmit={AddBudgetName}
+              onSubmit={handleAddBudgetName}
               className={cn("flex gap-2 items-center flex-1")}
             >
               <input
@@ -222,7 +249,6 @@ const Page = () => {
                 className="w-64 p-2 rounded-lg text-zinc-800 "
               />
             </form>
-           
           </DialogContent>
         </Dialog>
       </div>

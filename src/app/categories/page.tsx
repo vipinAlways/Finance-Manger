@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Transaction } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useMutation } from "@tanstack/react-query";
 
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
@@ -61,43 +62,57 @@ const Page: React.FC = () => {
     fetchTransactions();
   }, [startDate, endDate]);
   
-  const createCategorey = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const createCategory = async (name:string) => {
     if (!nameOfcateGorey) {
-      console.error("Not able to find category");
+      toast({
+        title: "Error",
+        description: "Please enter a category name",
+        variant: "destructive",
+      });
       return;
     }
-
+  
     try {
       const response = await fetch("/api/post-category", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          nameOfcateGorey,
-        }),
+        body: JSON.stringify({ nameOfCategory: name }),
       });
-
-      const data = await response.json();
-
-      if (data.ok) {
-        setNameOfcateGorey("");
-        setTimeout(() => {
-          setHidden(true);
-        }, 500);
-        toast({
-          title: "Success",
-          description: "Category submitted successfull",
-        });
-      } else {
-        throw new Error(data.message || "Error while creating category");
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create category");
       }
+  
+      return await response.json(); 
     } catch (error) {
-      console.error("Error in page while creating category:", error);
+      console.error("Error while creating category:", error);
+      throw error;
     }
   };
+  
+  const { mutate } = useMutation({
+    mutationKey: ["createCategory"],
+    mutationFn: createCategory, 
+    onSuccess: () => {
+      toast({
+        title: "Category Created",
+        description: "Category created successfully",
+        variant: "default",
+      });
+      setHidden(false);
+      setNameOfcateGorey("");
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong",
+        variant: "destructive",
+      });
+    },
+  });
 
   useEffect(() => {
     const newResult = Transactions.filter(
@@ -150,7 +165,10 @@ const Page: React.FC = () => {
         </DialogHeader>
         <form
           action="POST"
-          onSubmit={createCategorey}
+          onSubmit={(e)=>{
+            e.preventDefault()
+            mutate(nameOfcateGorey)
+          }}
           className={cn("flex gap-2 items-center flex-1")}
         >
           <input

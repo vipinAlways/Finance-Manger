@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { User } from "../types";
 import Link from "next/link";
 
 function AddTransaction({ className }: { className: string }) {
@@ -19,15 +18,7 @@ function AddTransaction({ className }: { className: string }) {
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (
-      !amount ||
-      !category ||
-      !method ||
-      !dateAt ||
-      !transactionType ||
-      !from
-    ) {
+    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
       setError("All fields are required.");
       return;
     }
@@ -40,15 +31,7 @@ function AddTransaction({ className }: { className: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          amount,
-          dateAt,
-          note,
-          method,
-          category,
-          transactionType,
-          from,
-        }),
+        body: JSON.stringify({ amount, dateAt, note, method, category, transactionType, from }),
       });
 
       if (response.ok) {
@@ -96,7 +79,6 @@ function AddTransaction({ className }: { className: string }) {
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
-
         const result = await response.json();
         if (result && Array.isArray(result.budgetCurrent)) {
           setGetAmountFor(result.budgetCurrent);
@@ -131,6 +113,7 @@ function AddTransaction({ className }: { className: string }) {
           >
             X
           </Button>
+
           <div className="w-full flex items-start h-12 text-zinc-800">
             <select
               name="from"
@@ -141,7 +124,7 @@ function AddTransaction({ className }: { className: string }) {
               required
             >
               <option value="" disabled>
-                Select Amount For
+              Select Budget
               </option>
               {getAmountFor.map((amount, index) => (
                 <option key={index} value={amount.budgetFor}>
@@ -150,6 +133,7 @@ function AddTransaction({ className }: { className: string }) {
               ))}
             </select>
           </div>
+
           <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
             <label htmlFor="amount" className="text-xl leading-none">
               Amount
@@ -164,6 +148,7 @@ function AddTransaction({ className }: { className: string }) {
               value={amount}
             />
           </div>
+
           <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
             <label htmlFor="date" className="text-xl leading-none">
               Date
@@ -194,14 +179,11 @@ function AddTransaction({ className }: { className: string }) {
               <option value="" disabled>
                 Select a Method
               </option>
-              <option value="cash" className="text-black">
-                Cash
-              </option>
-              <option value="online" className="text-black">
-                Online
-              </option>
+              <option value="cash">Cash</option>
+              <option value="online">Online</option>
             </select>
           </div>
+
           <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
             <label htmlFor="category" className="text-xl leading-none">
               Category
@@ -216,7 +198,6 @@ function AddTransaction({ className }: { className: string }) {
               <option value="" disabled>
                 Select a Category
               </option>
-
               {categoryGroup.map((cate, index) => (
                 <option key={index} value={cate.nameOfCategorey}>
                   {cate.nameOfCategorey}
@@ -224,31 +205,27 @@ function AddTransaction({ className }: { className: string }) {
               ))}
             </select>
           </div>
+
           <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="transactionTyped" className="text-xl leading-none">
+            <label htmlFor="transactionType" className="text-xl leading-none">
               Transaction Type
             </label>
             <select
               onChange={(e) => setTransactionType(e.target.value)}
               name="transactionType"
               id="transactionType"
-              className="border h-10 rounded-sm text-black  w-full"
+              className="border h-10 rounded-sm text-black w-full"
               value={transactionType}
             >
               <option value="" disabled>
                 Select a Transaction Type
               </option>
-              <option value="spend" className="text-black">
-                Spend
-              </option>
-              <option value="earn" className="text-black">
-                Earn
-              </option>
-              <option value="loan" className="text-black">
-                Loan
-              </option>
+              <option value="spend">Spend</option>
+              <option value="earn">Earn</option>
+              <option value="loan">Loan</option>
             </select>
           </div>
+
           <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
             <label htmlFor="note" className="text-xl leading-none">
               Note
@@ -259,7 +236,7 @@ function AddTransaction({ className }: { className: string }) {
               name="note"
               placeholder="Enter note"
               id="note"
-              className="border h-10 rounded-sm text-black  w-full"
+              className="border h-10 rounded-sm text-black w-full"
               value={note}
             />
           </div>
@@ -271,81 +248,20 @@ function AddTransaction({ className }: { className: string }) {
           >
             Submit
           </button>
-          {error && <p className="text-red-500 mt-3 text-l">{error}</p>}
+          {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
         </form>
       ) : (
-        <div>
-          {getAmountFor.length === 0 && categoryGroup.length === 0 ? (
-            <div className="flex flex-col items-center gap-5 relative">
-              <Button
-                className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
-                onClick={() => window.location.reload()}
-              >
-                X
-              </Button>
-              <h1 className="text-center text-3xl text-zinc-100 ">
-                Opps ! Looks like You Haven&#39;t Asign any budget and Category
-              </h1>
-              <div className="flex gap-5 justify-center">
-                <Link
-                  href="/acounts"
-                  className="text-green-500 p-2 rounded-lg  bg-zinc-200"
-                >
-                  Set Budget
-                </Link>
-                <Link
-                  href="/categories"
-                  className="text-green-500 p-2 rounded-lg  bg-zinc-200"
-                >
-                  Set Category
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div>
-              {getAmountFor.length === 0 ? (
-                <div className="flex flex-col items-center gap-5 relative ">
-                  <Button
-                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
-                    onClick={() => window.location.reload()}
-                  >
-                    X
-                  </Button>
-                  <h1 className="text-center text-3xl text-zinc-100 ">
-                    Opps ! Looks like You Haven&#39;t Asign any budget
-                  </h1>
-                  <div>
-                    <Link
-                      href="/acounts"
-                      className="text-green-500 p-2 rounded-lg  bg-zinc-200"
-                    >
-                      Set Budget
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-5 relative">
-                  <Button
-                    className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute -top-10 right-0"
-                    onClick={() => window.location.reload()}
-                  >
-                    X
-                  </Button>
-                  <h1 className="text-center text-3xl text-zinc-100 ">
-                    Opps ! Looks like You Haven&#39;t Asign any Category
-                  </h1>
-                  <div>
-                    <Link
-                      href="/categories"
-                      className="text-green-500 p-2 rounded-lg  bg-zinc-200"
-                    >
-                      Set Category
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+        <div className="flex flex-col items-center gap-5 relative">
+          <Button
+            className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute top-1 right-2"
+            onClick={() => window.location.reload()}
+          >
+            X
+          </Button>
+          <h1 className="text-2xl font-bold text-white">No Budget Assigned</h1>
+          <Link href="/dashboard/addbudget">
+            <Button>Add Budget</Button>
+          </Link>
         </div>
       )}
     </div>
