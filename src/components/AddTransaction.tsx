@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { set } from "mongoose";
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
@@ -18,7 +20,14 @@ function AddTransaction({ className }: { className: string }) {
 
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
+    if (
+      !amount ||
+      !category ||
+      !method ||
+      !dateAt ||
+      !transactionType ||
+      !from
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -31,7 +40,15 @@ function AddTransaction({ className }: { className: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount, dateAt, note, method, category, transactionType, from }),
+        body: JSON.stringify({
+          amount,
+          dateAt,
+          note,
+          method,
+          category,
+          transactionType,
+          from,
+        }),
       });
 
       if (response.ok) {
@@ -75,25 +92,34 @@ function AddTransaction({ className }: { className: string }) {
     getCategory();
   }, [setCategory, setError]);
 
-  useEffect(() => {
-    const getAmount = async () => {
-      try {
-        const response = await fetch(`/api/get-amount`);
-        const result = await response.json();
-        if (result && Array.isArray(result.budgetCurrent)) {
-          setGetAmountFor(result.budgetCurrent);
-        } else {
-          console.error("Unexpected API response structure for amounts");
-          setError("Failed to fetch amounts.");
-        }
-      } catch (error) {
-        console.error("Error fetching amounts:", error);
-        setError("An error occurred while fetching amounts.");
+  const getAmount = async () => {
+    try {
+      const response = await fetch(`/api/get-amount`);
+      const result = await response.json();
+      if (result && Array.isArray(result.budgetCurrent)) {
+        return result.budgetCurrent;
+      } else {
+        console.error("Unexpected API response structure for amounts");
+        setError("Failed to fetch amounts.");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching amounts:", error);
+      setError("An error occurred while fetching amounts.");
+    }
+  };
 
-    getAmount();
-  }, []);
+  const {data} =useQuery({
+    queryKey:["get-amount"],
+    queryFn:async ()=> getAmount(),
+    
+  })
+
+   useEffect(() => {
+      if (data) {
+        setGetAmountFor(data);
+      }
+    }, [data]);
+
 
   return (
     <div
@@ -124,7 +150,7 @@ function AddTransaction({ className }: { className: string }) {
               required
             >
               <option value="" disabled>
-              Select Budget
+                Select Budget
               </option>
               {getAmountFor.map((amount, index) => (
                 <option key={index} value={amount.budgetFor}>
