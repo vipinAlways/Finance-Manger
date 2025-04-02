@@ -4,18 +4,29 @@ import React, { useEffect, useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { BudgetName } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const AddAmount = () => {
   const [budgetFor, setBudgetFor] = useState("");
   const [amount, setAmount] = useState<number>(0);
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-  const [budgetName, setBudgetName] = useState<BudgetName[]>();
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [budgetName, setBudgetName] = useState<BudgetName[]>([]);
   const { toast } = useToast();
-  const AddBudget = async (e: React.FormEvent) => {
-    e.preventDefault();
+
+  const AddBudget = async ({
+    budgetFor,
+    amount,
+    startDate,
+    endDate,
+  }: {
+    budgetFor: string;
+    amount: number;
+    startDate: Date;
+    endDate: Date;
+  }) => {
     try {
-      let response = await fetch("/api/post-amount", {
+      const response = await fetch("/api/post-amount", {
         method: "POST",
         body: JSON.stringify({
           budgetFor,
@@ -28,114 +39,136 @@ const AddAmount = () => {
         },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        toast({
-          title: "budgetAdded succesFully",
-          description: `Your budet added for ${budgetFor}`,
-        });
-
-        if (data.ok) {
-          setAmount(0);
-          setStartDate(new Date());
-          setEndDate(new Date());
-          setBudgetFor("");
-        } else {
-          throw new Error("error while adding budget client response");
-        }
-      } else {
-        console.log("error while adding budget client response");
+      if (!response.ok) {
+        throw new Error("Failed to add budget. Server responded with an error.");
       }
-    } catch (error) {
-      console.log("error while adding budget client ", error);
-    }
 
-    window.location.reload();
+      const data = await response.json();
+
+      toast({
+        title: "Budget Added Successfully",
+        description: `Your budget has been added for ${budgetFor}`,
+      });
+
+      return data;
+    } catch (error) {
+      console.error("Error while adding budget:", error);
+      throw error;
+    }
   };
 
-  useEffect(() => {
-    const getbudgetname = async () => {
-      try {
-        const response = await fetch("/api/get-budgetname");
-        const result = await response.json();
-        if (result.ok) {
-          setBudgetName(result.budgetNames);
-        } else {
-          throw new Error("api is not working");
-        }
-      } catch (error) {
-        throw new Error("error in api function ");
+  const { mutate } = useMutation({
+    mutationFn: AddBudget,
+    onSuccess: (_, variables) => {
+      toast({
+        title: "Budget Added",
+        description: `Your budget has been added for ${variables.budgetFor}`,
+      });
+
+      setAmount(0);
+      setStartDate(null);
+      setEndDate(null);
+      setBudgetFor("");
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "An error occurred while adding the budget.",
+        variant: "destructive",
+      });
+    },
+  });
+  const getBudgetNames = async () => {
+    try {
+      const response = await fetch("/api/get-budgetname");
+      const result = await response.json();
+      if (result.ok && Array.isArray(result.budgetNames)) {
+        return result.budgetNames
+      } else {
+        console.error("Unexpected API response structure for budget names");
       }
-    };
-    getbudgetname();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching budget names:", error);
+    }
+  };
+
+  const  {data} = useQuery({
+    queryKey: ["get-budgetname"],
+    queryFn: async () => getBudgetNames(),
+  })
+
+  useEffect(() => {
+   setBudgetName(data)
+    
+  }, [data]);
 
   return (
-    <div className=" w-full h-full flex items-center py-4 px-2 bg-green-500 rounded-xl">
+    <div className="w-full h-full flex items-center py-4 px-2 bg-green-500 rounded-xl">
       <form
-        action="POST"
-        onSubmit={AddBudget}
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutate({ budgetFor, amount, startDate: startDate!, endDate: endDate! });
+        }}
         className="flex flex-col items-center justify-around h-full w-full gap-4"
       >
         <div className="flex items-center gap-4 text-lg text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="budgetFor" >
+          <label className="text-wrap w-20 text-center" htmlFor="budgetFor">
             Type
           </label>
           <select
             name="budgetFor"
             value={budgetFor}
             onChange={(e) => setBudgetFor(e.target.value)}
-            className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3 "
+            className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
           >
             <option value="" disabled>
               Select an option
             </option>
-            {budgetName &&
-              budgetName.map((bud, index) => (
-                <option key={index} value={bud.nameOfCategorey}>
-                  {bud.nameOfCategorey}
-                </option>
-              ))}
+            {budgetName.map((bud, index) => (
+              <option key={index} value={bud.nameOfCategorey}>
+                {bud.nameOfCategorey}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex items-center gap-2 text-lg text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="amount" >
+          <label className="text-wrap w-20 text-center" htmlFor="amount">
             Amount
           </label>
           <input
-            type="text"
+            type="number"
             name="amount"
             id="amount"
             value={amount}
-            onChange={(e) => setAmount(parseInt(e.target.value))}
-            className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3 "
+            onChange={(e) => setAmount(Number(e.target.value))}
+            className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
             placeholder="Enter budget"
           />
         </div>
         <div className="flex items-center gap-4 text-xl text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="startDate">From :</label>
+          <label className="text-wrap w-20 text-center" htmlFor="startDate">
+            From:
+          </label>
           <input
             type="date"
             name="startDate"
             id="startDate"
             value={startDate ? startDate.toISOString().split("T")[0] : ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setStartDate(new Date(e.target.value))
-            }
-            className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3 "
+            onChange={(e) => setStartDate(new Date(e.target.value))}
+            className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3"
           />
         </div>
         <div className="flex items-center gap-4 text-xl text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="endDate">To :</label>
+          <label className="text-wrap w-20 text-center" htmlFor="endDate">
+            To:
+          </label>
           <input
             type="date"
             name="endDate"
             id="endDate"
             value={endDate ? endDate.toISOString().split("T")[0] : ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEndDate(new Date(e.target.value))
-            }
-            className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3 "
+            onChange={(e) => setEndDate(new Date(e.target.value))}
+            className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3"
           />
         </div>
         <Button type="submit" className="w-32 p-1 text-xl">

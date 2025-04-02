@@ -30,8 +30,6 @@ const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
   const [budget, setBudget] = useState<[]>([]);
   const [budgetName, setBudgetName] = useState<string[]>([]);
-  // const [budgetUpdated, setBudgetUpdated] = useState(false);
-  // const [hidden2, setHidden2] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
@@ -156,26 +154,31 @@ const Page = () => {
   }, [budgetCurrect, index, totalEarned, totalSpent]);
 
   const fetchTransactions = useCallback(async () => {
-    if (!budgetCurrect[index]) return;
+    if (!budgetCurrect[index]) return [];
     try {
       const response = await fetch(
         `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
       );
       const result = await response.json();
-      setTransactions(
-        Array.isArray(result.transactions) ? result.transactions : result
-      );
+      
+      return Array.isArray(result.transactions) ? result.transactions : [];
     } catch (error) {
       console.error("Transaction fetch error:", error);
       alert("Currently our servers are not working, please try again later.");
+      return [];
     }
-  }, [index, budgetCurrect,mutate]);
-
+  }, [index, budgetCurrect]);
+  
+  const { data: transactionData } = useQuery({
+    queryKey: ["transaction", index], 
+    queryFn: fetchTransactions,
+    refetchInterval: 10000, 
+  });
+  
   useEffect(() => {
-    fetchTransactions();
-    const interval = setInterval(fetchTransactions, 10000);
-    return () => clearInterval(interval);
-  }, [fetchTransactions]);
+    setTransactions(transactionData || []);
+  }, [transactionData]);
+  
 
  
 

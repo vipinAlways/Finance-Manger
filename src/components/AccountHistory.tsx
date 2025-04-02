@@ -2,29 +2,34 @@
 
 import React, { useEffect, useState } from "react";
 import { AmountGet } from "@/app/accounts/page";
+import { useQuery } from "@tanstack/react-query";
 
 const AccountHistory = ({ accountId }: { accountId: string }) => {
   const [budget, setBudget] = useState<AmountGet[] | null>(null);
+  const fetchBudget = async () => {
+    try {
+      const response = await fetch("/api/get-amount");
+      console.log("ac history");
+      const result = await response.json();
 
-  useEffect(() => {
-    const fetchBudget = async () => {
-      try {
-        const response = await fetch("/api/get-amount");
-        console.log("ac history");
-        const result = await response.json();
-
-        if (result.ok) {
-          setBudget(result.budgetCurrent);
-        } else {
-          console.error("Error while getting amounts client-side");
-        }
-      } catch (error) {
-        console.error("Error while getting amounts client-side API", error);
+      if (result.ok) {
+        return result.budgetCurrent
+      } else {
+        console.error("Error while getting amounts client-side");
+        return [];
       }
-    };
-
-    fetchBudget();
-  }, []);
+    } catch (error) {
+      console.error("Error while getting amounts client-side API", error);
+      return []
+    }
+  };
+   const {data}  = useQuery({
+    queryKey: ["budget"],
+    queryFn:async ()=> fetchBudget(),
+   })
+  useEffect(() => {
+    setBudget(data)
+  }, [data]);
 
   return (
     <div>

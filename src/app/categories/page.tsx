@@ -14,8 +14,16 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useMutation } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
@@ -33,36 +41,41 @@ const Page: React.FC = () => {
 
   const { toast } = useToast();
 
+  async function fetchTransactions() {
+    try {
+      const response = await fetch(
+        `/api/get-transaction?start=${startDate}&end=${endDate}`
+      );
+      const result = await response.json();
+  
+      if (Array.isArray(result.transactions)) {
+        return result.transactions;
+      } else {
+        alert("Currently, our servers are not working. Please try again later.");
+        return []; // Ensure function always returns an array
+      }
+    } catch (error) {
+      alert("Currently, our servers are not working. Please try again later.");
+      return [];
+    }
+  }
+  
+  const { data } = useQuery({
+    queryKey: ["transactions", startDate, endDate],
+    queryFn: fetchTransactions,
+    enabled: !!startDate && !!endDate, 
+  });
+  
   useEffect(() => {
     if (!startDate || !endDate) {
-      setTransactions([]); 
+      setTransactions([]);
       return;
     }
+    setTransactions(data || []); 
+  }, [data, startDate, endDate]);
   
-    async function fetchTransactions() {
-      try {
-        const response = await fetch(
-          `/api/get-transaction?start=${startDate}&end=${endDate}`
-        );
-  
-        const result = await response.json();
-  
-        if (result.transactions) {
-          setTransactions(result.transactions);
-        } else if (Array.isArray(result)) {
-          setTransactions(result);
-        } else {
-          alert("Currently, our servers are not working. Please try again later.");
-        }
-      } catch (error) {
-        alert("Currently, our servers are not working. Please try again later.");
-      }
-    }
-  
-    fetchTransactions();
-  }, [startDate, endDate]);
-  
-  const createCategory = async (name:string) => {
+
+  const createCategory = async (name: string) => {
     if (!nameOfcateGorey) {
       toast({
         title: "Error",
@@ -71,7 +84,7 @@ const Page: React.FC = () => {
       });
       return;
     }
-  
+
     try {
       const response = await fetch("/api/post-category", {
         method: "POST",
@@ -80,22 +93,22 @@ const Page: React.FC = () => {
         },
         body: JSON.stringify({ nameOfCategory: name }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create category");
       }
-  
-      return await response.json(); 
+
+      return await response.json();
     } catch (error) {
       console.error("Error while creating category:", error);
       throw error;
     }
   };
-  
+
   const { mutate } = useMutation({
     mutationKey: ["createCategory"],
-    mutationFn: createCategory, 
+    mutationFn: createCategory,
     onSuccess: () => {
       toast({
         title: "Category Created",
@@ -117,72 +130,77 @@ const Page: React.FC = () => {
   useEffect(() => {
     const newResult = Transactions.filter(
       (item) =>
-        item.category == searchBox && item.transactionType === selectType && new Date(item.date) <= new Date(endDate!) && new Date(item.date) >= new Date(startDate!) 
+        item.category == searchBox &&
+        item.transactionType === selectType &&
+        new Date(item.date) <= new Date(endDate!) &&
+        new Date(item.date) >= new Date(startDate!)
     );
     setFilteredTransactions(newResult);
-  }, [searchBox, selectType, Transactions,endDate,startDate]);
+  }, [searchBox, selectType, Transactions, endDate, startDate]);
 
-  useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const response = await fetch(`/api/get-category`);
-        const result = await response.json();
-        if (result && Array.isArray(result.getAllCateGories)) {
-          setCategoryGroup(result.getAllCateGories);
-        } else {
-          console.error("Unexpected API response structure for categories");
-          setError("Failed to fetch categories.");
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        setError("An error occurred while fetching categories.");
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`/api/get-category`);
+      const result = await response.json();
+  
+      if (Array.isArray(result.getAllCateGories)) {
+        return result.getAllCateGories;
+      } else {
+        throw new Error("Unexpected API response structure for categories");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      throw new Error("An error occurred while fetching categories.");
+    }
+  };
+  
+  const { data: categoryGroups, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
 
-    getCategory();
-  }, []);
+  useEffect(()=>{
+    setCategoryGroup(categoryGroups|| [])
+  },[data])
+
 
   const totalAmount = FilteredTransactions.reduce(
     (total, item) => total + item.amount,
     0
   );
 
-
   return (
     <div className="w-full">
       <div className="p-4 flex justify-start gap-3 flex-1">
-      
-        <Dialog >
-      <DialogTrigger asChild>
-        <Button className="w-40">ADD CATEGORY</Button>
-      </DialogTrigger>
-      <DialogContent className="max-md:w-4/5 w-full h-40  flex items-center justify-center flex-col">
-        <DialogHeader>
-          <DialogTitle>Add CateGory</DialogTitle>
-          <DialogDescription>
-           Add the categories what you want to have 
-          </DialogDescription>
-        </DialogHeader>
-        <form
-          action="POST"
-          onSubmit={(e)=>{
-            e.preventDefault()
-            mutate(nameOfcateGorey)
-          }}
-          className={cn("flex gap-2 items-center flex-1")}
-        >
-          <input
-            type="text"
-            value={nameOfcateGorey}
-            name="cateGory"
-            onChange={(e) => setNameOfcateGorey(e.target.value)}
-            className="w-64 p-2 rounded-lg text-zinc-800 "
-          />
-        </form>
-      
-      </DialogContent>
-    </Dialog>
-      
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-40">ADD CATEGORY</Button>
+          </DialogTrigger>
+          <DialogContent className="max-md:w-4/5 w-full h-40  flex items-center justify-center flex-col">
+            <DialogHeader>
+              <DialogTitle>Add CateGory</DialogTitle>
+              <DialogDescription>
+                Add the categories what you want to have
+              </DialogDescription>
+            </DialogHeader>
+            <form
+              action="POST"
+              onSubmit={(e) => {
+                e.preventDefault();
+                mutate(nameOfcateGorey);
+              }}
+              className={cn("flex gap-2 items-center flex-1")}
+            >
+              <input
+                type="text"
+                value={nameOfcateGorey}
+                name="cateGory"
+                onChange={(e) => setNameOfcateGorey(e.target.value)}
+                className="w-64 p-2 rounded-lg text-zinc-800 "
+              />
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 max-md:flex-col ">
         <div className="flex items-center gap-3 w-full max-sm:justify-between flex-col">
@@ -193,7 +211,7 @@ const Page: React.FC = () => {
             onChange={(e) => setSearchBox(e.target.value)}
             name="category"
             id="category"
-             className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 text-l font-semibold text-zinc-800"
             value={searchBox}
           >
             <option value="" disabled>
@@ -259,7 +277,7 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      {Transactions.length ===0 ? null : (
+      {Transactions.length === 0 ? null : (
         <div className="w-full border-2">
           <Table>
             <TableCaption className="text-green-700 text-center max-sm:hidden">
@@ -284,9 +302,7 @@ const Page: React.FC = () => {
                   <TableCell>
                     {new Date(transaction.date).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>
-                    {transaction.from}
-                  </TableCell>
+                  <TableCell>{transaction.from}</TableCell>
                   <TableCell
                     className={cn(
                       "",

@@ -2,6 +2,7 @@
 import BarGraph from "@/components/BarGraph";
 import CardData from "@/components/CardData";
 import PieGraph from "@/components/PieGraph";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -35,34 +36,40 @@ function Home() {
 
     postUser();
   }, []);
+  const getAmount = async () => {
+    try {
+      const response = await fetch(`/api/get-amount`);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (result && Array.isArray(result.budgetCurrent)) {
+        return result.budgetCurrent;
+      } else {
+        console.error("Unexpected API response structure for amounts");
+        return [];
+      }
+    } catch (error) {
+      console.error("Error fetching amounts:", error);
+      return [];
+    }
+  };
+
+  const { data } = useQuery({
+    queryKey: ["get-amount"],
+    queryFn: async () => getAmount(),
+  });
 
   useEffect(() => {
     let isMounted = true;
+    if (!isMounted) return;
+    setGetAmountFor(data);
 
-    const getAmount = async () => {
-      try {
-        const response = await fetch(`/api/get-amount`);
-
-        if (!response.ok) {
-          throw new Error(
-            `API error: ${response.status} ${response.statusText}`
-          );
-        }
-
-        const result = await response.json();
-
-        if (result && Array.isArray(result.budgetCurrent)) {
-          if (isMounted) setGetAmountFor(result.budgetCurrent);
-        } else {
-          console.error("Unexpected API response structure for amounts");
-        }
-      } catch (error) {
-        console.error("Error fetching amounts:", error);
-      }
-    };
-    getAmount();
     return () => {
-    isMounted = false;
+      isMounted = false;
     };
   }, []);
 
