@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { BudgetName } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AddAmount = () => {
   const [budgetFor, setBudgetFor] = useState("");
@@ -13,6 +13,7 @@ const AddAmount = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [budgetName, setBudgetName] = useState<BudgetName[]>([]);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const AddBudget = async ({
     budgetFor,
@@ -43,14 +44,8 @@ const AddAmount = () => {
         throw new Error("Failed to add budget. Server responded with an error.");
       }
 
-      const data = await response.json();
-
-      toast({
-        title: "Budget Added Successfully",
-        description: `Your budget has been added for ${budgetFor}`,
-      });
-
-      return data;
+      return await response.json();
+      
     } catch (error) {
       console.error("Error while adding budget:", error);
       throw error;
@@ -59,16 +54,18 @@ const AddAmount = () => {
 
   const { mutate } = useMutation({
     mutationFn: AddBudget,
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       toast({
         title: "Budget Added",
-        description: `Your budget has been added for ${variables.budgetFor}`,
+        description: `Your budget has been added for`,
       });
 
       setAmount(0);
       setStartDate(null);
       setEndDate(null);
       setBudgetFor("");
+      queryClient.invalidateQueries({queryKey: ["get-budget"]});
+      queryClient.invalidateQueries({queryKey: ["get-budgetName"]});
     },
     onError: () => {
       toast({
