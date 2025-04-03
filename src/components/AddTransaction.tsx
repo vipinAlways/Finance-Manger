@@ -2,8 +2,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { set } from "mongoose";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
@@ -11,135 +10,104 @@ function AddTransaction({ className }: { className: string }) {
   const [note, setNote] = useState("");
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
-  const [dateAt, setDate] = useState<Date | null>();
+  const [dateAt, setDate] = useState<Date | null>(null);
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
-  const [categoryGroup, setCategoryGroup] = useState<any[]>([]);
-  const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
 
-  const addTransaction = async (e: React.FormEvent) => {
+  const queryClient = useQueryClient();
+
+  const fetchCategories = async () => {
+    const response = await fetch("/api/get-category");
+    if (!response.ok) throw new Error("Failed to fetch categories");
+    return response.json();
+  };
+
+  const { data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+
+  const fetchAmounts = async () => {
+    const response = await fetch("/api/get-amount");
+    if (!response.ok) throw new Error("Failed to fetch amounts");
+    return response.json();
+  };
+
+  const { data: amountData } = useQuery({
+    queryKey: ["amounts"],
+    queryFn: fetchAmounts,
+  });
+
+  const addTransaction = async (transaction: {
+    amount: string;
+    dateAt: Date | null;
+    note: string;
+    method: string;
+    category: string;
+    transactionType: string;
+    from: string;
+  }) => {
+    const response = await fetch("/api/post-transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(transaction),
+    });
+    if (!response.ok) throw new Error("Failed to add transaction");
+    return response.json();
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: addTransaction,
+    onSuccess: () => {
+      setAmount("");
+      setNote("");
+      setCategory("");
+      setDate(null);
+      setMethod("");
+      setTransactionType("");
+      setDisable(false);
+      setFrom("");
+      setError("");
+      queryClient.invalidateQueries({ queryKey: ["amounts"] });
+    },
+    onError: (error: any) => {
+      setError(error.message);
+      setDisable(false);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !amount ||
-      !category ||
-      !method ||
-      !dateAt ||
-      !transactionType ||
-      !from
-    ) {
+    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
       setError("All fields are required.");
       return;
     }
-
-    setError("");
-
-    try {
-      const response = await fetch("/api/post-transaction", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount,
-          dateAt,
-          note,
-          method,
-          category,
-          transactionType,
-          from,
-        }),
-      });
-
-      if (response.ok) {
-        await response.json();
-        setAmount("");
-        setNote("");
-        setCategory("");
-        setDate(null);
-        setMethod("");
-        setTransactionType("");
-        setDisable(true);
-        setFrom("");
-        setError("");
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to add transaction.");
-      }
-    } catch (error) {
-      console.error("Error while adding transaction:", error);
-      setError("An error occurred while adding the transaction.");
-    }
+    setDisable(true);
+    mutate({ amount, dateAt, note, method, category, transactionType, from });
   };
-
-  useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const response = await fetch(`/api/get-category`);
-        const result = await response.json();
-        if (result && Array.isArray(result.getAllCateGories)) {
-          setCategoryGroup(result.getAllCateGories);
-        } else {
-          console.error("Unexpected API response structure for categories");
-          setError("Failed to fetch categories.");
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        setError("An error occurred while fetching categories.");
-      }
-    };
-
-    getCategory();
-  }, [setCategory, setError]);
-
-  const getAmount = async () => {
-    try {
-      const response = await fetch(`/api/get-amount`);
-      const result = await response.json();
-      if (result && Array.isArray(result.budgetCurrent)) {
-        return result.budgetCurrent;
-      } else {
-        console.error("Unexpected API response structure for amounts");
-        setError("Failed to fetch amounts.");
-      }
-    } catch (error) {
-      console.error("Error fetching amounts:", error);
-      setError("An error occurred while fetching amounts.");
-    }
-  };
-
-  const {data} =useQuery({
-    queryKey:["get-amount"],
-    queryFn:async ()=> getAmount(),
-    
-  })
-
-   useEffect(() => {
-      if (data) {
-        setGetAmountFor(data);
-      }
-    }, [data]);
-
 
   return (
     <div
       className={cn(
-        "absolute top-0 left-1/2 -translate-x-1/2 -translate-y-0 bg-[#5849494f] w-[100vw] h-[100vh] z-[99] flex items-center justify-center flex-col",
+        "absolute top-0 left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center",
         className
       )}
     >
-      {getAmountFor.length > 0 && categoryGroup.length > 0 ? (
+      {amountData?.budgetCurrent?.length > 0 && categoryData?.getAllCateGories?.length > 0 ? (
         <form
-          onSubmit={addTransaction}
+          onSubmit={handleSubmit}
           className="flex flex-col items-center py-7 w-2/5 max-sm:w-4/5 px-9 mb-10 text-white bg-green-700 rounded-xl relative"
         >
           <Button
             className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute top-1 right-2"
+            type="button"
             onClick={() => window.location.reload()}
           >
             X
           </Button>
 
+          {/* Budget Select */}
           <div className="w-full flex items-start h-12 text-zinc-800">
             <select
               name="from"
@@ -152,7 +120,7 @@ function AddTransaction({ className }: { className: string }) {
               <option value="" disabled>
                 Select Budget
               </option>
-              {getAmountFor.map((amount, index) => (
+              {amountData.budgetCurrent.map((amount: any, index: number) => (
                 <option key={index} value={amount.budgetFor}>
                   {amount.budgetFor}
                 </option>
@@ -160,135 +128,99 @@ function AddTransaction({ className }: { className: string }) {
             </select>
           </div>
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="amount" className="text-xl leading-none">
-              Amount
-            </label>
-            <input
-              type="number"
-              onChange={(e) => setAmount(e.target.value)}
-              name="amount"
-              placeholder="Enter amount"
-              id="amount"
-              className="border h-10 rounded-sm text-black w-full"
-              value={amount}
-            />
-          </div>
+          {/* Amount */}
+          <input
+            type="number"
+            onChange={(e) => setAmount(e.target.value)}
+            name="amount"
+            placeholder="Enter amount"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={amount}
+            required
+          />
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="date" className="text-xl leading-none">
-              Date
-            </label>
-            <input
-              type="date"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setDate(new Date(e.target.value))
-              }
-              name="date"
-              id="date"
-              className="border h-10 rounded-sm text-black w-full"
-              value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
-            />
-          </div>
+          {/* Date */}
+          <input
+            type="date"
+            onChange={(e) => setDate(new Date(e.target.value))}
+            name="date"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
+            required
+          />
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="method" className="text-xl leading-none">
-              Method
-            </label>
-            <select
-              onChange={(e) => setMethod(e.target.value)}
-              name="method"
-              id="method"
-              className="border h-10 rounded-sm text-black w-full"
-              value={method}
-            >
-              <option value="" disabled>
-                Select a Method
+          {/* Method */}
+          <select
+            onChange={(e) => setMethod(e.target.value)}
+            name="method"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={method}
+            required
+          >
+            <option value="" disabled>
+              Select a Method
+            </option>
+            <option value="cash">Cash</option>
+            <option value="online">Online</option>
+          </select>
+
+          {/* Category */}
+          <select
+            onChange={(e) => setCategory(e.target.value)}
+            name="category"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={category}
+            required
+          >
+            <option value="" disabled>
+              Select a Category
+            </option>
+            {categoryData.getAllCateGories.map((cate: any, index: number) => (
+              <option key={index} value={cate.nameOfCategorey}>
+                {cate.nameOfCategorey}
               </option>
-              <option value="cash">Cash</option>
-              <option value="online">Online</option>
-            </select>
-          </div>
+            ))}
+          </select>
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="category" className="text-xl leading-none">
-              Category
-            </label>
-            <select
-              onChange={(e) => setCategory(e.target.value)}
-              name="category"
-              id="category"
-              className="border h-10 rounded-sm text-black w-full"
-              value={category}
-            >
-              <option value="" disabled>
-                Select a Category
-              </option>
-              {categoryGroup.map((cate, index) => (
-                <option key={index} value={cate.nameOfCategorey}>
-                  {cate.nameOfCategorey}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Transaction Type */}
+          <select
+            onChange={(e) => setTransactionType(e.target.value)}
+            name="transactionType"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={transactionType}
+            required
+          >
+            <option value="" disabled>
+              Select a Transaction Type
+            </option>
+            <option value="spend">Spend</option>
+            <option value="earn">Earn</option>
+            <option value="loan">Loan</option>
+          </select>
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="transactionType" className="text-xl leading-none">
-              Transaction Type
-            </label>
-            <select
-              onChange={(e) => setTransactionType(e.target.value)}
-              name="transactionType"
-              id="transactionType"
-              className="border h-10 rounded-sm text-black w-full"
-              value={transactionType}
-            >
-              <option value="" disabled>
-                Select a Transaction Type
-              </option>
-              <option value="spend">Spend</option>
-              <option value="earn">Earn</option>
-              <option value="loan">Loan</option>
-            </select>
-          </div>
+          {/* Note */}
+          <input
+            type="text"
+            onChange={(e) => setNote(e.target.value)}
+            name="note"
+            placeholder="Enter note"
+            className="border h-10 rounded-sm text-black w-full mb-5"
+            value={note}
+          />
 
-          <div className="flex flex-col gap-1.5 items-start mb-5 w-2/3">
-            <label htmlFor="note" className="text-xl leading-none">
-              Note
-            </label>
-            <input
-              type="text"
-              onChange={(e) => setNote(e.target.value)}
-              name="note"
-              placeholder="Enter note"
-              id="note"
-              className="border h-10 rounded-sm text-black w-full"
-              value={note}
-            />
-          </div>
-
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={disable}
-            className="border-2 p-2 rounded-md"
+            className="border-2 p-2 rounded-md bg-white text-green-700"
           >
             Submit
           </button>
+
           {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
         </form>
       ) : (
-        <div className="flex flex-col items-center gap-5 relative">
-          <Button
-            className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute top-1 right-2"
-            onClick={() => window.location.reload()}
-          >
-            X
-          </Button>
-          <h1 className="text-2xl font-bold text-white">No Budget Assigned</h1>
-          <Link href="/dashboard/addbudget">
-            <Button>Add Budget</Button>
-          </Link>
-        </div>
+        <p className="text-white text-lg">Loading data...</p>
       )}
     </div>
   );
