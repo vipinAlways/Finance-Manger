@@ -66,7 +66,7 @@ const Page = () => {
         budgetAll: Array.isArray(result.budgetall) ? result.budgetall : [],
       };
     } catch (error) {
-      console.error("Error fetching budgets:", error);
+
       throw new Error("Failed to fetch budgets");
     }
   };
@@ -100,7 +100,7 @@ const Page = () => {
 
       return data;
     } catch (error) {
-      console.error("Error while adding budget name:", error);
+      // console.error("Error while adding budget name:", error);
       throw error;
     }
   };

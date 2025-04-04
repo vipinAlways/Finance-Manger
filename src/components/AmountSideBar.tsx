@@ -26,7 +26,7 @@ const AmountSideBar = () => {
     const getbudgets = async () => {
       try {
         const response = await fetch("/api/get-amount");
-        console.log("sidebar");
+       
         const result = await response.json();
 
         if (Array.isArray(result.budgetCurrent)) {
