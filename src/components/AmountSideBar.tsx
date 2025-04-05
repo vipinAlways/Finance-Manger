@@ -11,43 +11,48 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useQuery } from "@tanstack/react-query";
+
+export interface BudgetTypes {
+  budgetFor: string;
+  amount: number;
+  endDate: Date;
+  startDate: Date;
+  _id: string;
+}
 
 const AmountSideBar = () => {
-  const [budget, setBudget] = useState<AmountGet[]>([
-    {
-      budgetFor: "",
-      amount: 0,
-      endDate: new Date(),
-      startDate: new Date(),
-    },
-  ]);
   const [haveBudgetName, setHaveBudgetName] = useState(false);
-  useEffect(() => {
-    const getbudgets = async () => {
-      try {
-        const response = await fetch("/api/get-amount");
-       
-        const result = await response.json();
 
-        if (Array.isArray(result.budgetCurrent)) {
-          setBudget(result.budgetCurrent);
+  const getbudgets = async (): Promise<BudgetTypes[] | undefined> => {
+    try {
+      const response = await fetch("/api/get-amount");
 
-          if (
-            Array.isArray(result.budgetNameForBudget) &&
-            result.budgetNameForBudget.length > 0
-          ) {
-            setHaveBudgetName(true);
-          }
-        } else {
-          console.log("some error while fetching in array checking");
+      const result: {
+        budgetCurrent: BudgetTypes[];
+        budgetNameForBudget: string[];
+      } = await response.json();
+
+      if (Array.isArray(result.budgetCurrent)) {
+        if (
+          Array.isArray(result.budgetNameForBudget) &&
+          result.budgetNameForBudget.length > 0
+        ) {
+          setHaveBudgetName(true);
         }
-      } catch (error) {
-        console.log("error in client ", error);
+        return result.budgetCurrent;
+      } else {
+        console.log("some error while fetching in array checking");
       }
-    };
+    } catch (error) {
+      console.log("error in client ", error);
+    }
+  };
 
-    getbudgets();
-  }, []);
+  const { data = [] } = useQuery({
+    queryKey: ["budget"],
+    queryFn: async () => getbudgets(),
+  });
   return (
     <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-green-500 rounded-md">
       <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between max-md:hidden">
@@ -56,11 +61,11 @@ const AmountSideBar = () => {
         </h1>
 
         <div className="h-96 w-full flex flex-col items-center text-green-100 py-4">
-          {budget.length > 0 &&
-            budget.map((bud, index) => (
+          {data.length > 0 &&
+            data.map((bud: BudgetTypes) => (
               <Link
                 href={`/accounts/${bud._id}`}
-                key={bud.budgetFor + index}
+                key={bud._id}
                 className="text-2xl capitalize cursor-pointer font-mono font-semibold"
               >
                 {bud.budgetFor}

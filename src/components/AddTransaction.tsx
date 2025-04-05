@@ -79,7 +79,14 @@ function AddTransaction({ className }: { className: string }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !category || !method || !dateAt || !transactionType || !from) {
+    if (
+      !amount ||
+      !category ||
+      !method ||
+      !dateAt ||
+      !transactionType ||
+      !from
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -94,7 +101,8 @@ function AddTransaction({ className }: { className: string }) {
         className
       )}
     >
-      {amountData?.budgetCurrent?.length > 0 && categoryData?.getAllCateGories?.length > 0 ? (
+      {amountData?.budgetCurrent?.length > 0 &&
+      categoryData?.getAllCateGories?.length > 0 ? (
         <form
           onSubmit={handleSubmit}
           className="flex flex-col items-center py-7 w-2/5 max-sm:w-4/5 px-9 mb-10 text-white bg-green-700 rounded-xl relative"
@@ -107,7 +115,6 @@ function AddTransaction({ className }: { className: string }) {
             X
           </Button>
 
-          {/* Budget Select */}
           <div className="w-full flex items-start h-12 text-zinc-800">
             <select
               name="from"
@@ -128,7 +135,6 @@ function AddTransaction({ className }: { className: string }) {
             </select>
           </div>
 
-          {/* Amount */}
           <input
             type="number"
             onChange={(e) => setAmount(e.target.value)}
@@ -139,7 +145,6 @@ function AddTransaction({ className }: { className: string }) {
             required
           />
 
-          {/* Date */}
           <input
             type="date"
             onChange={(e) => setDate(new Date(e.target.value))}
@@ -149,7 +154,6 @@ function AddTransaction({ className }: { className: string }) {
             required
           />
 
-          {/* Method */}
           <select
             onChange={(e) => setMethod(e.target.value)}
             name="method"
@@ -164,7 +168,6 @@ function AddTransaction({ className }: { className: string }) {
             <option value="online">Online</option>
           </select>
 
-          {/* Category */}
           <select
             onChange={(e) => setCategory(e.target.value)}
             name="category"
@@ -182,7 +185,6 @@ function AddTransaction({ className }: { className: string }) {
             ))}
           </select>
 
-          {/* Transaction Type */}
           <select
             onChange={(e) => setTransactionType(e.target.value)}
             name="transactionType"
@@ -198,7 +200,6 @@ function AddTransaction({ className }: { className: string }) {
             <option value="loan">Loan</option>
           </select>
 
-          {/* Note */}
           <input
             type="text"
             onChange={(e) => setNote(e.target.value)}
@@ -208,7 +209,6 @@ function AddTransaction({ className }: { className: string }) {
             value={note}
           />
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={disable}

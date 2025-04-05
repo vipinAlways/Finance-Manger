@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Transaction } from "../types";
 import AddTransaction from "./AddTransaction";
+import { useQuery } from "@tanstack/react-query";
+import { get } from "http";
+import { BudgetTypes } from "./AmountSideBar";
 
 function TransactionTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -29,7 +32,7 @@ function TransactionTable() {
 
     setBlock(true);
   };
-  useEffect(() => {
+
     const fetchTransactions = async () => {
       try {
         const response = await fetch(
@@ -37,26 +40,32 @@ function TransactionTable() {
         );
         const result = await response.json();
         console.log("transaction");
-  
+
         if (Array.isArray(result.transactions)) {
-          if (page === 1) {
-            setTransactions(result.transactions);
-          } else {
-            setTransactions((prev) => [...prev, ...result.transactions]);
-          }
           setHasMore(result.hasMore);
-        } else {
+         return result.transations
+        } else { 
           console.error("Unexpected API response structure");
         }
       } catch (error) {
         console.error("Error fetching transactions:", error);
       }
     };
-  
-    fetchTransactions();
-  }, [page, from]);
-  
 
+   
+
+  const {data} = useQuery({
+    queryKey: ["transactions", page, from],
+    queryFn: async () => fetchTransactions(),
+  })
+
+  useEffect(()=>{
+    if (page === 1) {
+      setTransactions(data);
+    } else {
+      setTransactions((prev) => [...prev, ...data]);
+    }
+  },[])
   useEffect(() => {
     const initializePage = setTimeout(() => {
       setPage(1);
@@ -65,14 +74,14 @@ function TransactionTable() {
     return () => clearTimeout(initializePage);
   }, []);
 
-  useEffect(() => {
+  
     const getAmount = async () => {
       try {
         const response = await fetch(`/api/get-amount`);
         const result = await response.json();
         console.log("transaction table");
         if (result && Array.isArray(result.budgetCurrent)) {
-          setGetAmountFor(result.budgetCurrent);
+          return (result.budgetCurrent);
         } else {
           console.error("Unexpected API response structure for amounts");
         }
@@ -82,8 +91,12 @@ function TransactionTable() {
     };
 
     getAmount();
-  },[page,from]);
+  
 
+  const {data:amountData} = useQuery({
+    queryKey: ["amounts"],
+    queryFn: async () => getAmount(),
+  })
 
   const handleShowMore = () => {
     if (hasMore) {
@@ -101,14 +114,12 @@ function TransactionTable() {
           <div className=" w-20">
             <Button onClick={onclick}>Add Transaction</Button>
           </div>
-         
-            <AddTransaction className={cn(!block && "hidden")} />
-      
+
+          <AddTransaction className={cn(!block && "hidden")} />
         </div>
       </div>
     );
   }
-  console.log(transactions.length ,"check this transaction");
 
   return (
     <>
@@ -121,16 +132,14 @@ function TransactionTable() {
           className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
         >
           <option value="">All</option>
-          {getAmountFor.map((amount, index) => (
-            <option value={amount.budgetFor} key={index}>
+          {amountData.map((amount:BudgetTypes) => (
+            <option value={amount.budgetFor} key={amount._id}>
               {amount.budgetFor}
             </option>
           ))}
-         
         </select>
       </div>
-      <Table className={cn(transactions.length === 0 && "hidden" ,"my-4")}>
-       
+      <Table className={cn(transactions.length === 0 && "hidden", "my-4")}>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Date</TableHead>
