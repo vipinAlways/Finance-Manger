@@ -24,7 +24,7 @@ function TransactionTable() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [from, setFrom] = useState("");
-  const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
+  // const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
   const [block, setBlock] = useState(false);
 
   const onclick = () => {

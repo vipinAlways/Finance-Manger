@@ -22,7 +22,7 @@ function AuthButtons() {
       ) : (
         <div className="flex justify-center items-center gap-2">
           <Button>
-            <LoginLink className="p-2 text-base">Sign in</LoginLink>
+            <LoginLink className="p-2 text-base" >Sign in</LoginLink>
           </Button>
           <Button>
             <RegisterLink className="p-2 text-base">Sign up</RegisterLink>

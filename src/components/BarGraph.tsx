@@ -158,9 +158,9 @@ function BarGraph({ forWhich }: { forWhich: string }) {
     plugins: {
       legend: {
         labels: {
-          font: {
-            size: window.innerWidth < 600 ? 12 : 16, // Adjust legend label size based on screen width
-          },
+          font:
+            16 
+          ,
         },
       },
     },
@@ -174,15 +174,14 @@ function BarGraph({ forWhich }: { forWhich: string }) {
       },
       y: {
         ticks: {
-          font: {
-            size: window.innerWidth < 600 ? 10 : 14, // Adjust Y-axis label size dynamically
-          },
+          font:14, // Adjust Y-axis label size dynamically
+          
         },
       },
     },
   };
   
-  return <Bar options={options} data={data} className="h-full w-full text-xl" />;
+  return <Bar  data={data} className="h-full w-full text-xl" />;
 }
 
 export default BarGraph;
