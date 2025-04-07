@@ -42,6 +42,7 @@ export async function GET(req: Request) {
             user: dbuser._id,
             endDate: { $gte: currentdate },
           });
+    
 
     const budgetNameForBudget = await BudgetNameModel.find({
       user: dbuser,

@@ -8,11 +8,10 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 function Home() {
-  const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
   const [from, setFrom] = useState("");
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  useEffect(() => {
+ useEffect(() => {
     const postUser = async () => {
       try {
         const response = await fetch("/api/post-user", {
@@ -24,11 +23,11 @@ function Home() {
 
         const data = await response.json();
 
-        if (data.success ) {
+        if (data.success) {
           toast({
-            title:"Enjoy",
-            description:<div className="text-orange-500">Your Day</div>
-          })
+            title: "Enjoy",
+            description: <div className="text-orange-500">Your Day</div>,
+          });
         } else if (data.success) {
           console.log("User added successfully");
         } else {
@@ -41,6 +40,8 @@ function Home() {
 
     postUser();
   }, []);
+
+  
   const getAmount = async () => {
     try {
       const response = await fetch(`/api/get-amount`);
@@ -52,7 +53,7 @@ function Home() {
       const result = await response.json();
 
       if (result && Array.isArray(result.budgetCurrent)) {
-        return result.budgetCurrent.budgetFor;
+        return result.budgetCurrent;
       } else {
         console.error("Unexpected API response structure for amounts");
         return [];
@@ -62,13 +63,11 @@ function Home() {
       return [];
     }
   };
-
-  const { data =[]} = useQuery({
+  const { data = [] } = useQuery({
     queryKey: ["get-amount"],
     queryFn: async () => getAmount(),
   });
-  
-  
+console.log(data);
   return (
     <div className="w-full flex flex-col gap-1 py-3">
       <div className="w-full flex flex-col items-center gap-2 h-fit">
@@ -82,11 +81,12 @@ function Home() {
               className="xl:w-56 w-40 h-10 border border-gray-300 rounded-md px-2 py-1 capitalize"
             >
               <option value="">All</option>
-              {data.length > 0 && data.map((name:string, i:number) => (
-                <option value={name} key={i}>
-                  {name}
-                </option>
-              ))}
+              {data !== undefined &&
+                data.map((name:any, i: number) => (
+                  <option value={name.budgetFor} key={i}>
+                    {name.budgetFor}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="flex items-center  w-full flex-wrap h-full">

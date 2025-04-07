@@ -54,8 +54,8 @@ function TransactionTable() {
 
    
 
-  const {data} = useQuery({
-    queryKey: ["transactions", page, from],
+  const {data = []} = useQuery({
+    queryKey: ["transactions", page, from !== "" && from],
     queryFn: async () => fetchTransactions(),
   })
 
@@ -89,8 +89,6 @@ function TransactionTable() {
         console.error("Error fetching amounts:", error);
       }
     };
-
-    getAmount();
   
 
   const {data:amountData} = useQuery({

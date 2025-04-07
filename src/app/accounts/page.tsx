@@ -81,6 +81,10 @@ const Page = () => {
       setBudgetCurrent(data.budgetCurrent);
       setBudgetName(data.budgetName);
       setBudget(data.budgetAll);
+    }else{
+      setBudgetCurrent([]);
+      setBudgetName([]);
+      setBudget([]);
     }
   }, [data]);
 
@@ -169,7 +173,7 @@ const Page = () => {
     }
   }, [index, budgetCurrect]);
   
-  const { data: transactionData } = useQuery({
+  const { data: transactionData = [] } = useQuery({
     queryKey: ["transaction", index], 
     queryFn: fetchTransactions,
     refetchInterval: 10000, 
@@ -350,3 +354,4 @@ const Page = () => {
 };
 
 export default Page;
+      
