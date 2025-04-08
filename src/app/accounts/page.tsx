@@ -173,9 +173,9 @@ const Page = () => {
     }
   }, [index, budgetCurrect]);
   
-  const { data: transactionData = [] } = useQuery({
+  const { data: transactionData} = useQuery({
     queryKey: ["transaction", index], 
-    queryFn: fetchTransactions,
+    queryFn: async ()=>fetchTransactions(),
     refetchInterval: 10000, 
   });
   

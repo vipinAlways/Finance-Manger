@@ -17,9 +17,6 @@ export async function GET(req: Request) {
 
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    
-
-   
 
     console.log(getUser, "check user");
     console.log(getKindeServerSession, "check session");
@@ -50,14 +47,20 @@ export async function GET(req: Request) {
       );
     }
 
+    const filters: any = { user: dbUser._id };
+
+    if (from !== "") {
+      filters.category = from; // or filters.type = from — depending on your schema
+    }
+
+    if (startDate && endDate) {
+      filters.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
     const transactions = await transactionModel
-      .find(
-        from !== ""
-          ? startDate === ""
-            ? { user: dbUser._id, from: from }
-            : { user: dbUser._id, date: { $lte: startDate, $gte: endDate } }
-          : { user: dbUser._id }
-      )
+      .find(filters)
       .skip((page - 1) * perpage)
       .limit(perpage)
       .sort({ date: -1 });

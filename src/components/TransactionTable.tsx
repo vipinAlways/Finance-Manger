@@ -24,7 +24,6 @@ function TransactionTable() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [from, setFrom] = useState("");
-  // const [getAmountFor, setGetAmountFor] = useState<any[]>([]);
   const [block, setBlock] = useState(false);
 
   const onclick = () => {
@@ -33,7 +32,7 @@ function TransactionTable() {
     setBlock(true);
   };
 
-    const fetchTransactions = async () => {
+    const fetchTransactions = async ({page,from=""}:{page:number,from:string}) => {
       try {
         const response = await fetch(
           `/api/get-transaction?page=${page}&perpage=20&from=${from}`
@@ -43,36 +42,36 @@ function TransactionTable() {
 
         if (Array.isArray(result.transactions)) {
           setHasMore(result.hasMore);
-         return result.transations
+         return result.transactions
         } else { 
           console.error("Unexpected API response structure");
+          []
         }
       } catch (error) {
         console.error("Error fetching transactions:", error);
+        return []
       }
     };
 
    
 
-  const {data = []} = useQuery({
-    queryKey: ["transactions", page, from !== "" && from],
-    queryFn: async () => fetchTransactions(),
+  const {data} = useQuery({
+    queryKey: ["transactions"],
+    queryFn: async () => fetchTransactions({page,from}),
   })
 
-  useEffect(()=>{
+  useEffect(() => {
+    if (!data) return;
+  
     if (page === 1) {
       setTransactions(data);
     } else {
       setTransactions((prev) => [...prev, ...data]);
     }
-  },[data,page])
-  useEffect(() => {
-    const initializePage = setTimeout(() => {
-      setPage(1);
-    }, 50);
-
-    return () => clearTimeout(initializePage);
-  }, []);
+  }, [data, page]);
+  
+  
+  
 
   
     const getAmount = async () => {
