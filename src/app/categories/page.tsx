@@ -161,7 +161,7 @@ const Page: React.FC = () => {
 
   useEffect(()=>{
     setCategoryGroup(categoryGroups|| [])
-  },[data])
+  },[data,categoryGroups])
 
 
   const totalAmount = FilteredTransactions.reduce(

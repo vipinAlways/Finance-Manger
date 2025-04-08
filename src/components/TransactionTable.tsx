@@ -65,7 +65,7 @@ function TransactionTable() {
     } else {
       setTransactions((prev) => [...prev, ...data]);
     }
-  },[])
+  },[data,page])
   useEffect(() => {
     const initializePage = setTimeout(() => {
       setPage(1);

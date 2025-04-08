@@ -39,7 +39,7 @@ function Home() {
     };
 
     postUser();
-  }, []);
+  }, [toast]);
 
   
   const getAmount = async () => {

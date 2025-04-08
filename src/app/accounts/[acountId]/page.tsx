@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 
-import { use, useEffect } from "react";
+import { use } from "react";
 
-const page = ({ params }: { params: Promise<{ acountId: string }> }) => {
+const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
   const { acountId } = use(params);
   const { toast } = useToast();
 
@@ -73,4 +73,4 @@ const page = ({ params }: { params: Promise<{ acountId: string }> }) => {
   );
 };
 
-export default page;
+export default Page;
