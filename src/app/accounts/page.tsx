@@ -51,29 +51,24 @@ const Page = () => {
       }, 0),
     [transactions, budgetCurrect, index]
   );
-
   const fetchBudgets = async () => {
     try {
       const response = await fetch("/api/get-amount", { cache: "no-store" });
       const result = await response.json();
+
       return {
-        budgetCurrent: Array.isArray(result.budgetCurrent)
-          ? result.budgetCurrent
-          : [],
-        budgetName: Array.isArray(result.budgetNameForBudget)
-          ? result.budgetNameForBudget
-          : [],
-        budgetAll: Array.isArray(result.budgetall) ? result.budgetall : [],
+        budgetCurrent: result.budgetCurrent,
+        budgetName: result.budgetNameForBudget,
+        budgetAll: result.budgetall,
       };
     } catch (error) {
-
       throw new Error("Failed to fetch budgets");
     }
   };
 
-  const { data } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["budget"],
-    queryFn:async()=> fetchBudgets(),
+    queryFn: async () => await fetchBudgets(),
   });
 
   useEffect(() => {
@@ -81,14 +76,20 @@ const Page = () => {
       setBudgetCurrent(data.budgetCurrent);
       setBudgetName(data.budgetName);
       setBudget(data.budgetAll);
-    }else{
+    }
+    if (
+      (!data?.budgetCurrent?.length &&
+        !data?.budgetName?.length &&
+        !data?.budgetAll?.length) ||
+      isError
+    ) {
       setBudgetCurrent([]);
       setBudgetName([]);
       setBudget([]);
     }
-  }, [data]);
+  }, [data, isError]);
 
-  const AddBudgetName = async (name:string) => {
+  const AddBudgetName = async (name: string) => {
     try {
       const response = await fetch("/api/post-budgetName", {
         method: "POST",
@@ -110,7 +111,6 @@ const Page = () => {
   };
 
   const { mutate } = useMutation({
- 
     mutationFn: AddBudgetName,
     onError: () => {
       toast({
@@ -157,37 +157,37 @@ const Page = () => {
     );
   }, [budgetCurrect, index, totalEarned, totalSpent]);
 
-  const fetchTransactions = useCallback(async () => {
-    if (!budgetCurrect[index]) return [];
-    try {
-      const response = await fetch(
-        `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
-      );
-      const result = await response.json();
-      
-      return Array.isArray(result.transactions) ? result.transactions : [];
-    } catch (error) {
-      console.error("Transaction fetch error:", error);
-      alert("Currently our servers are not working, please try again later.");
-      return [];
-    }
-  }, [index, budgetCurrect]);
-  
-  const { data: transactionData} = useQuery({
-    queryKey: ["transaction", index], 
-    queryFn: async ()=>fetchTransactions(),
-    refetchInterval: 10000, 
+  const fetchTransactions = useCallback(
+    async (index: number) => {
+      if (!budgetCurrect[index]) return [];
+      try {
+        const response = await fetch(
+          `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
+        );
+        const result = await response.json();
+
+        return Array.isArray(result.transactions) ? result.transactions : [];
+      } catch (error) {
+        console.error("Transaction fetch error:", error);
+        alert("Currently our servers are not working, please try again later.");
+        return [];
+      }
+    },
+    [budgetCurrect]
+  );
+
+  const { data: transactionData } = useQuery({
+    queryKey: ["transaction", index],
+    queryFn: async () => fetchTransactions(index),
+    refetchInterval: 10000,
   });
-  
+
   useEffect(() => {
     setTransactions(transactionData || []);
   }, [transactionData]);
-  
-
- 
 
   const handleAddBudgetName = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!nameOfBudget.trim()) return;
     mutate(nameOfBudget);
   };
@@ -201,7 +201,7 @@ const Page = () => {
         <div className="w-full h-32 flex flex-col items-start gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="">ADD NAME</Button>
+              <Button>ADD NAME</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -354,4 +354,3 @@ const Page = () => {
 };
 
 export default Page;
-      
