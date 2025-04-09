@@ -83,21 +83,23 @@ const AddAmount = () => {
         return result.budgetNames
       } else {
         console.error("Unexpected API response structure for budget names");
+        return []
       }
     } catch (error) {
       console.error("Error fetching budget names:", error);
+      return []
     }
   };
 
-  const  {data} = useQuery({
+  const  {data=[]} = useQuery({
     queryKey: ["get-budgetname"],
     queryFn: async () => getBudgetNames(),
   })
 
-  useEffect(() => {
-   setBudgetName(data)
+  // useEffect(() => {
+  //  setBudgetNaem(data)
     
-  }, [data]);
+  // }, [data]);
 
   return (
     <div className="w-full h-full flex items-center py-4 px-2 bg-green-500 rounded-xl">
@@ -121,7 +123,7 @@ const AddAmount = () => {
             <option value="" disabled>
               Select an option
             </option>
-            {budgetName.map((bud, index) => (
+            {data.map((bud:BudgetName, index:number) => (
               <option key={index} value={bud.nameOfCategorey}>
                 {bud.nameOfCategorey}
               </option>
