@@ -3,6 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
@@ -97,24 +105,27 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        "absolute top-0 left-1/2 -translate-x-1/2 bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center",
+        "bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center",
         className
       )}
     >
       {amountData?.budgetCurrent?.length > 0 &&
       categoryData?.getAllCateGories?.length > 0 ? (
-        <form
+        <Dialog >
+        <DialogTrigger asChild>
+          <Button className="">ADD TRANSACTION</Button>
+        </DialogTrigger>
+        <DialogContent className="max-md:w-4/5 w-full h-4/5 flex items-center justify-center flex-col">
+          <DialogHeader>
+            <DialogTitle>Add CateGory</DialogTitle>
+            <DialogDescription>
+              Add the categories what you want to have
+            </DialogDescription>
+          </DialogHeader>
+          <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center py-7 w-2/5 max-sm:w-4/5 px-9 mb-10 text-white bg-green-700 rounded-xl relative"
+          className="flex flex-col items-center  w-4/5 max-sm:w-4/5 px-9  text-white bg-green-700 rounded-xl relative"
         >
-          <Button
-            className="rounded-full text-xl w-fit h-fit bg-green-50 text-green-700 hover:text-zinc-100 border-green-500 absolute top-1 right-2"
-            type="button"
-            onClick={() => window.location.reload()}
-          >
-            X
-          </Button>
-
           <div className="w-full flex items-start h-12 text-zinc-800">
             <select
               name="from"
@@ -219,6 +230,8 @@ function AddTransaction({ className }: { className: string }) {
 
           {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
         </form>
+        </DialogContent>
+      </Dialog>
       ) : (
         <p className="text-white text-lg">Loading data...</p>
       )}

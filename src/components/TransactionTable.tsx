@@ -107,19 +107,20 @@ function TransactionTable() {
           It seems you haven&#39;t recorded any transactions yet.{" "}
           <span className="text-3xl ">Let&#39;s get started!</span>
         </h1>
-        <div className="py-2">
-          <div className=" w-20">
-            <Button onClick={onclick}>Add Transaction</Button>
-          </div>
+        <div className="py-2 w-full h-full">
+          
 
-          <AddTransaction className={cn(!block && "hidden")} />
+          <AddTransaction className="w-full h-full" />
         </div>
       </div>
     );
   }
 
   return (
-    <>
+    <div>
+      <div>
+        <AddTransaction className="w-full h-full" />
+      </div>
       <div className=" w-full h-9">
         <select
           name="from"
@@ -192,7 +193,7 @@ function TransactionTable() {
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

@@ -4,6 +4,14 @@ import TransactionTable from "@/components/TransactionTable";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function Page() {
   const [block, setBlock] = useState(false);
@@ -19,7 +27,6 @@ function Page() {
       setLoading(false);
     }, 1000);
   }, []);
-
 
   useEffect(() => {
     const preventDefault = (e: Event) => {
@@ -44,12 +51,7 @@ function Page() {
 
   return (
     <div className="max-lg:p-4 flex flex-col gap-2">
-      <div className="flex justify-end w-full mt-4 ">
-        <Button onClick={onclick} className="text-xl max-md:text-lg">Add Transaction</Button>
-      </div>
-      <div className="w-full  ">
-        <AddTransaction className={cn(!block && "hidden")} />
-      </div>
+      
 
       <div className="w-full h-full  ">
         {loading ? (
