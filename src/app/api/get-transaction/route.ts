@@ -18,9 +18,6 @@ export async function GET(req: Request) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
-    console.log(getUser, "check user");
-    console.log(getKindeServerSession, "check session");
-
     if (!user || !user.id) {
       return NextResponse.json(
         {
@@ -50,7 +47,7 @@ export async function GET(req: Request) {
     const filters: any = { user: dbUser._id };
 
     if (from !== "") {
-      filters.category = from; // or filters.type = from — depending on your schema
+      filters.category = from; 
     }
 
     if (startDate && endDate) {
