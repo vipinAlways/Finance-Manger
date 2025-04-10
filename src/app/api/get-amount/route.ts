@@ -42,7 +42,6 @@ export async function GET(req: Request) {
             user: dbuser._id,
             endDate: { $gte: currentdate },
           });
-    
 
     const budgetNameForBudget = await BudgetNameModel.find({
       user: dbuser,
@@ -71,7 +70,6 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching amounts:", error);
     return NextResponse.json(
       { success: false, message: "An error occurred while fetching amounts" },
       { status: 500 }

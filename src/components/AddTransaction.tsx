@@ -105,7 +105,7 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        "bg-[#5849494f] w-full h-full z-[99] flex items-center justify-center",
+        "w-full h-full flex items-center justify-start pt-3",
         className
       )}
     >
@@ -115,7 +115,7 @@ function AddTransaction({ className }: { className: string }) {
         <DialogTrigger asChild>
           <Button className="">ADD TRANSACTION</Button>
         </DialogTrigger>
-        <DialogContent className="max-md:w-4/5 w-full h-4/5 flex items-center justify-center flex-col">
+        <DialogContent className="max-md:w-4/5 w-full h-4/5 flex items-center justify-center flex-col p-5">
           <DialogHeader>
             <DialogTitle>Add CateGory</DialogTitle>
             <DialogDescription>
@@ -124,7 +124,7 @@ function AddTransaction({ className }: { className: string }) {
           </DialogHeader>
           <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center  w-4/5 max-sm:w-4/5 px-9  text-white bg-green-700 rounded-xl relative"
+          className="flex flex-col items-center  w-full max-sm:w-4/5 px-3 h-full py-3  text-white bg-green-700 rounded-xl relative"
         >
           <div className="w-full flex items-start h-12 text-zinc-800">
             <select

@@ -53,7 +53,7 @@ function Page() {
     <div className="max-lg:p-4 flex flex-col gap-2">
       
 
-      <div className="w-full h-full  ">
+      <div className="w-full h-full py-5">
         {loading ? (
           <div className="flex justify-center items-center space-x-2">
             <div

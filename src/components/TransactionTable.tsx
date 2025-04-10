@@ -32,68 +32,69 @@ function TransactionTable() {
     setBlock(true);
   };
 
-    const fetchTransactions = async ({page,from=""}:{page:number,from:string}) => {
-      try {
-        const response = await fetch(
-          `/api/get-transaction?page=${page}&perpage=20&from=${from}`
-        );
-        const result = await response.json();
-        console.log("transaction");
+  const fetchTransactions = async ({
+    page,
+    from = "",
+  }: {
+    page: number;
+    from: string;
+  }) => {
+    try {
+      const response = await fetch(
+        `/api/get-transaction?page=${page}&perpage=20&from=${from}`
+      );
+      const result = await response.json();
+      console.log("transaction");
 
-        if (Array.isArray(result.transactions)) {
-          setHasMore(result.hasMore);
-         return result.transactions
-        } else { 
-          console.error("Unexpected API response structure");
-          []
-        }
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-        return []
+      if (Array.isArray(result.transactions)) {
+        setHasMore(result.hasMore);
+        return result.transactions;
+      } else {
+        console.error("Unexpected API response structure");
+        [];
       }
-    };
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      return [];
+    }
+  };
 
-   
-
-  const {data} = useQuery({
+  const { data } = useQuery({
     queryKey: ["transactions"],
-    queryFn: async () => fetchTransactions({page,from}),
-  })
+    queryFn: async () => fetchTransactions({ page, from }),
+  });
 
   useEffect(() => {
     if (!data) return;
-  
+
     if (page === 1) {
       setTransactions(data);
     } else {
       setTransactions((prev) => [...prev, ...data]);
     }
   }, [data, page]);
-  
-  
-  
 
-  
-    const getAmount = async () => {
-      try {
-        const response = await fetch(`/api/get-amount`);
-        const result = await response.json();
-        console.log("transaction table");
-        if (result && Array.isArray(result.budgetCurrent)) {
-          return (result.budgetCurrent);
-        } else {
-          console.error("Unexpected API response structure for amounts");
-        }
-      } catch (error) {
-        console.error("Error fetching amounts:", error);
+  const getAmount = async () => {
+    try {
+      const response = await fetch(`/api/get-amount`);
+      const result = await response.json();
+      console.log("transaction table");
+      if (result || Array.isArray(result.budgetCurrent)) {
+        return result.budgetCurrent;
+      } else {
+        return [];
       }
-    };
-  
+    } catch (error) {
+      return [];
+    }
+  };
 
-  const {data:amountData} = useQuery({
+  const { data: amountData = [] } = useQuery({
     queryKey: ["amounts"],
-    queryFn: async () => getAmount(),
-  })
+    queryFn: getAmount,
+  });
+
+  console.log(amountData);
 
   const handleShowMore = () => {
     if (hasMore) {
@@ -108,8 +109,6 @@ function TransactionTable() {
           <span className="text-3xl ">Let&#39;s get started!</span>
         </h1>
         <div className="py-2 w-full h-full">
-          
-
           <AddTransaction className="w-full h-full" />
         </div>
       </div>
@@ -130,11 +129,17 @@ function TransactionTable() {
           className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
         >
           <option value="">All</option>
-          {amountData.map((amount:BudgetTypes) => (
-            <option value={amount.budgetFor} key={amount._id}>
-              {amount.budgetFor}
+          {amountData.length >0 ? (
+            amountData.map((amount: BudgetTypes) => (
+              <option value={amount.budgetFor} key={amount._id}>
+                {amount.budgetFor}
+              </option>
+            ))
+          ) : (
+            <option value="" disabled>
+              No budgets available
             </option>
-          ))}
+          )}
         </select>
       </div>
       <Table className={cn(transactions.length === 0 && "hidden", "my-4")}>
