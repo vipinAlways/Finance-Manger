@@ -67,7 +67,7 @@ function Home() {
     queryKey: ["get-amount"],
     queryFn: async () => getAmount(),
   });
-console.log(data);
+
   return (
     <div className="w-full flex flex-col gap-1 py-3">
       <div className="w-full flex flex-col items-center gap-2 h-fit">
