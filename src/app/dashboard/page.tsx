@@ -28,10 +28,10 @@ function Home() {
             title: "Enjoy",
             description: <div className="text-orange-500">Your Day</div>,
           });
-        } else if (data.success) {
-          console.log("User added successfully");
+        
         } else {
           console.error("Failed to add user:", data);
+          throw new Error("Failed to add user:", data);
         }
       } catch (error) {
         console.error("Error while adding user:", error);
@@ -44,7 +44,7 @@ function Home() {
   
   const getAmount = async () => {
     try {
-      const response = await fetch(`/api/get-amount`);
+      const response = await fetch(`/api/get-amount?from=${from}`);
 
       if (!response.ok) {
         throw new Error(`API error: ${response.status} ${response.statusText}`);

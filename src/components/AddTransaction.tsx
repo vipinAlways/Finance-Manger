@@ -22,6 +22,7 @@ function AddTransaction({ className }: { className: string }) {
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -77,7 +78,9 @@ function AddTransaction({ className }: { className: string }) {
       setDisable(false);
       setFrom("");
       setError("");
+      setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["amounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
     onError: (error: any) => {
       setError(error.message);
@@ -105,133 +108,137 @@ function AddTransaction({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        "w-full h-full flex items-center justify-start pt-3",
+        "w-full h-full flex items-center justify-start pt-3 my-3",
         className
       )}
     >
       {amountData?.budgetCurrent?.length > 0 &&
       categoryData?.getAllCateGories?.length > 0 ? (
-        <Dialog >
-        <DialogTrigger asChild>
-          <Button className="">ADD TRANSACTION</Button>
-        </DialogTrigger>
-        <DialogContent className="max-md:w-4/5 w-full h-4/5 flex items-center justify-center flex-col p-5">
-          <DialogHeader>
-            <DialogTitle>Add CateGory</DialogTitle>
-            <DialogDescription>
-              Add the categories what you want to have
-            </DialogDescription>
-          </DialogHeader>
-          <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center  w-full max-sm:w-4/5 px-3 h-full py-3  text-white bg-green-700 rounded-xl relative"
-        >
-          <div className="w-full flex items-start h-12 text-zinc-800">
-            <select
-              name="from"
-              id="from"
-              className="rounded-sm border h-9 w-40"
-              onChange={(e) => setFrom(e.target.value)}
-              value={from}
-              required
+        <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+          <DialogTrigger asChild>
+            <Button className="">ADD TRANSACTION</Button>
+          </DialogTrigger>
+          <DialogContent className="max-md:w-4/5 w-full h-4/5 flex items-center justify-center flex-col p-5">
+            <DialogHeader>
+              <DialogTitle>Add CateGory</DialogTitle>
+              <DialogDescription>
+                Add the categories what you want to have
+              </DialogDescription>
+            </DialogHeader>
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-center  w-full max-sm:w-4/5 px-3 h-full py-3  text-white bg-green-700 rounded-xl relative"
             >
-              <option value="" disabled>
-                Select Budget
-              </option>
-              {amountData.budgetCurrent.map((amount: any, index: number) => (
-                <option key={index} value={amount.budgetFor}>
-                  {amount.budgetFor}
+              <div className="w-full flex items-start h-12 text-zinc-800">
+                <select
+                  name="from"
+                  id="from"
+                  className="rounded-sm border h-9 w-40"
+                  onChange={(e) => setFrom(e.target.value)}
+                  value={from}
+                  required
+                >
+                  <option value="" disabled>
+                    Select Budget
+                  </option>
+                  {amountData.budgetCurrent.map(
+                    (amount: any, index: number) => (
+                      <option key={index} value={amount.budgetFor}>
+                        {amount.budgetFor}
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              <input
+                type="number"
+                onChange={(e) => setAmount(e.target.value)}
+                name="amount"
+                placeholder="Enter amount"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={amount}
+                required
+              />
+
+              <input
+                type="date"
+                onChange={(e) => setDate(new Date(e.target.value))}
+                name="date"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
+                required
+              />
+
+              <select
+                onChange={(e) => setMethod(e.target.value)}
+                name="method"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={method}
+                required
+              >
+                <option value="" disabled>
+                  Select a Method
                 </option>
-              ))}
-            </select>
-          </div>
+                <option value="cash">Cash</option>
+                <option value="online">Online</option>
+              </select>
 
-          <input
-            type="number"
-            onChange={(e) => setAmount(e.target.value)}
-            name="amount"
-            placeholder="Enter amount"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={amount}
-            required
-          />
+              <select
+                onChange={(e) => setCategory(e.target.value)}
+                name="category"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={category}
+                required
+              >
+                <option value="" disabled>
+                  Select a Category
+                </option>
+                {categoryData.getAllCateGories.map(
+                  (cate: any, index: number) => (
+                    <option key={index} value={cate.nameOfCategorey}>
+                      {cate.nameOfCategorey}
+                    </option>
+                  )
+                )}
+              </select>
 
-          <input
-            type="date"
-            onChange={(e) => setDate(new Date(e.target.value))}
-            name="date"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
-            required
-          />
+              <select
+                onChange={(e) => setTransactionType(e.target.value)}
+                name="transactionType"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={transactionType}
+                required
+              >
+                <option value="" disabled>
+                  Select a Transaction Type
+                </option>
+                <option value="spend">Spend</option>
+                <option value="earn">Earn</option>
+                <option value="loan">Loan</option>
+              </select>
 
-          <select
-            onChange={(e) => setMethod(e.target.value)}
-            name="method"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={method}
-            required
-          >
-            <option value="" disabled>
-              Select a Method
-            </option>
-            <option value="cash">Cash</option>
-            <option value="online">Online</option>
-          </select>
+              <input
+                type="text"
+                onChange={(e) => setNote(e.target.value)}
+                name="note"
+                placeholder="Enter note"
+                className="border h-10 rounded-sm text-black w-full mb-5"
+                value={note}
+              />
 
-          <select
-            onChange={(e) => setCategory(e.target.value)}
-            name="category"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={category}
-            required
-          >
-            <option value="" disabled>
-              Select a Category
-            </option>
-            {categoryData.getAllCateGories.map((cate: any, index: number) => (
-              <option key={index} value={cate.nameOfCategorey}>
-                {cate.nameOfCategorey}
-              </option>
-            ))}
-          </select>
+              <button
+                type="submit"
+                disabled={disable}
+                className="border-2 p-2 rounded-md bg-white text-green-700"
+              >
+                Submit
+              </button>
 
-          <select
-            onChange={(e) => setTransactionType(e.target.value)}
-            name="transactionType"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={transactionType}
-            required
-          >
-            <option value="" disabled>
-              Select a Transaction Type
-            </option>
-            <option value="spend">Spend</option>
-            <option value="earn">Earn</option>
-            <option value="loan">Loan</option>
-          </select>
-
-          <input
-            type="text"
-            onChange={(e) => setNote(e.target.value)}
-            name="note"
-            placeholder="Enter note"
-            className="border h-10 rounded-sm text-black w-full mb-5"
-            value={note}
-          />
-
-          <button
-            type="submit"
-            disabled={disable}
-            className="border-2 p-2 rounded-md bg-white text-green-700"
-          >
-            Submit
-          </button>
-
-          {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
-        </form>
-        </DialogContent>
-      </Dialog>
+              {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
+            </form>
+          </DialogContent>
+        </Dialog>
       ) : (
         <p className="text-white text-lg">Loading data...</p>
       )}

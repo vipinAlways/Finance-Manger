@@ -126,7 +126,7 @@ const Page: React.FC = () => {
     const response = await fetch(`/api/get-category`);
     const result = await response.json();
 
-    if (Array.isArray(result.getAllCateGories)) {
+    if (result ||Array.isArray(result.getAllCateGories)) {
       return result.getAllCateGories;
     } else {
       return []
@@ -134,13 +134,13 @@ const Page: React.FC = () => {
     }
   };
 
-  const { data: categoryGroupsData } = useQuery({
+  const { data: categoryGroupsData=[] } = useQuery({
     queryKey: ["categories"],
-    queryFn: fetchCategories,
+    queryFn: async ()=>await fetchCategories(),
   });
-
+  console.log(categoryGroupsData, "categoryGroupsData");
   useEffect(() => {
-    setCategoryGroup(categoryGroupsData || []);
+    setCategoryGroup(categoryGroupsData);
   }, [categoryGroupsData]);
 
   return (
@@ -191,7 +191,7 @@ const Page: React.FC = () => {
             <option value="" disabled>
               Select a Category
             </option>
-            {categoryGroup.map((cate, index) => (
+            { Array.isArray(categoryGroup) && categoryGroup.map((cate, index) => (
               <option key={index} value={cate.nameOfCategorey}>
                 {cate.nameOfCategorey}
               </option>
