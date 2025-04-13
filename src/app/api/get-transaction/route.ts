@@ -9,9 +9,6 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from") || "";
-
-  const startDate = searchParams.get("start") || "";
-  const endDate = searchParams.get("end") || "";
   try {
     await dbConnect();
 
@@ -44,20 +41,10 @@ export async function GET(req: Request) {
       );
     }
 
-    const filters: any = { user: dbUser._id };
-
-    if (from !== "") {
-      filters.category = from; 
-    }
-
-    if (startDate && endDate) {
-      filters.date = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      };
-    }
     const transactions = await transactionModel
-      .find(filters)
+      .find(
+       from !== "" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
+      )
       .skip((page - 1) * perpage)
       .limit(perpage)
       .sort({ date: -1 });
