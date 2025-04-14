@@ -107,7 +107,7 @@ function PostAmount() {
               From
             </label>
             <input
-              className="border p-2 rounded-lg bg-green-600 text-white"
+              className="border p-2 rounded-lg bg-[#2ecc71] text-white"
               type="date"
               name="startDate"
               id="startDate"
@@ -124,7 +124,7 @@ function PostAmount() {
               To
             </label>
             <input
-              className="border p-2 rounded-lg bg-green-600 text-white"
+              className="border p-2 rounded-lg bg-[#2ecc71] text-white"
               type="date"
               name="endDate"
               id="endDate"

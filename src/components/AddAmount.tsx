@@ -65,6 +65,7 @@ const AddAmount = () => {
       setEndDate(null);
       setBudgetFor("");
       queryClient.invalidateQueries({queryKey: ["get-budget"]});
+      queryClient.invalidateQueries({queryKey: ["budget"]});
       queryClient.invalidateQueries({queryKey: ["get-budgetName"]});
     },
     onError: () => {
@@ -102,7 +103,7 @@ const AddAmount = () => {
   // }, [data]);
 
   return (
-    <div className="w-full h-full flex items-center py-4 px-2 bg-green-500 rounded-xl">
+    <div className="w-full h-full flex items-center py-4 px-2 bg-[#2ecc71] rounded-xl">
       <form
         onSubmit={(e) => {
           e.preventDefault();

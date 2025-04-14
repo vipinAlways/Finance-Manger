@@ -176,9 +176,9 @@ const Page: React.FC = () => {
         </Dialog>
       </div>
 
-      {/* Filters */}
+      
       <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 max-md:flex-col">
-        {/* Category Filter */}
+      
         <div className="flex items-center gap-3 w-full max-sm:justify-between flex-col">
           <label htmlFor="category" className="text-xl leading-none">
             Category
@@ -199,7 +199,7 @@ const Page: React.FC = () => {
           </select>
         </div>
 
-        {/* Type Filter */}
+        
         <div className="flex items-center gap-3 w-full flex-col">
           <label className="font-semibold text-lg text-zinc-800">
             Transaction Type
@@ -218,7 +218,7 @@ const Page: React.FC = () => {
           </select>
         </div>
 
-        {/* Date Range */}
+       
         <div className="flex items-center gap-3 w-full flex-col">
           <label htmlFor="start" className="font-semibold text-lg text-zinc-800">
             From
@@ -243,7 +243,7 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      {/* Transaction Table */}
+     
       {Transactions.length > 0 && (
         <div className="w-full border-2">
           <Table>

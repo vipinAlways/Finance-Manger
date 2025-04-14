@@ -42,7 +42,7 @@ function DeleteBudget({
     <div
       onMouseEnter={() => setAnimation("animation")}
       className={cn(
-        "rotate-90 absolute top-1/2 -left-28 bg-green-600 text-white rounded-lg  -translate-x-20 -translate-y-1/2 p-3",
+        "rotate-90 absolute top-1/2 -left-28 bg-[#2ecc71] text-white rounded-lg  -translate-x-20 -translate-y-1/2 p-3",
         className,
         animation
       )}

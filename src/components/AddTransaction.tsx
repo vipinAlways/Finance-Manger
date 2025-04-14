@@ -38,14 +38,33 @@ function AddTransaction({ className }: { className: string }) {
   });
 
   const fetchAmounts = async () => {
-    const response = await fetch("/api/get-amount");
-    if (!response.ok) throw new Error("Failed to fetch amounts");
-    return response.json();
+    
+      try {
+        const response = await fetch(`/api/get-amount`);
+        console.log("carddata");
+        const result = await response.json();
+
+        if (result.ok) {
+          if (Array.isArray(result.budgetCurrent)) {
+            return result.budgetCurrent;
+          } else {
+            console.error("Unexpected API response structure from amount");
+            return []
+          }
+        } else {
+          return []
+        }
+      } catch (error) {
+        console.error("Failed to fetch budget:", error);
+        throw new Error("Sorry server error")
+      }
+
+
   };
 
-  const { data: amountData } = useQuery({
+  const { data: amountData =[] } = useQuery({
     queryKey: ["amounts"],
-    queryFn: fetchAmounts,
+    queryFn: async ()=>await fetchAmounts(),
   });
 
   const addTransaction = async (transaction: {
@@ -104,6 +123,7 @@ function AddTransaction({ className }: { className: string }) {
     setDisable(true);
     mutate({ amount, dateAt, note, method, category, transactionType, from });
   };
+  console.log("ljjd",amountData);
 
   return (
     <div
@@ -112,7 +132,7 @@ function AddTransaction({ className }: { className: string }) {
         className
       )}
     >
-      {amountData?.budgetCurrent?.length > 0 &&
+      {amountData &&
       categoryData?.getAllCateGories?.length > 0 ? (
         <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
           <DialogTrigger asChild>
@@ -141,7 +161,7 @@ function AddTransaction({ className }: { className: string }) {
                   <option value="" disabled>
                     Select Budget
                   </option>
-                  {amountData.budgetCurrent.map(
+                  {amountData.map(
                     (amount: any, index: number) => (
                       <option key={index} value={amount.budgetFor}>
                         {amount.budgetFor}

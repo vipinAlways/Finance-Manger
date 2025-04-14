@@ -56,11 +56,11 @@ function TransactionsAccorindToDate() {
         <div className='flex items-center gap-9 justify-center w-full'>
             <div className='flex flex-col items-center gap-2 '>
               <label htmlFor="from" className='lg:text-xl max-sm:text-sm max-md:text-lg'>From</label>
-            <input type="date" name="from" id="from" onChange={(e)=>setStartDate(e.target.value)} value={from} className='bg-green-500 text-white p-2.5 rounded-lg lg:text-xl max-sm:text-sm max-md:text-lg ' />
+            <input type="date" name="from" id="from" onChange={(e)=>setStartDate(e.target.value)} value={from} className='bg-[#2ecc71] text-white p-2.5 rounded-lg lg:text-xl max-sm:text-sm max-md:text-lg ' />
             </div>
             <div className='flex flex-col items-center gap-2 '>
               <label htmlFor="to" className='lg:text-xl max-sm:text-sm max-md:text-lg'>To</label>
-            <input type="date" name="to" id="to" onChange={(e)=>setEndDate(e.target.value)} value={to }  className='bg-green-500 text-white p-2.5 rounded-lg lg:text-xl max-sm:text-sm max-md:text-lg '/>
+            <input type="date" name="to" id="to" onChange={(e)=>setEndDate(e.target.value)} value={to }  className='bg-[#2ecc71] text-white p-2.5 rounded-lg lg:text-xl max-sm:text-sm max-md:text-lg '/>
             </div>
         </div>
 

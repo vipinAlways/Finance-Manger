@@ -72,18 +72,23 @@ function BarGraph({ forWhich }: { forWhich: string }) {
   }, [forWhich]);
 
   const dates = useMemo(() => {
-    const dateArray: Date[] = [];
+    const dateSet = new Set<string>();
+  
     budget.forEach((item) => {
       let currentDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
-
+  
       while (currentDate <= endDate) {
-        dateArray.push(new Date(currentDate));
+        dateSet.add(currentDate.toDateString());
         currentDate.setDate(currentDate.getDate() + 1);
       }
     });
-    return dateArray;
+  
+    return Array.from(dateSet)
+      .map((d) => new Date(d))
+      .sort((a, b) => a.getTime() - b.getTime());
   }, [budget]);
+  
 
   const formatDate = (date: Date) =>
     `${date.getDate()} / ${date.getMonth() + 1}`;
@@ -154,34 +159,34 @@ function BarGraph({ forWhich }: { forWhich: string }) {
     ],
   };
 
-  const options = {
-    responsive: true, // Enables responsiveness
-    maintainAspectRatio: false, // Allows flexibility
-    plugins: {
-      legend: {
-        labels: {
-          font:
-            16 
-          ,
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          font: {
-            size: window.innerWidth < 600 ? 10 : 14, // Adjust X-axis label size dynamically
-          },
-        },
-      },
-      y: {
-        ticks: {
-          font:14, // Adjust Y-axis label size dynamically
+  // const options = {
+  //   responsive: true, // Enables responsiveness
+  //   maintainAspectRatio: false, // Allows flexibility
+  //   plugins: {
+  //     legend: {
+  //       labels: {
+  //         font:
+  //           16 
+  //         ,
+  //       },
+  //     },
+  //   },
+  //   scales: {
+  //     x: {
+  //       ticks: {
+  //         font: {
+  //           size: window.innerWidth < 600 ? 10 : 14, // Adjust X-axis label size dynamically
+  //         },
+  //       },
+  //     },
+  //     y: {
+  //       ticks: {
+  //         font:14, // Adjust Y-axis label size dynamically
           
-        },
-      },
-    },
-  };
+  //       },
+  //     },
+  //   },
+  // };
   
   return <Bar  data={data} className="h-full w-full text-xl" />;
 }

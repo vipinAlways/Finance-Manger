@@ -22,7 +22,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="#fff"
+        stroke="#ecf0f1"
         strokeWidth={strokeWidth}
         opacity="0.5"
       />
@@ -39,7 +39,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="url(#progressGradient)"
+        stroke="#2ecc71"
         strokeWidth={strokeWidth / 1.1}
         strokeDasharray={circumference}
         strokeDashoffset={offset}

@@ -24,10 +24,7 @@ function Home() {
         const data = await response.json();
 
         if (data.success) {
-          toast({
-            title: "Enjoy",
-            description: <div className="text-orange-500">Your Day</div>,
-          });
+          return
         
         } else {
           console.error("Failed to add user:", data);
@@ -39,7 +36,7 @@ function Home() {
     };
 
     postUser();
-  }, [toast]);
+  }, []);
 
   
   const getAmount = async () => {

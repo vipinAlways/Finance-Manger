@@ -67,7 +67,7 @@ const Page = () => {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["budget"],
+    queryKey: ["get-budget"],
     queryFn: async () => await fetchBudgets(),
   });
 
@@ -261,7 +261,7 @@ const Page = () => {
         </Dialog>
       </div>
       <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-lg:flex-col px-3">
-        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-green-600 text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
+        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
           <div className="flex space-x-4 relative w-full items-center justify-around p-2">
             {budgetCurrect.map(
               (show, i) =>
@@ -313,9 +313,9 @@ const Page = () => {
         <div>
           <div>
             <div className="relative">
-              <CircularProgress percentage={progress} size={200} />
-              <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-mono">
-                {progress}%
+              <CircularProgress percentage={progress} size={240} />
+              <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-bold text-[#2c3e50]">
+                {progress.toFixed(3)}%
               </p>
             </div>
           </div>

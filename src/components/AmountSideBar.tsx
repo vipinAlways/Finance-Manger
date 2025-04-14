@@ -54,7 +54,7 @@ const AmountSideBar = () => {
     queryFn: async () => getbudgets(),
   });
   return (
-    <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-green-500 rounded-md">
+    <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-[#2ecc71] rounded-md">
       <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between max-md:hidden">
         <h1 className="w-full text-2xl leading-none text-center text-zinc-800 font-bold  font-serif ">
           Budgets
@@ -74,7 +74,7 @@ const AmountSideBar = () => {
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline">Add Budget</Button>
+            <Button  className=" hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">+ Add Budget</Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="min-h-96 min-w-96 ">
             <AlertDialogTitle className="w-full text-center">

@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Transaction } from "../types";
 import AddTransaction from "./AddTransaction";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { get } from "http";
 import { BudgetTypes } from "./AmountSideBar";
 
@@ -24,13 +24,8 @@ function TransactionTable() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [from, setFrom] = useState("");
-  const [block, setBlock] = useState(false);
-
-  const onclick = () => {
-    if (block) setBlock(false);
-
-    setBlock(true);
-  };
+  const queryClient = useQueryClient();
+  
 
   const fetchTransactions = async ({
     page,
@@ -60,9 +55,10 @@ function TransactionTable() {
   };
 
   const { data } = useQuery({
-    queryKey: ["transactions"],
+    queryKey: ["transactions", page, from],
     queryFn: async () => fetchTransactions({ page, from }),
   });
+  
 
   useEffect(() => {
     if (!data) return;
@@ -73,28 +69,37 @@ function TransactionTable() {
       setTransactions((prev) => [...prev, ...data]);
     }
   }, [data, page]);
-
   const getAmount = async () => {
     try {
-      const response = await fetch(`/api/get-amount`);
+      const response = await fetch(`/api/get-amount?from=${from}`);
+      
       const result = await response.json();
-      console.log("transaction table");
-      if (result || Array.isArray(result.budgetCurrent)) {
-        return result.budgetCurrent;
+
+      if (result.ok) {
+        if (Array.isArray(result.budgetCurrent)) {
+          return result.budgetCurrent;
+        } else {
+          console.error("Unexpected API response structure from amount");
+          return []
+        }
       } else {
-        return [];
+        console.error("Error in fetching budget");
+        throw new Error("Sorry server error")
       }
     } catch (error) {
-      return [];
+      console.error("Failed to fetch budget:", error);
+      throw new Error("Sorry server error")
     }
   };
 
+  
+
   const { data: amountData = [] } = useQuery({
     queryKey: ["amounts"],
-    queryFn: getAmount,
+    queryFn: async ()=>await getAmount(),
   });
 
-  console.log(amountData);
+  console.log("check this ",amountData);
 
   const handleShowMore = () => {
     if (hasMore) {
@@ -125,7 +130,11 @@ function TransactionTable() {
           name="from"
           id="from"
           value={from}
-          onChange={(e) => setFrom(e.target.value)}
+          onChange={(e) => {
+            setFrom(e.target.value)
+            queryClient.invalidateQueries({queryKey:["transactions"]})
+          
+          }}
           className="w-52 h-full border border-gray-300 rounded-md px-2 py-1 capitalize"
         >
           <option value="">All</option>
