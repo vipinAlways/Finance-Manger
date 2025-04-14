@@ -46,7 +46,8 @@ export async function GET(req: Request) {
        from !== "" ?  { user: dbUser._id, from: from } : { user: dbUser._id }
       )
       .skip((page - 1) * perpage)
-      .limit(perpage)
+      .limit(perpage ? perpage : 10)
+      .populate("user")
       .sort({ date: -1 });
 
     const totalTransactions = await transactionModel.countDocuments({
