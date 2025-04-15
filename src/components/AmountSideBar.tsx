@@ -74,7 +74,9 @@ const AmountSideBar = () => {
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button  className=" hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">+ Add Budget</Button>
+            <Button className=" hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+              + Add Budget
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="min-h-96 min-w-96 ">
             <AlertDialogTitle className="w-full text-center">
