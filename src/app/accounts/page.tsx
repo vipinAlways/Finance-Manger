@@ -36,21 +36,7 @@ const Page = () => {
   const { toast } = useToast();
   const [progress, setProgress] = useState(0);
   const queryClient = useQueryClient();
-  const calculateTotalAmount = useCallback(
-    (type: string) =>
-      transactions.reduce((total, transaction) => {
-        if (transaction.transactionType === type) {
-          const transactionDate = new Date(transaction.date);
-          const startDate = new Date(budgetCurrect[index]?.startDate);
-          const endDate = new Date(budgetCurrect[index]?.endDate);
-          if (transactionDate >= startDate && transactionDate <= endDate) {
-            return total + transaction.amount;
-          }
-        }
-        return total;
-      }, 0),
-    [transactions, budgetCurrect, index]
-  );
+
   const fetchBudgets = async () => {
     try {
       const response = await fetch("/api/get-amount", { cache: "no-store" });
@@ -66,7 +52,7 @@ const Page = () => {
     }
   };
 
-  const { data, isError } = useQuery({
+  const { data, isError, isPending } = useQuery({
     queryKey: ["get-budget"],
     queryFn: async () => await fetchBudgets(),
   });
@@ -126,36 +112,9 @@ const Page = () => {
         variant: "default",
       });
       setNameOfBudget("");
-      // setHidden2(true);
-      // setBudgetUpdated((prev) => !prev);
       queryClient.invalidateQueries({ queryKey: ["budget"] });
     },
   });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev < budgetCurrect.length - 1 ? prev + 1 : 0));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [budgetCurrect]);
-
-  const totalEarned = useMemo(
-    () => calculateTotalAmount("earn"),
-    [calculateTotalAmount]
-  );
-  const totalSpent = useMemo(
-    () => calculateTotalAmount("spend"),
-    [calculateTotalAmount]
-  );
-
-  useEffect(() => {
-    setProgress(
-      budgetCurrect[index]?.amount > 0
-        ? (Math.abs(totalEarned + totalSpent) / budgetCurrect[index]?.amount) *
-            100
-        : 0
-    );
-  }, [budgetCurrect, index, totalEarned, totalSpent]);
 
   const fetchTransactions = useCallback(
     async (index: number) => {
@@ -175,11 +134,12 @@ const Page = () => {
     },
     [budgetCurrect]
   );
-
-  const { data: transactionData } = useQuery({
+  
+  const { data: transactionData, isPending: transactionIspending } = useQuery({
     queryKey: ["transaction", index],
     queryFn: async () => fetchTransactions(index),
     refetchInterval: 10000,
+    refetchIntervalInBackground: false,
   });
 
   useEffect(() => {
@@ -191,6 +151,65 @@ const Page = () => {
     if (!nameOfBudget.trim()) return;
     mutate(nameOfBudget);
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev < budgetCurrect.length - 1 ? prev + 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [budgetCurrect]);
+
+  const calculateTotalAmount = useCallback(
+    (type: string) =>
+      transactions.reduce((total, transaction) => {
+        if (transaction.transactionType === type) {
+          const transactionDate = new Date(transaction.date);
+          const startDate = new Date(budgetCurrect[index]?.startDate);
+          const endDate = new Date(budgetCurrect[index]?.endDate);
+          if (transactionDate >= startDate && transactionDate <= endDate) {
+            return total + transaction.amount;
+          }
+        }
+        return total;
+      }, 0),
+    [transactions, budgetCurrect, index]
+  );
+
+  const totalEarned = useMemo(
+    () => calculateTotalAmount("earn"),
+    [calculateTotalAmount]
+  );
+  const totalSpent = useMemo(
+    () => calculateTotalAmount("spend"),
+    [calculateTotalAmount]
+  );
+
+  useEffect(() => {
+    setProgress(
+      budgetCurrect[index]?.amount > 0
+        ? (Math.abs(totalEarned + totalSpent) / budgetCurrect[index]?.amount) *
+            100
+        : 0
+    );
+  }, [budgetCurrect, index, totalEarned, totalSpent, transactionData]);
+
+  if (isPending || transactionIspending) {
+    return (
+      <div className="flex justify-center items-center space-x-2">
+        <div
+          className="w-4 h-4 bg-[#2ecc71] rounded-full animate-bounce"
+          style={{ animationDelay: "0s" }}
+        ></div>
+        <div
+          className="w-4 h-4 bg-[#2ecc71] rounded-full animate-bounce"
+          style={{ animationDelay: "0.2s" }}
+        ></div>
+        <div
+          className="w-4 h-4 bg-[#2ecc71] rounded-full animate-bounce"
+          style={{ animationDelay: "0.4s" }}
+        ></div>
+      </div>
+    );
+  }
 
   if (budgetName.length === 0) {
     return (

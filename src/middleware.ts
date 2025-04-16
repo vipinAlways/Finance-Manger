@@ -5,5 +5,5 @@ export default function middleware(req:Request) {
   });
 }
 export const config = {
-  matcher: ["/dashboard","/transaction","/accounts","/budgets"],
+  matcher: ["/dashboard","/transaction","/accounts","/categories"],
 };

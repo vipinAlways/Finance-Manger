@@ -126,7 +126,7 @@ const Page: React.FC = () => {
     const response = await fetch(`/api/get-category`);
     const result = await response.json();
 
-    if (result ||Array.isArray(result.getAllCateGories)) {
+    if (result && Array.isArray(result.getAllCateGories)) {
       return result.getAllCateGories;
     } else {
       return []
@@ -138,10 +138,8 @@ const Page: React.FC = () => {
     queryKey: ["categories"],
     queryFn: async ()=>await fetchCategories(),
   });
-  console.log(categoryGroupsData, "categoryGroupsData");
-  useEffect(() => {
-    setCategoryGroup(categoryGroupsData);
-  }, [categoryGroupsData]);
+  
+  
 
   return (
     <div className="w-full">
@@ -191,7 +189,7 @@ const Page: React.FC = () => {
             <option value="" disabled>
               Select a Category
             </option>
-            { Array.isArray(categoryGroup) && categoryGroup.map((cate, index) => (
+            { Array.isArray(categoryGroup) && categoryGroupsData.map((cate:categoryGrp, index:number) => (
               <option key={index} value={cate.nameOfCategorey}>
                 {cate.nameOfCategorey}
               </option>
