@@ -40,6 +40,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
               <div key={bud._id}>
                 {bud.budgetFor}
                 {bud.amount}
+               <h1> {bud?.startDate?.toLocaleDateString()}</h1>
               </div>
             )
           );
