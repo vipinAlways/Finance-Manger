@@ -61,7 +61,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
         }
       } catch (error) {
         console.error("Error fetching transactions data:", error);
-      }
+      }   
     };
 
     fetchBudget();
@@ -110,6 +110,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
         borderWidth: 1,
         tension: 0.2,
         fill: false,
+        
       },
     ],
   };
