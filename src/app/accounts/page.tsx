@@ -121,7 +121,7 @@ const Page = () => {
       if (!budgetCurrect[index]) return [];
       try {
         const response = await fetch(
-          `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
+          `/api/get-transaction`
         );
         const result = await response.json();
 
