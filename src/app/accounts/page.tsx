@@ -284,7 +284,7 @@ const Page = () => {
           <div className="flex space-x-4 relative w-full items-center justify-around p-2">
             {budgetCurrect.map(
               (show, i) =>
-                i === index && (
+                (
                   <Link
                     key={i}
                     href={`/accounts/${show._id}`}
