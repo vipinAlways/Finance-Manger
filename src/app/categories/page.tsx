@@ -184,7 +184,7 @@ const Page: React.FC = () => {
           <select
             onChange={(e) => setSearchBox(e.target.value)}
             value={searchBox}
-            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-100 p-2 font-semibold text-zinc-800"
           >
             <option value="" disabled>
               Select a Category
@@ -205,7 +205,7 @@ const Page: React.FC = () => {
           <select
             onChange={(e) => setSelectType(e.target.value)}
             value={selectType}
-            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-100 p-2 font-semibold text-zinc-800"
           >
             <option value="" disabled>
               Select an option
@@ -225,7 +225,7 @@ const Page: React.FC = () => {
             type="date"
             value={startDate ? startDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setStartDate(new Date(e.target.value))}
-            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-100 p-2 font-semibold text-zinc-800"
           />
         </div>
         <div className="flex items-center gap-3 w-full flex-col">
@@ -236,7 +236,7 @@ const Page: React.FC = () => {
             type="date"
             value={endDate ? endDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setEndDate(new Date(e.target.value))}
-            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-200 p-2 font-semibold text-zinc-800"
+            className="w-60 border-2 max-sm:w-4/5 text-center max-sm:text-sm rounded-md border-green-100 p-2 font-semibold text-zinc-800"
           />
         </div>
       </div>
@@ -249,28 +249,28 @@ const Page: React.FC = () => {
               Here are all your transactions
             </TableCaption>
             <TableHeader>
-              <TableRow>
-                <TableHead className="text-green-500">Date</TableHead>
-                <TableHead className="text-green-500">From</TableHead>
-                <TableHead className="text-green-500">Amount</TableHead>
-                <TableHead className="text-green-500">Method</TableHead>
-                <TableHead className="text-green-500">Category</TableHead>
-                <TableHead className="text-green-500">Type</TableHead>
-                <TableHead className="text-green-500">Note</TableHead>
+              <TableRow className="text-green-900">
+                <TableHead >Date</TableHead>
+                <TableHead>From</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Method</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Note</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {FilteredTransactions.map((t, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-green-700">
+                <TableRow key={index} className="text-black">
+                  <TableCell >
                     {new Date(t.date).toLocaleDateString()}
                   </TableCell>
-                  <TableCell className="text-green-700">{t.from}</TableCell>
-                  <TableCell className="text-green-700">{t.amount}</TableCell>
-                  <TableCell className="text-green-700">{t.method}</TableCell>
-                  <TableCell className="text-green-700">{t.category}</TableCell>
-                  <TableCell className="text-green-700">{t.transactionType}</TableCell>
-                  <TableCell className="text-green-700">{t.note}</TableCell>
+                  <TableCell >{t.from}</TableCell>
+                  <TableCell >{t.amount}</TableCell>
+                  <TableCell >{t.method}</TableCell>
+                  <TableCell >{t.category}</TableCell>
+                  <TableCell >{t.transactionType}</TableCell>
+                  <TableCell >{t.note}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
