@@ -116,24 +116,21 @@ const Page = () => {
     },
   });
 
-  const fetchTransactions = useCallback(
-    async (index: number) => {
-      if (!budgetCurrect[index]) return [];
-      try {
-        const response = await fetch(
-          `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
-        );
-        const result = await response.json();
+  const fetchTransactions =  async (index: number) => {
+    if (!budgetCurrect[index]) return [];
+    try {
+      const response = await fetch(
+        `/api/get-transaction?from=${budgetCurrect[index]?.budgetFor}`
+      );
+      const result = await response.json();
 
-        return Array.isArray(result.transactions) ? result.transactions : [];
-      } catch (error) {
-        console.error("Transaction fetch error:", error);
-        alert("Currently our servers are not working, please try again later.");
-        return [];
-      }
-    },
-    [budgetCurrect]
-  );
+      return Array.isArray(result.transactions) ? result.transactions : [];
+    } catch (error) {
+      console.error("Transaction fetch error:", error);
+      alert("Currently our servers are not working, please try again later.");
+      return [];
+    }
+  };
   
   const { data: transactionData, isPending: transactionIspending } = useQuery({
     queryKey: ["transaction", index],
@@ -249,9 +246,11 @@ const Page = () => {
     );
   }
 
+  
+
   return (
-    <div className="h-full w-full py-3 flex flex-col gap-4 max-md:gap-2 items-center justify-center">
-      <div className="w-full h-32 flex flex-col items-start gap-4">
+    <div className="h-full w-full py-3 flex flex-col gap-6 max-md:gap-2 items-center justify-center">
+      <div className="w-full flex flex-col items-start gap-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button className="text-xl max-md:text-lg ">ADD NAME</Button>
@@ -279,9 +278,9 @@ const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="h-full mx-auto relative rounded-md w-full flex items-center justify-center gap-4 max-lg:flex-col px-3">
-        <div className="h-56 flex items-center justify-center overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
-          <div className="flex space-x-4 relative w-full items-center justify-around p-2">
+      <div className="h-full mx-auto relative rounded-md w-full flex  gap-4 max-lg:flex-col">
+        <div className="h-56 flex overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
+          <div className="flex space-x-4 relative w-full items-center justify-around ">
             {budgetCurrect.map(
               (show, i) =>
                 i === index && (
@@ -367,6 +366,10 @@ const Page = () => {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div>
+        
       </div>
     </div>
   );
