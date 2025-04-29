@@ -357,7 +357,7 @@ const Page = () => {
                   )}
                   {group.length > 1 && (
                     <>
-                      : ₹{group[1]?.amount} (Till:{" "}
+                      : ₹{group[1]?.amount} (Till:
                       {new Date(group[1]?.endDate).toLocaleDateString()})
                     </>
                   )}
