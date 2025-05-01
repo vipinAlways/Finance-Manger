@@ -28,8 +28,7 @@ export interface AmountGet {
 
 const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
-  const [budget, setBudget] = useState<[]>([]);
-  const [budgetName, setBudgetName] = useState<string[]>([]);
+  
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
@@ -56,12 +55,11 @@ const Page = () => {
     queryKey: ["get-budget"],
     queryFn: async () => await fetchBudgets(),
   });
+  console.log(data?.budgetAll, "dd");
 
   useEffect(() => {
     if (data) {
       setBudgetCurrent(data.budgetCurrent);
-      setBudgetName(data.budgetName);
-      setBudget(data.budgetAll);
     }
     if (
       (!data?.budgetCurrent?.length &&
@@ -70,8 +68,7 @@ const Page = () => {
       isError
     ) {
       setBudgetCurrent([]);
-      setBudgetName([]);
-      setBudget([]);
+      
     }
   }, [data, isError]);
 
@@ -91,7 +88,6 @@ const Page = () => {
 
       return data;
     } catch (error) {
-      // console.error("Error while adding budget name:", error);
       throw error;
     }
   };
@@ -116,7 +112,7 @@ const Page = () => {
     },
   });
 
-  const fetchTransactions =  async (index: number) => {
+  const fetchTransactions = async (index: number) => {
     if (!budgetCurrect[index]) return [];
     try {
       const response = await fetch(
@@ -131,7 +127,7 @@ const Page = () => {
       return [];
     }
   };
-  
+
   const { data: transactionData, isPending: transactionIspending } = useQuery({
     queryKey: ["transaction", index],
     queryFn: async () => fetchTransactions(index),
@@ -208,7 +204,7 @@ const Page = () => {
     );
   }
 
-  if (budgetName.length === 0) {
+  if (data?.budgetName.length === 0) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
         <h1 className="text-4xl font-light">
@@ -245,8 +241,6 @@ const Page = () => {
       </div>
     );
   }
-
-  
 
   return (
     <div className="h-full w-full py-3 flex flex-col gap-6 max-md:gap-2 items-center justify-center">
@@ -342,35 +336,21 @@ const Page = () => {
 
       <div className="flex w-full items-start flex-col">
         <h1 className="w-full flex-col flex items-start gap-1.5">
-          <span className=" text-zinc-700 ">Last Month&#39;s Savings</span>
+          <span className="text-zinc-700">Last Month's Savings</span>
           <span>Summary</span>
         </h1>
         <ul>
-          {budget.map((group: Amount[], index) => (
-            <li key={index}>
-              <ul>
-                <li>
-                  {group.length > 1 ? (
-                    <strong>{group[1]?.budgetFor}</strong>
-                  ) : (
-                    <p></p>
-                  )}
-                  {group.length > 1 && (
-                    <>
-                      : ₹{group[1]?.amount} (Till:
-                      {new Date(group[1]?.endDate).toLocaleDateString()}) ewewew
-                    </>
-                  )}
-                </li>
-              </ul>
-            </li>
-          ))}
+          {data?.budgetAll?.map((group: Amount[], groupIndex: number) =>
+            group.map((bud: Amount, budIndex: number) => (
+              <li key={`${groupIndex}-${budIndex}`} className="text-black">
+                <strong>{bud.budgetFor}</strong>: ₹{bud.amount}
+              </li>
+            ))
+          )}
         </ul>
       </div>
 
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 };
