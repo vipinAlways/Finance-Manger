@@ -28,7 +28,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
     queryKey: ["budget"],
     queryFn: async () => fetchBudget(),
   });
-  console.log(data);
+  
 
   return (
     <div className="">

@@ -272,68 +272,70 @@ const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="h-full mx-auto relative rounded-md w-full flex  gap-4 max-lg:flex-col">
-        <div className="h-56 flex overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
-          <div className="flex space-x-4 relative w-full items-center justify-around ">
-            {budgetCurrect.map(
-              (show, i) =>
-                i === index && (
-                  <Link
-                    key={i}
-                    href={`/accounts/${show._id}`}
-                    className="md:w-[28rem] md:h-52  max-md:h-44 flex items-center "
-                  >
-                    <Image
-                      src={"/image1.jpg"}
-                      alt="Budget Image"
-                      height={60}
-                      width={120}
-                      className="object-contain rounded-full"
-                    />
-                    <div className="flex justify-around h-full w-full p-2 flex-col">
-                      <div className="flex flex-col items-center gap-2 border-b pb-5 border-green-50">
-                        <h1 className="md:text-4xl font-bold">
-                          Name of Budget
-                        </h1>
-                        <h1
-                          className={cn(
-                            "flex justify-around capitalize font-serif",
-                            show.budgetFor.split(" ").length < 4
-                              ? "text-5xl"
-                              : "text-3xl"
-                          )}
-                        >
-                          {show.budgetFor}
-                        </h1>
+      {
+        budgetCurrect.length>0 && (<div className="h-full mx-auto relative rounded-md w-full flex  gap-4 max-lg:flex-col">
+          <div className="h-56 flex overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
+            <div className="flex space-x-4 relative w-full items-center justify-around ">
+              { budgetCurrect.map(
+                (show, i) =>
+                  i === index && (
+                    <Link
+                      key={i}
+                      href={`/accounts/${show._id}`}
+                      className="md:w-[28rem] md:h-52  max-md:h-44 flex items-center "
+                    >
+                      <Image
+                        src={"/image1.jpg"}
+                        alt="Budget Image"
+                        height={60}
+                        width={120}
+                        className="object-contain rounded-full"
+                      />
+                      <div className="flex justify-around h-full w-full p-2 flex-col">
+                        <div className="flex flex-col items-center gap-2 border-b pb-5 border-green-50">
+                          <h1 className="md:text-4xl font-bold">
+                            Name of Budget
+                          </h1>
+                          <h1
+                            className={cn(
+                              "flex justify-around capitalize font-serif",
+                              show.budgetFor.split(" ").length < 4
+                                ? "text-5xl"
+                                : "text-3xl"
+                            )}
+                          >
+                            {show.budgetFor}
+                          </h1>
+                        </div>
+                        <div className="w-full flex items-center justify-center font-serif">
+                          <p className="text-2xl rounded-full p-2 flex w-full items-center justify-center gap-3">
+                            <span className="w-fit flex">Till :</span>
+                            <span className="text-xl w-fit text-start">
+                              {new Date(show.endDate)
+                                .toString()
+                                .replace("GMT+0530 (India Standard Time)", "")}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="w-full flex items-center justify-center font-serif">
-                        <p className="text-2xl rounded-full p-2 flex w-full items-center justify-center gap-3">
-                          <span className="w-fit flex">Till :</span>
-                          <span className="text-xl w-fit text-start">
-                            {new Date(show.endDate)
-                              .toString()
-                              .replace("GMT+0530 (India Standard Time)", "")}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )
-            )}
+                    </Link>
+                  )
+              )}
+            </div>
           </div>
-        </div>
-        <div>
           <div>
-            <div className="relative">
-              <CircularProgress percentage={progress} size={240} />
-              <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-bold text-[#2c3e50]">
-                {progress.toFixed(3)}%
-              </p>
+            <div>
+              <div className="relative">
+                <CircularProgress percentage={progress} size={240} />
+                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-bold text-[#2c3e50]">
+                  {progress.toFixed(3)}%
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+  )
+      }
       <div className="flex w-full items-start flex-col">
         <h1 className="w-full flex-col flex items-start gap-1.5">
           <span className="text-zinc-700">Last Month's Savings</span>
