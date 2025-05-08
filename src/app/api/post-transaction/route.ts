@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         await req.json();
 
 
-        if(transactionType === "spend" ){
+        if(transactionType === "spend" || transactionType === "loan"){
           amount = -amount
         }
 

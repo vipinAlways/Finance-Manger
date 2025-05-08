@@ -108,7 +108,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
             ? matchingTransaction.reduce((acc, curr) => acc + curr.amount, 0)
             : 0;
         }),
-        backgroundColor: "rgba(75, 192, 192, 0.84)",
+        backgroundColor: "rgba(75,192,192,0.84)",
         borderColor: "green",
         borderWidth: 1,
       },

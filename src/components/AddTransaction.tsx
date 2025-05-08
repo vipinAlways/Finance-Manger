@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { AmountGet } from "@/app/accounts/page";
+import { useToast } from "./ui/use-toast";
+
+
 
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
@@ -19,10 +23,13 @@ function AddTransaction({ className }: { className: string }) {
   const [category, setCategory] = useState("");
   const [method, setMethod] = useState("");
   const [dateAt, setDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [transactionType, setTransactionType] = useState("");
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
+
+  const {toast}= useToast();
 
   const queryClient = useQueryClient();
 
@@ -36,6 +43,7 @@ function AddTransaction({ className }: { className: string }) {
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
+
 
   const fetchAmounts = async () => {
     
@@ -115,15 +123,30 @@ function AddTransaction({ className }: { className: string }) {
       !method ||
       !dateAt ||
       !transactionType ||
-      !from
+      !from 
     ) {
       setError("All fields are required.");
       return;
     }
+
+    if((dateAt > endDate!)){
+      toast({
+        title: "Error",
+        description: "Date should be less than end date",
+        variant: "destructive",
+      })
+      setDate(null)
+      return
+    }
     setDisable(true);
     mutate({ amount, dateAt, note, method, category, transactionType, from });
+    toast({
+      title: "Success",
+      description: "Transaction added successfully",
+      variant: "default",
+    });
   };
-  console.log("ljjd",amountData);
+ 
 
   return (
     <div
@@ -154,7 +177,15 @@ function AddTransaction({ className }: { className: string }) {
                   name="from"
                   id="from"
                   className="rounded-sm border h-9 w-40"
-                  onChange={(e) => setFrom(e.target.value)}
+                  onChange={(e) => {
+                    setFrom(e.target.value);
+                    setEndDate(()=>{
+                      const selectedBudget = amountData.find(
+                        (budget:AmountGet) => budget.budgetFor === e.target.value
+                      );
+                      return selectedBudget ? new Date(selectedBudget.endDate) : null;
+                    });
+                  }}
                   value={from}
                   required
                 >
