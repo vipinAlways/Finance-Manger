@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   return (
     <html lang="en">
      <AuthProvider>
-     <body className={`${recursive.className} relative bg-green-50 scroll-smooth `}>
+     <body className={`${recursive.className} relative bg-[#e3f2ea] scroll-smooth `}>
         <Header/>
         <MarginOfBody>
         {children}

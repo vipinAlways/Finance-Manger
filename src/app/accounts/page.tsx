@@ -17,6 +17,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
 export interface AmountGet {
   budgetFor: string;
@@ -28,7 +37,7 @@ export interface AmountGet {
 
 const Page = () => {
   const [budgetCurrect, setBudgetCurrent] = useState<AmountGet[]>([]);
-  
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [nameOfBudget, setNameOfBudget] = useState("");
   const [index, setIndex] = useState(0);
@@ -68,7 +77,6 @@ const Page = () => {
       isError
     ) {
       setBudgetCurrent([]);
-      
     }
   }, [data, isError]);
 
@@ -243,11 +251,11 @@ const Page = () => {
   }
 
   return (
-    <div className="h-full w-full py-3 flex flex-col gap-6 max-md:gap-2 items-center justify-center">
-      <div className="w-full flex flex-col items-start gap-4">
+    <div className="flex flex-col gap-6">
+      <div className="w-full flex flex-col items-start ">
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="text-xl max-md:text-lg ">ADD NAME</Button>
+            <Button>ADD NAME</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -272,87 +280,64 @@ const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
-      {
-        budgetCurrect.length>0 && (<div className="h-full mx-auto relative rounded-md w-full flex  gap-4 max-lg:flex-col">
-          <div className="h-56 flex overflow-x-auto overflow-y-hidden scroll-smooth touch-pan-left bg-[#2ecc71] text-green-50 md:w-[34rem]  rounded-md max-md:w-full">
-            <div className="flex space-x-4 relative w-full items-center justify-around ">
-              { budgetCurrect.map(
-                (show, i) =>
-                  i === index && (
-                    <Link
-                      key={i}
-                      href={`/accounts/${show._id}`}
-                      className="md:w-[28rem] md:h-52  max-md:h-44 flex items-center "
-                    >
-                      <Image
-                        src={"/image1.jpg"}
-                        alt="Budget Image"
-                        height={60}
-                        width={120}
-                        className="object-contain rounded-full"
-                      />
-                      <div className="flex justify-around h-full w-full p-2 flex-col">
-                        <div className="flex flex-col items-center gap-2 border-b pb-5 border-green-50">
-                          <h1 className="md:text-4xl font-bold">
-                            Name of Budget
-                          </h1>
-                          <h1
-                            className={cn(
-                              "flex justify-around capitalize font-serif",
-                              show.budgetFor.split(" ").length < 4
-                                ? "text-5xl"
-                                : "text-3xl"
-                            )}
-                          >
-                            {show.budgetFor}
-                          </h1>
-                        </div>
-                        <div className="w-full flex items-center justify-center font-serif">
-                          <p className="text-2xl rounded-full p-2 flex w-full items-center justify-center gap-3">
-                            <span className="w-fit flex">Till :</span>
-                            <span className="text-xl w-fit text-start">
-                              {new Date(show.endDate)
-                                .toString()
-                                .replace("GMT+0530 (India Standard Time)", "")}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  )
-              )}
+
+      <div>
+        <div className="w-96 h-48 bg-[rgba(46,204,113,0.1)] backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start">
+          <div className="flex items-center gap-2 justify-start">
+            <Image
+              src="/image1.jpg"
+              alt="green"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <h1 className="text-2xl font-thin text-green-900">Self</h1>
+          </div>
+          <div className="relative w-full bg-[linear-gradient(to_right,red_0%,red_50%,green_50%,green_80%,blue_80%,blue_100%)] h-4 rounded-lg group">
+            <div className="w-10 h-10 absolute top-0 left-1/2 -translate-x-1/2 rounded shadow-md hidden group-hover:block transition-all duration-300 ease-linear">
+              <p className="text-xs text-black p-2">
+                kshdkhskhkdjkjskdjkjhdkhs
+              </p>
             </div>
           </div>
-          <div>
-            <div>
-              <div className="relative">
-                <CircularProgress percentage={progress} size={240} />
-                <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-bold text-[#2c3e50]">
-                  {progress.toFixed(3)}%
-                </p>
-              </div>
-            </div>
-          </div>
+
+          <div>{/* Additional content if needed */}</div>
         </div>
-  )
-      }
-      <div className="flex w-full items-start flex-col">
-        <h1 className="w-full flex-col flex items-start gap-1.5">
-          <span className="text-zinc-700">Last Month's Savings</span>
-          <span>Summary</span>
-        </h1>
-        <ul>
-          {data?.budgetAll?.map((group: Amount[], groupIndex: number) =>
-            group.map((bud: Amount, budIndex: number) => (
-              <li key={`${groupIndex}-${budIndex}`} className="text-black">
-                <strong>{bud.budgetFor}</strong>: ₹{bud.amount}
-              </li>
-            ))
-          )}
-        </ul>
       </div>
 
-      <div></div>
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead rowSpan={2}>Bud Name</TableHead>
+              <TableHead colSpan={3} className="text-center">
+                Spent Wise
+              </TableHead>
+              <TableHead colSpan={2} className="text-center">
+                Actions
+              </TableHead>
+            </TableRow>
+            <TableRow>
+              <TableHead>Earn</TableHead>
+              <TableHead>Spend</TableHead>
+              <TableHead>Loan</TableHead>
+              <TableHead className="">Spent</TableHead>
+              <TableHead className="">Save</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            <TableRow>
+              <TableCell>hello</TableCell>
+              <TableCell>hello1</TableCell>
+              <TableCell>hello2</TableCell>
+              <TableCell>hello3</TableCell>
+              <TableCell>hello4</TableCell>
+              <TableCell className="">hello5</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
