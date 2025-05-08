@@ -120,19 +120,19 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
               {budget.budgetFor} Usage
             </h1>
             <div className="border-b border-black/20 px-4">
-              <li className="space-x-2 list-disc w-full marker:text-black/20 marker:text-xl hover:marker:text-black ">
+              <li className="space-x-2 list-disc w-full marker:text-[rgba(75,192,192,0.84)] marker:text-xl hover:marker:text-[rgba(75,192,192,1)]">
                 <span>Earn</span>
                 <span>{earn}</span>
               </li>
             </div>
             <div className="border-b border-black/20 px-4">
-              <li className="space-x-2 list-disc w-full marker:text-black/20 marker:text-xl hover:marker:text-black">
+              <li className="space-x-2 list-disc w-full marker:text-red-600/20 marker:text-xl hover:marker:text-red-600">
                 <span>Spend</span>
                 <span>{spend}</span>
               </li>
             </div>
             <div className="border-b border-black/20 px-4">
-              <li className="space-x-2 list-disc w-full marker:text-black/20 marker:text-xl hover:marker:text-black">
+              <li className="space-x-2 list-disc w-full marker:text-yellow-600/20 marker:text-xl hover:marker:text-yellow-600">
                 <span>Loan</span>
                 <span>{loan}</span>
               </li>
