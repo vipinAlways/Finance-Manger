@@ -5,6 +5,7 @@ import { set } from "mongoose";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
+import Link from "next/link";
 
 const BudgetCard = ({ budget }: { budget: AmountGet }) => {
   const [earn, setEarn] = useState(0);
@@ -77,7 +78,6 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
   
     const spendPercent = (Math.abs(spend) / totalVal) * 100;
     const earnPercent = (Math.abs(earn) / totalVal) * 100;
-    const loanPercent = (Math.abs(loan) / totalVal) * 100;
   
     const gradient = `linear-gradient(
       to right,
@@ -97,7 +97,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
   
 
   return (
-    <div className="w-96 h-48 bg-[rgba(46,204,113,0.5)] backdrop:blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start relative">
+    <Link href={`/accounts/${budget._id}`} className="min-w-96 h-48 bg-[rgba(46,204,113,0.5)] backdrop:blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start relative">
       <div className="flex items-center gap-2">
         <Image
           src="/image1.jpg"
@@ -128,13 +128,13 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
             <div className="border-b border-black/20 px-4">
               <li className="space-x-2 list-disc w-full marker:text-red-600/20 marker:text-xl hover:marker:text-red-600">
                 <span>Spend</span>
-                <span>{spend}</span>
+                <span>{-1*spend}</span>
               </li>
             </div>
             <div className="border-b border-black/20 px-4">
               <li className="space-x-2 list-disc w-full marker:text-yellow-600/20 marker:text-xl hover:marker:text-yellow-600">
                 <span>Loan</span>
-                <span>{loan}</span>
+                <span>{-1*loan}</span>
               </li>
             </div>
           </ul>
@@ -147,13 +147,13 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
        </h1>
 
        <h1>
-        {budget.amount}  {total}
+        {budget.amount}
        </h1>
        
        
       </div>
   
-    </div>
+    </Link>
   );
 };
 

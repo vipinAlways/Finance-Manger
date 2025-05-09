@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,7 +15,6 @@ import { Button } from "./ui/button";
 import { Transaction } from "../types";
 import AddTransaction from "./AddTransaction";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { get } from "http";
 import { BudgetTypes } from "./AmountSideBar";
 
 function TransactionTable() {
@@ -190,6 +188,7 @@ function TransactionTable() {
                 <TableCell className="text-right">{transaction.note}</TableCell>
                 <TableCell className="text-right">
                   <DeleteTransaction transactionId={transaction._id || ""} />
+                  
                 </TableCell>
               </TableRow>
             ))}

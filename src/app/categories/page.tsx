@@ -189,7 +189,7 @@ const Page: React.FC = () => {
             <option value="" disabled>
               Select a Category
             </option>
-            { Array.isArray(categoryGroup) && categoryGroupsData.map((cate:categoryGrp, index:number) => (
+            { Array.isArray(categoryGroupsData) && categoryGroupsData.map((cate:categoryGrp, index:number) => (
               <option key={index} value={cate.nameOfCategorey}>
                 {cate.nameOfCategorey}
               </option>

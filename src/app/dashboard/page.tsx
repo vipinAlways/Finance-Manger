@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 
 function Home() {
   const [from, setFrom] = useState("");
-  const { toast } = useToast();
+  
 
  useEffect(() => {
     const postUser = async () => {
@@ -52,12 +52,12 @@ function Home() {
       if (result && Array.isArray(result.budgetCurrent)) {
         return result.budgetCurrent;
       } else {
-        console.error("Unexpected API response structure for amounts");
+        
         return [];
       }
     } catch (error) {
-      console.error("Error fetching amounts:", error);
-      return [];
+      
+      throw new Error("Sorry server error");
     }
   };
   const { data = [] } = useQuery({
@@ -92,7 +92,7 @@ function Home() {
         </div>
       </div>
       <div className="flex items-center gap-5 w-full justify-center max-lg:flex-col xl:mt-5 max-md:gap-3 max-sm:gap-1">
-        <div className="flex items-center flex-col max-sm:w-80 w-full">
+        <div className="flex items-center flex-col max-sm:w-[90%] w-full">
           <div className="w-[55vw] max-lg:w-[90%] max-sm:w-full mt-2 flex items-center justify-center md:p-3 rounded-xl p-2 bg-gradient-to-tr from-green-500 via-green-200 to-green-400  lg:h-[55vh] h-96 max-sm:h-60">
             <BarGraph forWhich={from} />
           </div>
@@ -104,7 +104,7 @@ function Home() {
           <div className="flex flex-col w-full items-center justify-center h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col p-3 max-lg:w-[90%] lg:w-96 max-sm:w-[95%] justify-center rounded-xl items-start bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
+              className="h-[55vh] max-md:h-80 flex flex-col max-lg:w-[90%] lg:w-96 max-sm:w-[95%] justify-center rounded-xl items-center bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
             >
               <PieGraph forWhich={from} />
             </Link>

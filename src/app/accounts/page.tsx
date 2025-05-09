@@ -58,7 +58,7 @@ const Page = () => {
     }
   };
 
-  const { data, isError, isPending } = useQuery({
+  const { data} = useQuery({
     queryKey: ["get-budget"],
     queryFn: async () => await fetchBudgets(),
   });
@@ -182,7 +182,7 @@ const Page = () => {
         </Dialog>
       </div>
 
-      <div className="flex gap-4 items-start justify-start w-full p-3 overflow-x-auto overflow-y-hidden">
+      <div className="flex gap-4 items-start justify-start w-full px-3 overflow-x-auto overflow-y-hidden py-5">
         {(data?.budgetCurrent ?? []).length > 0
           ? data?.budgetCurrent.map((budget: AmountGet, index: number) => (
               <BudgetCard budget={budget} key={index} />

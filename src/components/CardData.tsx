@@ -140,9 +140,6 @@ function Data({ forWhich="" }: { forWhich: string }) {
     },
   ];
 
-  console.log(amount);
-  console.log(spendAmount);
-  console.log(earnAmount);
 
   return (
     <div className="flex justify-evenly w-full flex-1 gap-2 max-lg:gap-4 items-center h-fit flex-wrap">
