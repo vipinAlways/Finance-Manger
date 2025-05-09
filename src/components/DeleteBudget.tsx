@@ -13,11 +13,6 @@ function DeleteBudget({
   const [animation, setAnimation] = useState("");
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    window.addEventListener("scroll", function () {
-      setAnimation("");
-    });
-  }, []);
   const deleteBudget = async () => {
     try {
       const response = await fetch(`/api/delete-budget?amountId=${amountId}`, {

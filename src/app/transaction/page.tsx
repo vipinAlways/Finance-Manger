@@ -32,21 +32,7 @@ function Page() {
     const preventDefault = (e: Event) => {
       e.preventDefault();
     };
-    const toggleScroll = () => {
-      if (block) {
-        window.addEventListener("scroll", preventDefault, { passive: false });
-        window.addEventListener("wheel", preventDefault, { passive: false });
-        window.addEventListener("touchmove", preventDefault, {
-          passive: false,
-        });
-      } else {
-        window.removeEventListener("scroll", preventDefault);
-        window.removeEventListener("wheel", preventDefault);
-        window.removeEventListener("touchmove", preventDefault);
-      }
-    };
 
-    toggleScroll();
   }, [block]);
 
   return (

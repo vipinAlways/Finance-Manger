@@ -26,7 +26,7 @@ export async function dbDisconnect(): Promise<void> {
     return;
   }
   try {
-    const db = await mongoose.disconnect();
+ await mongoose.disconnect();
   } catch (error) {
     console.error("db connection failed", error);
     process.exit(1);

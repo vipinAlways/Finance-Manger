@@ -28,6 +28,11 @@ ChartJS.register(
 function BarGraph({ forWhich }: { forWhich: string }) {
   const [transaction, setTransactions] = useState<Transaction[]>([]);
   const [budget, setBudget] = useState<Amount[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const fetchBudget = async () => {
@@ -163,7 +168,7 @@ function BarGraph({ forWhich }: { forWhich: string }) {
       legend: {
         labels: {
           font: {
-            size: window.innerWidth < 600 ? 12 : 14,
+          size: 12
           },
         },
       },
@@ -172,25 +177,21 @@ function BarGraph({ forWhich }: { forWhich: string }) {
       x: {
         ticks: {
           font: {
-            size: window.innerWidth < 600 ? 8 : 6,
+            size: 8 
           },
         },
       },
       y: {
         ticks: {
           font: {
-            size: window.innerWidth < 600 ? 8 : 6,
+            size: 8 
           },
         },
       },
     },
   };
 
-  return (
-    
-      <Bar className="w-full h-full" data={data} options={chartOptions} />
-    
-  );
+  if(isClient) return <Bar className="w-full h-full" data={data} options={chartOptions} />;
 }
 
 export default BarGraph;

@@ -119,7 +119,7 @@ function PieGraph({forWhich}: {forWhich: string}) {
       legend: {
         labels: {
           font: {
-            size: window.innerWidth < 600 ? 12 : 16, 
+            size: 16 
           },
         },
       },

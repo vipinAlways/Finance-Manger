@@ -54,7 +54,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
         }
         return total;
       }, 0),
-    [transactionData]
+    [transactionData,budget.budgetFor, budget.startDate, budget.endDate]
   );
 
   useEffect(() => {
