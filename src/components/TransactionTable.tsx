@@ -37,7 +37,7 @@ function TransactionTable() {
         `/api/get-transaction?page=${page}&perpage=20&from=${from}`
       );
       const result = await response.json();
-      console.log("transaction");
+
 
       if (Array.isArray(result.transactions)) {
         setHasMore(result.hasMore);
@@ -97,7 +97,6 @@ function TransactionTable() {
     queryFn: async ()=>await getAmount(),
   });
 
-  console.log("check this ",amountData);
 
   const handleShowMore = () => {
     if (hasMore) {

@@ -10,7 +10,6 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
   const fetchBudget = async () => {
     try {
       const response = await fetch(`/api/get-amount`);
-      console.log("ac history");
       const result = await response.json();
 
       if (result.ok) {
@@ -27,7 +26,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
   const { data } = useQuery({
     queryKey: ["budget"],
     queryFn: async () => fetchBudget(),
-  });
+  }); 
   
 
   return (

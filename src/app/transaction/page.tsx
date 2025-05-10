@@ -1,17 +1,7 @@
 "use client";
-import AddTransaction from "@/components/AddTransaction";
 import TransactionTable from "@/components/TransactionTable";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 
 function Page() {
   const [block, setBlock] = useState(false);

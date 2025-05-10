@@ -68,7 +68,7 @@ const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
     <div>
       <AccountHistory accountId={acountId} />
 
-      <Button onClick={() => mutate()}>Delete budget</Button>
+      <Button onClick={() => mutate()}>Drop budget</Button>
     </div>
   );
 };

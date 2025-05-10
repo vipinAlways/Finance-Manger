@@ -14,8 +14,6 @@ import {
 import { AmountGet } from "@/app/accounts/page";
 import { useToast } from "./ui/use-toast";
 
-
-
 function AddTransaction({ className }: { className: string }) {
   const [amount, setAmount] = useState("");
   const [from, setFrom] = useState("");
@@ -29,7 +27,7 @@ function AddTransaction({ className }: { className: string }) {
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
 
-  const {toast}= useToast();
+  const { toast } = useToast();
 
   const queryClient = useQueryClient();
 
@@ -44,35 +42,31 @@ function AddTransaction({ className }: { className: string }) {
     queryFn: fetchCategories,
   });
 
-
   const fetchAmounts = async () => {
-    
-      try {
-        const response = await fetch(`/api/get-amount`);
-        console.log("carddata");
-        const result = await response.json();
+    try {
+      const response = await fetch(`/api/get-amount`);
+      console.log("carddata");
+      const result = await response.json();
 
-        if (result.ok) {
-          if (Array.isArray(result.budgetCurrent)) {
-            return result.budgetCurrent;
-          } else {
-            console.error("Unexpected API response structure from amount");
-            return []
-          }
+      if (result.ok) {
+        if (Array.isArray(result.budgetCurrent)) {
+          return result.budgetCurrent;
         } else {
-          return []
+          console.error("Unexpected API response structure from amount");
+          return [];
         }
-      } catch (error) {
-        console.error("Failed to fetch budget:", error);
-        throw new Error("Sorry server error")
+      } else {
+        return [];
       }
-
-
+    } catch (error) {
+      console.error("Failed to fetch budget:", error);
+      throw new Error("Sorry server error");
+    }
   };
 
-  const { data: amountData =[] } = useQuery({
+  const { data: amountData = [] } = useQuery({
     queryKey: ["amounts"],
-    queryFn: async ()=>await fetchAmounts(),
+    queryFn: async () => await fetchAmounts(),
   });
 
   const addTransaction = async (transaction: {
@@ -123,20 +117,20 @@ function AddTransaction({ className }: { className: string }) {
       !method ||
       !dateAt ||
       !transactionType ||
-      !from 
+      !from
     ) {
       setError("All fields are required.");
       return;
     }
 
-    if((dateAt > endDate!)){
+    if (dateAt > endDate!) {
       toast({
         title: "Error",
         description: "Date should be less than end date",
         variant: "destructive",
-      })
-      setDate(null)
-      return
+      });
+      setDate(null);
+      return;
     }
     setDisable(true);
     mutate({ amount, dateAt, note, method, category, transactionType, from });
@@ -146,7 +140,6 @@ function AddTransaction({ className }: { className: string }) {
       variant: "default",
     });
   };
- 
 
   return (
     <div
@@ -155,143 +148,166 @@ function AddTransaction({ className }: { className: string }) {
         className
       )}
     >
-      {amountData &&
-      categoryData?.getAllCateGories?.length > 0 ? (
+      {amountData && categoryData?.getAllCateGories?.length > 0 ? (
         <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
           <DialogTrigger asChild>
-            <Button className="">ADD TRANSACTION</Button>
+            <Button>ADD TRANSACTION</Button>
           </DialogTrigger>
-          <DialogContent className="w-[95%] h-4/5 max-lg:h-3/5 flex items-center justify-center flex-col rounded-lg p-2 ">
-            <DialogHeader>
-              <DialogTitle>Add CateGory</DialogTitle>
-              <DialogDescription>
-                Add the categories what you want to have
-              </DialogDescription>  
-            </DialogHeader>
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col items-center  w-full max-sm:w-full px-3 h-full py-3  text-white bg-green-700 rounded-xl relative"
-            >
-              <div className="w-full flex items-start h-12 text-zinc-800">
+
+          {amountData?.length > 0 && amountData?.budgetCurrent?.length > 0 ? (
+            <DialogContent className="w-[95%] h-4/5 max-lg:h-3/5 flex flex-col items-center justify-center rounded-lg p-2">
+              <DialogHeader>
+                <DialogTitle>Add Category</DialogTitle>
+                <DialogDescription>
+                  Add the categories you want to have
+                </DialogDescription>
+              </DialogHeader>
+
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col items-center w-full h-full px-3 py-3 text-white bg-green-700 rounded-xl"
+                aria-label="Add Transaction Form"
+              >
+                {/* Budget Select */}
+                <div className="w-full flex items-start h-12 text-zinc-800 mb-5">
+                  <select
+                    name="from"
+                    id="from"
+                    className="rounded-sm border h-10 w-40"
+                    onChange={(e) => {
+                      setFrom(e.target.value);
+                      setEndDate(() => {
+                        const selectedBudget = amountData.find(
+                          (budget: AmountGet) =>
+                            budget.budgetFor === e.target.value
+                        );
+                        return selectedBudget
+                          ? new Date(selectedBudget.endDate)
+                          : null;
+                      });
+                    }}
+                    value={from}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select Budget
+                    </option>
+                    {amountData.map((amount: AmountGet) => (
+                      <option key={amount._id} value={amount._id}>
+                        {amount.budgetFor}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <input
+                  type="number"
+                  onChange={(e) => setAmount(e.target.value)}
+                  name="amount"
+                  placeholder="Enter amount"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={amount}
+                  required
+                />
+
+                <input
+                  type="date"
+                  onChange={(e) => setDate(new Date(e.target.value))}
+                  name="date"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
+                  required
+                />
+
                 <select
-                  name="from"
-                  id="from"
-                  className="rounded-sm border h-9 w-40"
-                  onChange={(e) => {
-                    setFrom(e.target.value);
-                    setEndDate(()=>{
-                      const selectedBudget = amountData.find(
-                        (budget:AmountGet) => budget.budgetFor === e.target.value
-                      );
-                      return selectedBudget ? new Date(selectedBudget.endDate) : null;
-                    });
-                  }}
-                  value={from}
+                  onChange={(e) => setMethod(e.target.value)}
+                  name="method"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={method}
                   required
                 >
                   <option value="" disabled>
-                    Select Budget
+                    Select a Method
                   </option>
-                  {amountData.map(
-                    (amount: any, index: number) => (
-                      <option key={index} value={amount.budgetFor}>
-                        {amount.budgetFor}
-                      </option>
-                    )
-                  )}
+                  <option value="cash">Cash</option>
+                  <option value="online">Online</option>
                 </select>
-              </div>
 
-              <input
-                type="number"
-                onChange={(e) => setAmount(e.target.value)}
-                name="amount"
-                placeholder="Enter amount"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={amount}
-                required
-              />
-
-              <input
-                type="date"
-                onChange={(e) => setDate(new Date(e.target.value))}
-                name="date"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={dateAt ? dateAt.toISOString().split("T")[0] : ""}
-                required
-              />
-
-              <select
-                onChange={(e) => setMethod(e.target.value)}
-                name="method"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={method}
-                required
-              >
-                <option value="" disabled>
-                  Select a Method
-                </option>
-                <option value="cash">Cash</option>
-                <option value="online">Online</option>
-              </select>
-
-              <select
-                onChange={(e) => setCategory(e.target.value)}
-                name="category"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={category}
-                required
-              >
-                <option value="" disabled>
-                  Select a Category
-                </option>
-                {categoryData.getAllCateGories.map(
-                  (cate: any, index: number) => (
-                    <option key={index} value={cate.nameOfCategorey}>
+                <select
+                  onChange={(e) => setCategory(e.target.value)}
+                  name="category"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={category}
+                  required
+                >
+                  <option value="" disabled>
+                    Select a Category
+                  </option>
+                  {categoryData?.getAllCateGories?.map((cate: any) => (
+                    <option
+                      key={cate.nameOfCategorey}
+                      value={cate.nameOfCategorey}
+                    >
                       {cate.nameOfCategorey}
                     </option>
-                  )
-                )}
-              </select>
+                  ))}
+                </select>
 
-              <select
-                onChange={(e) => setTransactionType(e.target.value)}
-                name="transactionType"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={transactionType}
-                required
-              >
-                <option value="" disabled>
-                  Select a Transaction Type
-                </option>
-                <option value="spend">Spend</option>
-                <option value="earn">Earn</option>
-                <option value="loan">Loan</option>
-              </select>
+                <select
+                  onChange={(e) => setTransactionType(e.target.value)}
+                  name="transactionType"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={transactionType}
+                  required
+                >
+                  <option value="" disabled>
+                    Select a Transaction Type
+                  </option>
+                  <option value="spend">Spend</option>
+                  <option value="earn">Earn</option>
+                  <option value="loan">Loan</option>
+                </select>
 
-              <input
-                type="text"
-                onChange={(e) => setNote(e.target.value)}
-                name="note"
-                placeholder="Enter note"
-                className="border h-10 rounded-sm text-black w-full mb-5"
-                value={note}
-              />
+                <input
+                  type="text"
+                  onChange={(e) => setNote(e.target.value)}
+                  name="note"
+                  placeholder="Enter note"
+                  className="border h-10 rounded-sm text-black w-full mb-5"
+                  value={note}
+                />
 
-              <button
-                type="submit"
-                disabled={disable}
-                className="border-2 p-2 rounded-md bg-white text-green-700"
-              >
-                Submit
-              </button>
+                <button
+                  type="submit"
+                  disabled={disable}
+                  className="border-2 px-4 py-2 rounded-md bg-white text-green-700"
+                >
+                  Submit
+                </button>
 
-              {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
-            </form>
-          </DialogContent>
+                {error && <p className="text-red-500 mt-3 text-lg">{error}</p>}
+              </form>
+            </DialogContent>
+          ) : (
+            <DialogContent className="flex flex-col items-center justify-center rounded-lg p-5">
+             <DialogTitle>
+
+                <span className="text-xl font-semibold ">
+                  Seems like you haven’t added your budget yet
+                </span>
+             </DialogTitle>
+                <Link href="/accounts">
+                  <Button className="bg-green-700 text-white">
+                    ADD BUDGET
+                  </Button>
+                </Link>
+
+            </DialogContent>
+          )}
         </Dialog>
       ) : (
-        <p className="text-white text-lg">Loading data...</p>
+        <Link href="/categories">
+          <Button className="">ADD Categories</Button>
+        </Link>
       )}
     </div>
   );

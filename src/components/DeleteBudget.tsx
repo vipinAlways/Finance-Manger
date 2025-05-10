@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "./ui/use-toast";
 
 function DeleteBudget({
   className,
@@ -13,6 +14,9 @@ function DeleteBudget({
   const [animation, setAnimation] = useState("");
   const queryClient = useQueryClient();
 
+
+  const {toast} = useToast()
+
   const deleteBudget = async () => {
     try {
       const response = await fetch(`/api/delete-budget?amountId=${amountId}`, {
@@ -20,7 +24,11 @@ function DeleteBudget({
       });
       await response.json();
     } catch (error) {
-      alert("server error");
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     }
   };
 
@@ -29,8 +37,12 @@ function DeleteBudget({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget"] });
     },
-    onError: (error) => {
-      alert("server error");
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     },
   });
   return (
@@ -49,7 +61,7 @@ function DeleteBudget({
         }}
         className="lg:text-xl max-sm:text-sm max-md:text-lg"
       >
-        Delete Budget
+        Drop Budget
       </Button>
     </div>
   );
