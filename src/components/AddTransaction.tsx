@@ -168,7 +168,7 @@ function AddTransaction({ className }: { className: string }) {
                 className="flex flex-col items-center w-full h-full px-3 py-3 text-white bg-green-700 rounded-xl"
                 aria-label="Add Transaction Form"
               >
-                {/* Budget Select */}
+     
                 <div className="w-full flex items-start h-12 text-zinc-800 mb-5">
                   <select
                     name="from"
@@ -264,8 +264,8 @@ function AddTransaction({ className }: { className: string }) {
                   </option>
                   <option value="spend">Spend</option>
                   <option value="earn">Earn</option>
-                  <option value="loan">Loan</option>
-                </select>
+                    <option value="loan">Loan</option>
+                  </select>
 
                 <input
                   type="text"
