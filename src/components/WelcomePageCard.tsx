@@ -5,22 +5,22 @@ import React from "react";
 const cardData = [
   {
     url: "/dashboard",
-    description: "You can monitor journey with graph.",
+    description: "You can monitor your journey with a graph.",
     imageUrl: "/image1.jpg",
   },
   {
     url: "/transaction",
-    description: " You can add transactions",
+    description: "You can add transactions.",
     imageUrl: "/image4.jpg",
   },
   {
     url: "/categories",
-    description: "  Make your financial management easy.",
+    description: "Make your financial management easy.",
     imageUrl: "/image3.jpg",
   },
   {
     url: "/accounts",
-    description: " Let software handle your small tasks.",
+    description: "Let software handle your small tasks.",
     imageUrl: "/image5.jpg",
   },
 ];
@@ -31,18 +31,21 @@ function WelcomePageCard() {
       {cardData.map((item, index) => (
         <Link
           href={item.url}
-          className="flex items-center border max-lg:w-full  w-2/5 rounded-xl sm:h-40  h-72 p-1 lg:hover:scale-105 transition-all ease-in-out duration-300 card max-sm:flex-col"
-          key={index}
+          prefetch={false} 
+          key={item.url}  
+          className="flex items-center border max-lg:w-full w-2/5 rounded-xl sm:h-40 h-72 p-1 lg:hover:scale-105 transition-all ease-in-out duration-300 card max-sm:flex-col"
         >
           <div className="w-full h-64 sm:h-36 sm:w-52 relative">
             <Image
               src={item.imageUrl}
-              alt="hello"
+              alt={item.description}
               className="rounded-lg object-cover object-center border-r-2"
-              fill
+              layout="intrinsic"  
+              width={150} 
+              height={20} 
             />
           </div>
-          <h1 className="flex-grow    text-2xl sm:text-xl text-center">{item.description}</h1>
+          <h1 className="flex-grow text-2xl sm:text-xl text-center">{item.description}</h1>
         </Link>
       ))}
     </div>

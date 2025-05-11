@@ -151,6 +151,44 @@ const Page = () => {
     );
   }
 
+    if (data?.budgetCurrent && data?.budgetCurrent.length <=0 || data?.budgetAll.length <=0) {
+    return (
+      <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
+        <h1 className="text-4xl font-light">
+          You have not added any budget name. Please add one to continue.
+        </h1>
+        <div className="w-full h-32 flex flex-col items-start gap-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>ADD NAME</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add Name</DialogTitle>
+                <DialogDescription>
+                  Add the Name what you want to have for your budget
+                </DialogDescription>
+              </DialogHeader>
+              <form
+                action="POST"
+                onSubmit={handleAddBudgetName}
+                className={cn("flex gap-2 items-center flex-1")}
+              >
+                <input
+                  type="text"
+                  value={nameOfBudget}
+                  name="cateGory"
+                  onChange={(e) => setNameOfBudget(e.target.value)}
+                  className="w-64 p-2 rounded-lg text-zinc-800 "
+                />
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="w-full flex flex-col items-start">
