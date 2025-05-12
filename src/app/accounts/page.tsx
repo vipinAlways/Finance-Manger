@@ -5,9 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { Amount, Transaction } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {  useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
@@ -20,7 +18,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,

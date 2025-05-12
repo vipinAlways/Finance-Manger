@@ -12,6 +12,7 @@ export async function GET(req: Request) {
   const user = await getUser();
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from") || "";
+  const id = searchParams.get("id") || "";
 
   if (!user || !user.email) {
     return NextResponse.json(
@@ -31,7 +32,7 @@ export async function GET(req: Request) {
     }
 
     const currentdate = new Date();
-    const budgetCurrent =
+    let budgetCurrent =
       from !== ""
         ? await amountModel.find({
             user: dbuser._id,
@@ -63,6 +64,13 @@ export async function GET(req: Request) {
               budgetFor: budgetNameForBudget[i].nameOfCategorey,
             })
           );
+    }
+
+    if (id !== "") {
+      budgetCurrent = await amountModel.find({
+        user: dbuser._id,
+        _id: id,
+      });
     }
 
     return NextResponse.json(
