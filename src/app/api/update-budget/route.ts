@@ -1,48 +1,70 @@
 "use server";
-import dbConnect from "@/lib/dbconnects";
+import dbConnect, { dbDisconnect } from "@/lib/dbconnects";
 import amountModel from "@/Models/Amount.model";
+import userModel from "@/Models/User.model";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import mongoose from "mongoose";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function POST(req: Request) {
   await dbConnect();
-
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  if (!user.email) {
-    throw new Error("User is not Authenticated");
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id") || "";
+
+  if (!user) {
+    return NextResponse.json(
+      { success: false, message: "User not found" },
+      { status: 404 }
+    );
+  }
+
+  const dbuser = await userModel.findOne({ id: user.id });
+
+  if (!dbuser) {
+    return NextResponse.json(
+      { success: false, message: "User not found in database" },
+      { status: 404 }
+    );
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return NextResponse.json(
+      { success: false, message: "Invalid or missing ID" },
+      { status: 400 }
+    );
   }
 
   try {
-    const { amount, endDate } = await req.json();
-    const { searchParams } = new URL(req.url);
-    const amountId = searchParams.get("amountId") || "";
+    const { amount, startDate, endDate, budgetFor } = await req.json();
 
-    if (!mongoose.Types.ObjectId.isValid(amountId)) {
+    const updatedAmount = await amountModel.findByIdAndUpdate(id, {
+      amount,
+      startDate,
+      endDate,
+      budgetFor,
+    });
+
+    if (!updatedAmount) {
       return NextResponse.json(
-        { success: false, message: "Invalid amount ID" },
-        { status: 400 }
+        { success: false, message: "Amount not found or update failed" },
+        { status: 404 }
       );
     }
 
-    let budgetChange = await amountModel.findByIdAndUpdate(
-      amountId,
-      {
-        amount: amount,
-        endDate: endDate,
-      },
-      { new: true }
-    );
-
+    await dbDisconnect();
     return NextResponse.json(
-      { success: true, data: budgetChange },
+      {
+        success: true,
+        message: "Amount updated successfully",
+      },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Update error:");
-    return Response.json(
-      { success: false, message: "Failed to update" },
+    console.error("Error updating amount:", error);
+    return NextResponse.json(
+      { success: false, message: "Error updating amount" },
       { status: 500 }
     );
   }

@@ -5,17 +5,28 @@ import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { BudgetName } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AmountGet } from "@/app/accounts/page";
 
-const AddAmount = () => {
+const AddAmount = ({ budData }: { budData?: AmountGet }) => {
   const [budgetFor, setBudgetFor] = useState("");
   const [amount, setAmount] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [budgetName, setBudgetName] = useState<BudgetName[]>([]);
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const AddBudget = async ({
+  useEffect(() => {
+    if (budData) {
+      setAmount(budData.amount);
+      setStartDate(new Date(budData.startDate));
+      setEndDate(new Date(budData.endDate));
+      setBudgetFor(budData.budgetFor);
+    }
+  }, [budData]);
+
+  const addBudget = async ({
     budgetFor,
     amount,
     startDate,
@@ -26,93 +37,143 @@ const AddAmount = () => {
     startDate: Date;
     endDate: Date;
   }) => {
-    try {
-      const response = await fetch("/api/post-amount", {
-        method: "POST",
-        body: JSON.stringify({
-          budgetFor,
-          amount,
-          startDate,
-          endDate,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch("/api/post-amount", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to add budget. Server responded with an error.");
-      }
+    if (!response.ok) throw new Error("Failed to add budget");
 
-      return await response.json();
-      
-    } catch (error) {
-      console.error("Error while adding budget:", error);
-      throw error;
-    }
+    return response.json();
   };
 
-  const { mutate } = useMutation({
-    mutationFn: AddBudget,
+  const updateBudget = async ({
+    budgetFor,
+    amount,
+    startDate,
+    endDate,
+  }: {
+    budgetFor: string;
+    amount: number;
+    startDate: Date;
+    endDate: Date;
+  }) => {
+    if (!budData?._id) throw new Error("Budget ID is missing for update");
+
+    const response = await fetch(
+      `/api/update-budget?id=${budData._id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to update budget");
+
+    return response.json();
+  };
+
+  const { mutate: addMutate } = useMutation({
+    mutationFn: addBudget,
     onSuccess: () => {
       toast({
-        title: "Budget Added",
-        description: `Your budget has been added for`,
+        title: "Success",
+        description: "Budget added successfully",
       });
 
-      setAmount(0);
-      setStartDate(null);
-      setEndDate(null);
-      setBudgetFor("");
-      queryClient.invalidateQueries({queryKey: ["get-budget"]});
-      queryClient.invalidateQueries({queryKey: ["budget"]});
-      queryClient.invalidateQueries({queryKey: ["get-budgetName"]});
+      resetForm();
+      invalidateBudgetQueries();
     },
     onError: () => {
       toast({
         title: "Error",
-        description: "An error occurred while adding the budget.",
+        description: "Failed to add budget",
         variant: "destructive",
       });
     },
   });
+
+  const { mutate: updateMutate } = useMutation({
+    mutationFn: updateBudget,
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Budget updated successfully",
+      });
+
+      resetForm();
+      invalidateBudgetQueries();
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update budget",
+        variant: "destructive",
+      });
+    },
+  });
+
   const getBudgetNames = async () => {
-    try {
-      const response = await fetch("/api/get-budgetname");
-      const result = await response.json();
-      if (result.ok && Array.isArray(result.budgetNames)) {
-        return result.budgetNames
-      } else {
-        console.error("Unexpected API response structure for budget names");
-        return []
-      }
-    } catch (error) {
-      console.error("Error fetching budget names:", error);
-      return []
+    const response = await fetch("/api/get-budgetname");
+    const result = await response.json();
+
+    if (result.ok && Array.isArray(result.budgetNames)) {
+      return result.budgetNames;
+    } else {
+      console.error("Invalid response from /api/get-budgetname");
+      return [];
     }
   };
 
-  const  {data=[]} = useQuery({
+  const { data: budgetNames = [] } = useQuery({
     queryKey: ["get-budgetname"],
-    queryFn: async () => getBudgetNames(),
-  })
+    queryFn: getBudgetNames,
+  });
 
-  // useEffect(() => {
-  //  setBudgetNaem(data)
-    
-  // }, [data]);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!budgetFor || !amount || !startDate || !endDate) {
+      toast({
+        title: "Error",
+        description: "All fields are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const payload = { budgetFor, amount, startDate, endDate };
+
+    if (budData?._id) {
+      updateMutate(payload);
+    } else {
+      addMutate(payload);
+    }
+  };
+
+  const resetForm = () => {
+    setAmount(0);
+    setBudgetFor("");
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const invalidateBudgetQueries = () => {
+    queryClient.invalidateQueries({ queryKey: ["budget"] });
+    queryClient.invalidateQueries({ queryKey: ["get-budget"] });
+    queryClient.invalidateQueries({ queryKey: ["get-budgetname"] });
+  };
 
   return (
     <div className="w-full h-full flex items-center py-4 px-2 bg-[#2ecc71] rounded-xl">
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          mutate({ budgetFor, amount, startDate: startDate!, endDate: endDate! });
-        }}
+        onSubmit={handleSubmit}
         className="flex flex-col items-center justify-around h-full w-full gap-4"
       >
         <div className="flex items-center gap-4 text-lg text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="budgetFor">
+          <label className="w-20 text-center" htmlFor="budgetFor">
             Type
           </label>
           <select
@@ -120,19 +181,21 @@ const AddAmount = () => {
             value={budgetFor}
             onChange={(e) => setBudgetFor(e.target.value)}
             className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
+            required
           >
             <option value="" disabled>
               Select an option
             </option>
-            {data.map((bud:BudgetName, index:number) => (
+            {budgetNames.map((bud: BudgetName, index: number) => (
               <option key={index} value={bud.nameOfCategorey}>
                 {bud.nameOfCategorey}
               </option>
             ))}
           </select>
         </div>
+
         <div className="flex items-center gap-2 text-lg text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="amount">
+          <label className="w-20 text-center" htmlFor="amount">
             Amount
           </label>
           <input
@@ -143,10 +206,12 @@ const AddAmount = () => {
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
             placeholder="Enter budget"
+            required
           />
         </div>
+
         <div className="flex items-center gap-4 text-xl text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="startDate">
+          <label className="w-20 text-center" htmlFor="startDate">
             From:
           </label>
           <input
@@ -156,10 +221,12 @@ const AddAmount = () => {
             value={startDate ? startDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setStartDate(new Date(e.target.value))}
             className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3"
+            required
           />
         </div>
+
         <div className="flex items-center gap-4 text-xl text-zinc-200 justify-around w-full">
-          <label className="text-wrap w-20 text-center" htmlFor="endDate">
+          <label className="w-20 text-center" htmlFor="endDate">
             To:
           </label>
           <input
@@ -169,8 +236,10 @@ const AddAmount = () => {
             value={endDate ? endDate.toISOString().split("T")[0] : ""}
             onChange={(e) => setEndDate(new Date(e.target.value))}
             className="w-48 h-9 bg-zinc-100 text-zinc-500 rounded-lg px-3"
+            required
           />
         </div>
+
         <Button type="submit" className="w-32 p-1 text-xl">
           Submit
         </Button>

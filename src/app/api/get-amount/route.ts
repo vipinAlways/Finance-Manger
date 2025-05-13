@@ -65,14 +65,6 @@ export async function GET(req: Request) {
             })
           );
     }
-
-    if (id !== "") {
-      budgetCurrent = await amountModel.find({
-        user: dbuser._id,
-        _id: id,
-      });
-    }
-
     return NextResponse.json(
       { budgetCurrent, budgetNameForBudget, budgetall, ok: true },
       { status: 200 }
