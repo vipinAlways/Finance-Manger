@@ -33,6 +33,20 @@ export async function POST(req: Request) {
       user: dbuser?._id,
       nameOfCategorey: budgetFor,
     });
+
+    let allreadyBuget =await amountModel.findOne({
+      user:dbuser._id,
+      budgetFor,
+      endDate:{$gte:new Date()}
+    })
+
+    if (allreadyBuget) {
+      return NextResponse.json({
+        text:"You have already budget for this",
+        ok:false
+      },{status:400})
+    }
+
     
     let newAmount = new amountModel({
       budgetFor,
@@ -49,6 +63,9 @@ export async function POST(req: Request) {
       budgetNameForBudget.amount.push(newAmount._id);
       await budgetNameForBudget.save();
     }
+
+
+
 
     await dbDisconnect();
     return NextResponse.json(

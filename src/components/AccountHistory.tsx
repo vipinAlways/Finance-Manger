@@ -53,6 +53,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
           <div>
             {idBudget.budgetFor}
             {idBudget.amount}
+             {new Date(idBudget.endDate).toLocaleDateString("en-US") }
           </div>
         )}
 

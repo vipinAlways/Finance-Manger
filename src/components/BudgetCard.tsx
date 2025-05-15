@@ -28,7 +28,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
       return [];
     }
   };
-  console.log("budget", budget.budgetFor);
+  
 
   const { data: transactionData = [] } = useQuery({
     queryKey: ["transaction",budget.budgetFor],
@@ -120,7 +120,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
               {budget.budgetFor} Usage
             </h1>
             <div className="border-b border-black/20 px-4">
-              <li className="space-x-2 list-disc w-full marker:text-[rgba(75,192,192,0.84)] marker:text-xl hover:marker:text-[rgba(75,192,192,1)]">
+              <li className="space-x-2 list-disc w-full marker:text-[rgba(75,192,192,0.84)] marker:text-xl hover:marker:text-green-600">
                 <span>Earn</span>
                 <span>{earn}</span>
               </li>

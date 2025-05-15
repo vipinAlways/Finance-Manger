@@ -3,6 +3,7 @@ import BarGraph from "@/components/BarGraph";
 import CardData from "@/components/CardData";
 import PieGraph from "@/components/PieGraph";
 import { useToast } from "@/components/ui/use-toast";
+import { Amount } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -79,7 +80,7 @@ function Home() {
             >
               <option value="">All</option>
               {data !== undefined &&
-                data.map((name:any, i: number) => (
+                data.map((name:Amount, i: number) => (
                   <option value={name.budgetFor} key={i}>
                     {name.budgetFor}
                   </option>

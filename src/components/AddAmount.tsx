@@ -43,7 +43,11 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
       body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
     });
 
-    if (!response.ok) throw new Error("Failed to add budget");
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log(errorText);
+      throw new Error(errorText ? errorText : "Failed to add budget");
+    }
 
     return response.json();
   };
@@ -61,14 +65,11 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
   }) => {
     if (!budData?._id) throw new Error("Budget ID is missing for update");
 
-    const response = await fetch(
-      `/api/update-budget?id=${budData._id}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
-      }
-    );
+    const response = await fetch(`/api/update-budget?id=${budData._id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
+    });
 
     if (!response.ok) throw new Error("Failed to update budget");
 
@@ -86,10 +87,21 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
       resetForm();
       invalidateBudgetQueries();
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error, "ye hain error");
+
+      let description = "An unexpected error occurred";
+
+      try {
+        const payload = JSON.parse(error.message);
+        description = payload.text ?? JSON.stringify(payload);
+      } catch {
+        description = error.message;
+      }
+
       toast({
         title: "Error",
-        description: "Failed to add budget",
+        description,
         variant: "destructive",
       });
     },
