@@ -3,14 +3,7 @@
 import React, { useEffect } from "react";
 import { AmountGet } from "@/app/accounts/page";
 import { useQuery } from "@tanstack/react-query";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 import LineChart from "./LineChart";
 import { Button } from "./ui/button";
 import AddAmount from "./AddAmount";
@@ -45,7 +38,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
 
     setIdBudget(budget);
   }, [accountId, data]);
-  console.log(idBudget,"dsds");
+ 
   return (
     <div className="flex justify-around">
       <div>
@@ -63,26 +56,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
       </div>
 
       <div>
-        <AlertDialog>
-          
-          <AlertDialogTrigger asChild>
-            <Button className=" hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-              Update Budget
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent className="min-h-96 min-w-96 ">
-            <AlertDialogTitle className="w-full text-center">
-              Update BUDGET
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-            Update your budget for {idBudget?.budgetFor} here 
-          </AlertDialogDescription>
-
-            {idBudget && <AddAmount budData={idBudget} />}
-
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-          </AlertDialogContent>
-        </AlertDialog>
+       
       </div>
     </div>
   );
