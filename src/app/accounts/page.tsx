@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { Amount, Transaction } from "@/types";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
@@ -55,12 +55,10 @@ const Page = () => {
     }
   };
 
-  const { data} = useQuery({
+  const { data } = useQuery({
     queryKey: ["get-budget"],
     queryFn: async () => await fetchBudgets(),
   });
-
-
 
   const AddBudgetName = async (name: string) => {
     try {
@@ -108,8 +106,24 @@ const Page = () => {
     mutate(nameOfBudget);
   };
 
+  const fetchicon = async () => {
+    fetch("https://api.iconfinder.com/v4/icons/search?query=arrow&count=10", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer X0vjEUN6KRlxbp2DoUkyHeM0VOmxY91rA6BbU5j3Xu6wDodwS0McmilLPBWDUcJ1",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => console.log(json))
+      .catch((err) => console.error(err));
+  };
 
-
+  const {data:icons} =useQuery({
+    queryKey:["icons"],
+    queryFn:async()=>fetchicon()
+  })
   if (data?.budgetName.length === 0) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
@@ -148,7 +162,10 @@ const Page = () => {
     );
   }
 
-    if (data?.budgetCurrent && data?.budgetCurrent.length <=0 || data?.budgetAll.length <=0) {
+  if (
+    (data?.budgetCurrent && data?.budgetCurrent.length <= 0) ||
+    data?.budgetAll.length <= 0
+  ) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
         <h1 className="text-4xl font-light">
@@ -223,7 +240,6 @@ const Page = () => {
               <BudgetCard budget={budget} key={index} />
             ))
           : null}
-        
       </div>
       <div>
         <Table>
