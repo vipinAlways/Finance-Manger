@@ -35,6 +35,7 @@ export interface AmountGet {
 
 const Page = () => {
   const [nameOfBudget, setNameOfBudget] = useState("");
+  const [image, setImage] = useState("");
 
   const { toast } = useToast();
 
@@ -105,25 +106,21 @@ const Page = () => {
     if (!nameOfBudget.trim()) return;
     mutate(nameOfBudget);
   };
-
-  const fetchicon = async () => {
-    fetch("https://api.iconfinder.com/v4/icons/search?query=arrow&count=10", {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer X0vjEUN6KRlxbp2DoUkyHeM0VOmxY91rA6BbU5j3Xu6wDodwS0McmilLPBWDUcJ1",
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.error(err));
+  const fetchIcons = async (name:string) => {
+    const res = await fetch(`/api/get-icons?name=${name}`);
+    if (!res.ok) throw new Error("Failed to fetch icons");
+    const result = await res.json();
+    return result.data.icons;
   };
 
-  const {data:icons} =useQuery({
-    queryKey:["icons"],
-    queryFn:async()=>fetchicon()
-  })
+
+  const { data: icons = [] } = useQuery({
+    queryKey: ["icons"],
+    queryFn: async()=> await fetchIcons(nameOfBudget)
+  });
+
+    console.log(icons,"icons");
+
   if (data?.budgetName.length === 0) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
@@ -195,6 +192,16 @@ const Page = () => {
                   onChange={(e) => setNameOfBudget(e.target.value)}
                   className="w-64 p-2 rounded-lg text-zinc-800 "
                 />
+
+                <select name="icons" value={image} onChange={(e)=>setImage(e.target.value)}>
+                  {
+                    icons && icons.map((icon,index)=>(
+                        <option value={icon.preview_url}>
+
+                        </option>
+                    ))
+                  }
+                </select>
               </form>
             </DialogContent>
           </Dialog>
