@@ -24,6 +24,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import BudgetCard from "@/components/BudgetCard";
+import Image from "next/image";
 
 export interface AmountGet {
   budgetFor: string;
@@ -106,22 +107,21 @@ const Page = () => {
     if (!nameOfBudget.trim()) return;
     mutate(nameOfBudget);
   };
-  const fetchIcons = async (name:string) => {
+  const fetchIcons = async (name: string) => {
     const res = await fetch(`/api/get-icons?name=${name}`);
     if (!res.ok) throw new Error("Failed to fetch icons");
     const result = await res.json();
     return result.data.icons;
   };
 
-
   const { data: icons = [] } = useQuery({
-    queryKey: ["icons"],
-    queryFn: async()=> await fetchIcons(nameOfBudget)
+    queryKey: ["icons", nameOfBudget],
+    queryFn: async () => await fetchIcons(nameOfBudget),
   });
 
-    console.log(icons,"icons");
+  console.log(icons, "icons");
 
-  if (data?.budgetName.length === 0) {
+  if (data?.budgetName && data?.budgetName.length === 0) {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
         <h1 className="text-4xl font-light">
@@ -177,31 +177,53 @@ const Page = () => {
               <DialogHeader>
                 <DialogTitle>Add Name</DialogTitle>
                 <DialogDescription>
-                  Add the Name what you want to have for your budget
+                  Add the Name you want to have for your budget
                 </DialogDescription>
               </DialogHeader>
+
               <form
-                action="POST"
                 onSubmit={handleAddBudgetName}
-                className={cn("flex gap-2 items-center flex-1")}
+                className={cn("flex flex-col gap-4")}
               >
                 <input
                   type="text"
                   value={nameOfBudget}
-                  name="cateGory"
+                  name="category"
                   onChange={(e) => setNameOfBudget(e.target.value)}
-                  className="w-64 p-2 rounded-lg text-zinc-800 "
+                  className="w-full p-2 rounded-lg text-zinc-800"
                 />
 
-                <select name="icons" value={image} onChange={(e)=>setImage(e.target.value)}>
-                  {
-                    icons && icons.map((icon,index)=>(
-                        <option value={icon.preview_url}>
-
-                        </option>
-                    ))
-                  }
+                {/* Select without images inside options */}
+                <select
+                  name="icons"
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  className="p-2 rounded-lg text-zinc-800"
+                >
+                  {icons &&
+                    icons.map((icon: any, index: number) => (
+                      <option
+                        key={index}
+                        value={icon.raster_sizes[0].formats[0].preview_url}
+                      >
+                        Icon {index + 1}
+                      </option>
+                    ))}
                 </select>
+
+                {/* Optional: Show preview of selected image */}
+                {image && (
+                  <div className="flex justify-center">
+                    <Image
+                      src={image}
+                      height={56}
+                      width={56}
+                      alt="Selected Icon"
+                    />
+                  </div>
+                )}
+
+                <Button type="submit">Submit</Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -221,21 +243,54 @@ const Page = () => {
             <DialogHeader>
               <DialogTitle>Add Name</DialogTitle>
               <DialogDescription>
-                Add the name you want for your budget
+                Add the Name you want to have for your budget
               </DialogDescription>
             </DialogHeader>
+
             <form
-              action="POST"
               onSubmit={handleAddBudgetName}
-              className="flex gap-2 items-center flex-1"
+              className={cn("flex flex-col gap-4")}
             >
               <input
                 type="text"
                 value={nameOfBudget}
-                name="cateGory"
+                name="category"
                 onChange={(e) => setNameOfBudget(e.target.value)}
-                className="w-64 p-2 rounded-lg text-zinc-800"
+                className="w-full p-2 rounded-lg text-zinc-800"
               />
+
+              
+              {nameOfBudget && (
+                <select
+                  name="icons"
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  className="p-2 rounded-lg text-zinc-800"
+                >
+                  {icons &&
+                    icons.map((icon: any, index: number) => (
+                      <option
+                        key={index}
+                        value={icon.raster_sizes[8].formats[0].preview_url}
+                      >
+                        Icon {index + 1}
+                      </option>
+                    ))}
+                </select>
+              )}
+
+              {image && (
+                <div className="flex justify-center">
+                  <Image
+                    src={image}
+                    height={56}
+                    width={56}
+                    alt="Selected Icon"
+                  />
+                </div>
+              )}
+
+              <Button type="submit">Submit</Button>
             </form>
           </DialogContent>
         </Dialog>

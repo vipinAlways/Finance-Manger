@@ -11,14 +11,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { AmountGet } from "../page";
 import AddAmount from "@/components/AddAmount";
 
 
-const Page = ({ params }: { params: { acountId: string } }) => {
+const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
   const [idBudget, setIdBudget] = React.useState<AmountGet>();
-  const { acountId } = params;
+  const { acountId } = use(params);
   const { toast } = useToast();
   const fetchBudget = async () => {
     try {
