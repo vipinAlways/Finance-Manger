@@ -9,6 +9,7 @@ import { AmountGet } from "@/app/accounts/page";
 
 const AddAmount = ({ budData }: { budData?: AmountGet }) => {
   const [budgetFor, setBudgetFor] = useState("");
+  const [budgetIcon, setBudgetIcon] = useState("");
   const [amount, setAmount] = useState<number>(0);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -31,16 +32,24 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
     amount,
     startDate,
     endDate,
+    budgetIcon,
   }: {
     budgetFor: string;
     amount: number;
     startDate: Date;
     endDate: Date;
+    budgetIcon: string;
   }) => {
     const response = await fetch("/api/post-amount", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ budgetFor, amount, startDate, endDate }),
+      body: JSON.stringify({
+        budgetFor,
+        amount,
+        startDate,
+        endDate,
+        budgetIcon,
+      }),
     });
 
     if (!response.ok) {
@@ -88,8 +97,6 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
       invalidateBudgetQueries();
     },
     onError: (error) => {
-      console.log(error, "ye hain error");
-
       let description = "An unexpected error occurred";
 
       try {
@@ -155,8 +162,12 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
       });
       return;
     }
+    const selected = budgetNames.find(
+      (bud:BudgetName) => bud.nameOfCategorey === budgetFor
+    );
+    setBudgetIcon(selected?.icon ?? "")
 
-    const payload = { budgetFor, amount, startDate, endDate };
+    const payload = { budgetFor, amount, startDate, endDate, budgetIcon };
 
     if (budData?._id) {
       updateMutate(payload);
@@ -191,7 +202,16 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
           <select
             name="budgetFor"
             value={budgetFor}
-            onChange={(e) => setBudgetFor(e.target.value)}
+            onChange={(e) => {
+              const selectedName = e.target.value;
+              setBudgetFor(selectedName);
+              const selected = budgetNames.find(
+                (bud: BudgetName) => bud.nameOfCategorey === selectedName
+              );
+              if (selected) {
+                setBudgetIcon(selected.icon);
+              }
+            }}
             className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
             required
           >

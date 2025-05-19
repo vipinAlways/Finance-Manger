@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { nameOfBudget } = await req.json();
+    const { nameOfBudget, icon } = await req.json();
 
     const isNameAlready = await BudgetNameModel.findOne({
       nameOfCategorey: nameOfBudget,
@@ -37,7 +37,6 @@ export async function POST(req: Request) {
     });
 
     if (isNameAlready) {
-     
       return NextResponse.json(
         {
           ok: false,
@@ -50,6 +49,7 @@ export async function POST(req: Request) {
 
     const budgetName = await BudgetNameModel.create({
       nameOfCategorey: nameOfBudget,
+      icon: icon,
       user: dbuser._id,
     });
     budgetName.save();

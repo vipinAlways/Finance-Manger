@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req:Request) {
     const {searchParams} = new URL(req.url)
-    const name = searchParams.get("name") || "arrow";
+    const name = searchParams.get("name") || "";
   try {
     const response = await fetch(`https://api.iconfinder.com/v4/icons/search?query=${name}&count=10`, {
       method: "GET",
@@ -17,7 +17,6 @@ export async function GET(req:Request) {
     });
 
     const data = await response.json();
-    console.log('data', data)
     if (!response.ok) {
       return NextResponse.json({message:"Failed to fetch",ok:false},{status:400})
     }

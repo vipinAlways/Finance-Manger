@@ -5,6 +5,7 @@ export const BudgetNameShcema:Schema<BudgetName> = new Schema({
   nameOfCategorey: {
     type: String,
     require: true,
+    unique:true
     
   },
   user: {

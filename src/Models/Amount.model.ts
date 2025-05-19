@@ -21,6 +21,11 @@ const amountSchema: Schema<Amount> = new Schema({
     type:Number,
     
   },
+  image:{
+    type:String,
+    default:"",
+    require:true
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",

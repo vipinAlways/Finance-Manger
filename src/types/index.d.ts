@@ -14,6 +14,7 @@ declare interface Transaction extends Document {
 
 declare interface Amount extends Document {
   budgetFor: string;
+  image:string;
   startDate: Date;
   amount: number;
   saving: number;

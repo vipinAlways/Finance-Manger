@@ -100,7 +100,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
     <Link href={`/accounts/${budget._id}`} className="min-w-96 h-48 bg-[rgba(46,204,113,0.5)] backdrop:blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start relative">
       <div className="flex items-center gap-2">
         <Image
-          src="/image1.jpg"
+          src={budget.image === "" ? "/image1.jpg" : budget.image}
           alt="green"
           width={40}
           height={40}

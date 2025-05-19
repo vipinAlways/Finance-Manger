@@ -9,7 +9,6 @@ export async function POST(req: Request) {
   await dbConnect();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  
 
   if (!user) {
     return NextResponse.json(
@@ -28,31 +27,42 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { amount, startDate, endDate, budgetFor } = await req.json();
+    const { amount, startDate, endDate, budgetFor, budgetIcon } =
+      await req.json();
     const budgetNameForBudget = await BudgetNameModel.findOne({
       user: dbuser?._id,
       nameOfCategorey: budgetFor,
     });
 
-    let allreadyBuget =await amountModel.findOne({
-      user:dbuser._id,
+    let allreadyBuget = await amountModel.findOne({
+      user: dbuser._id,
       budgetFor,
-      endDate:{$gte:new Date()}
-    })
+      endDate: { $gte: new Date() },
+    });
 
     if (allreadyBuget) {
-      return NextResponse.json({
-        text:"You have already budget for this",
-        ok:false
-      },{status:400})
+      return NextResponse.json(
+        {
+          text: "You have already budget for this",
+          ok: false,
+        },
+        { status: 400 }
+      );
     }
 
-    
+    if (!budgetIcon) {
+      return NextResponse.json(
+        { success: false, message: "Budget icon is required" },
+        { status: 400 }
+      );
+    }
+
     let newAmount = new amountModel({
       budgetFor,
       amount,
       startDate,
       endDate,
+      image: budgetIcon,
       saving: 0,
       user: dbuser?._id,
     });
@@ -64,14 +74,9 @@ export async function POST(req: Request) {
       await budgetNameForBudget.save();
     }
 
-
-
-
     await dbDisconnect();
     return NextResponse.json(
-  
       {
-
         success: true,
         ok: true,
         message: "Amount added successfully",
