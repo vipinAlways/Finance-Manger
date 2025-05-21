@@ -45,7 +45,6 @@ function PieGraph({forWhich}: {forWhich: string}) {
         try {
           const response = await fetch(`/api/get-amount?from=${forWhich}`);
           const result = await response.json();
-          console.log("piegraph");
     
           if (result?.ok && Array.isArray(result.budgetCurrent)) {
             setBudget(result.budgetCurrent);

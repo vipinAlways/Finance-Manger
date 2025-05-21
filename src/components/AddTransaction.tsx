@@ -45,8 +45,7 @@ function AddTransaction({ className }: { className: string }) {
   const fetchAmounts = async () => {
     try {
       const response = await fetch(`/api/get-amount`);
-      console.log("carddata");
-      const result = await response.json();
+        const result = await response.json();
 
       if (result.ok) {
         if (Array.isArray(result.budgetCurrent)) {

@@ -5,7 +5,7 @@ import "swiper/css/scrollbar";
 import Link from "next/link";
 import { Amount, Transaction } from "@/types";
 
-function Data({ forWhich="" }: { forWhich: string }) {
+function Data({ forWhich = "" }: { forWhich: string }) {
   const [amount, setAmount] = useState<number>(0);
   const [from, setStartDate] = useState<Date>();
   const [to, setEndDate] = useState<Date>();
@@ -22,10 +22,8 @@ function Data({ forWhich="" }: { forWhich: string }) {
         const result = await response.json();
 
         if (result.transactions && Array.isArray(result.transactions)) {
-          console.log("result hain kya ", result.transaction);
           setTransactions(result.transactions);
         } else {
-          console.error("Error in transaction response");
           return [];
         }
       } catch (error) {
@@ -59,7 +57,6 @@ function Data({ forWhich="" }: { forWhich: string }) {
     const fetchBudget = async () => {
       try {
         const response = await fetch(`/api/get-amount?from=${forWhich}`);
-        console.log("carddata");
         const result = await response.json();
 
         if (result.ok) {
@@ -67,15 +64,15 @@ function Data({ forWhich="" }: { forWhich: string }) {
             setBudget(result.budgetCurrent);
           } else {
             console.error("Unexpected API response structure from amount");
-            return []
+            return [];
           }
         } else {
           console.error("Error in fetching budget");
-          throw new Error("Sorry server error")
+          throw new Error("Sorry server error");
         }
       } catch (error) {
         console.error("Failed to fetch budget:", error);
-        throw new Error("Sorry server error")
+        throw new Error("Sorry server error");
       }
     };
 
@@ -86,25 +83,25 @@ function Data({ forWhich="" }: { forWhich: string }) {
       if (forWhich === "") {
         let earliestStart = new Date(budget[0].startDate);
         let latestEnd = new Date(budget[0].endDate);
-  
+
         budget.forEach(({ startDate, endDate }) => {
           const start = new Date(startDate);
           const end = new Date(endDate);
-  
+
           if (start < earliestStart) earliestStart = start;
           if (end > latestEnd) latestEnd = end;
         });
-  
+
         setStartDate(earliestStart);
         setEndDate(latestEnd);
-  
+
         const totalAmount = budget.reduce((sum, b) => sum + b.amount, 0);
         setAmount(totalAmount);
       } else {
         const futureBudget = budget.find(
           (b) => new Date(b.endDate) > new Date()
         );
-  
+
         if (futureBudget) {
           setAmount(futureBudget.amount);
           setStartDate(new Date(futureBudget.startDate));
@@ -115,7 +112,6 @@ function Data({ forWhich="" }: { forWhich: string }) {
       }
     }
   }, [forWhich, budget]);
-  
 
   const blances = [
     {
@@ -139,7 +135,6 @@ function Data({ forWhich="" }: { forWhich: string }) {
       color: "bg-yellow-500",
     },
   ];
-
 
   return (
     <div className="flex justify-evenly w-full flex-1 gap-2 max-lg:gap-4 items-center h-fit flex-wrap">

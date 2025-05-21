@@ -28,7 +28,7 @@ function Home() {
           return
         
         } else {
-          console.error("Failed to add user:", data);
+         
           throw new Error("Failed to add user:", data);
         }
       } catch (error) {

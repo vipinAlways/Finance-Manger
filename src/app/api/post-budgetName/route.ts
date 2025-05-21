@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log("ye nahi catch");
+   
     return NextResponse.json(
       {
         ok: false,

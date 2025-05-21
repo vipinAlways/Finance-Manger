@@ -34,7 +34,6 @@ function BarGraph({ forWhich }: { forWhich: string }) {
       try {
         const response = await fetch(`/api/get-amount?from=${forWhich}`);
         const result = await response.json();
-        console.log("bar graph", result);
 
         if (result?.ok && Array.isArray(result.budgetCurrent)) {
           setBudget(result.budgetCurrent);
@@ -53,7 +52,6 @@ function BarGraph({ forWhich }: { forWhich: string }) {
 
         if (Array.isArray(result.transactions)) {
           setTransactions(result.transactions);
-          console.log("result", result);
         } else {
           console.error(
             "Unexpected API response structure for transactions data."

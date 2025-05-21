@@ -42,7 +42,7 @@ const AmountSideBar = () => {
         }
         return result.budgetCurrent;
       } else {
-        console.log("some error while fetching in array checking");
+        return [];
       }
     } catch (error) {
       console.log("error in client ", error);
