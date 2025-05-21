@@ -10,7 +10,7 @@ import { AmountGet } from "@/app/accounts/page";
 const AddAmount = ({ budData }: { budData?: AmountGet }) => {
   const [budgetFor, setBudgetFor] = useState("");
   const [budgetIcon, setBudgetIcon] = useState("");
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [budgetName, setBudgetName] = useState<BudgetName[]>([]);
@@ -234,7 +234,7 @@ const AddAmount = ({ budData }: { budData?: AmountGet }) => {
             type="number"
             name="amount"
             id="amount"
-            value={amount}
+            value={amount !== null ? amount : ""}
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-48 h-9 bg-zinc-100 text-zinc-800 rounded-lg px-3"
             placeholder="Enter budget"

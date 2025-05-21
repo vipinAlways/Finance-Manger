@@ -23,13 +23,14 @@ import {
 } from "@/components/ui/table";
 import BudgetCard from "@/components/BudgetCard";
 import Image from "next/image";
+import AddAmount from "@/components/AddAmount";
 
 export interface AmountGet {
   budgetFor: string;
   startDate: Date;
   amount: number;
   endDate: Date;
-  image:string
+  image: string;
   _id?: string;
 }
 
@@ -70,7 +71,7 @@ const Page = () => {
     try {
       const response = await fetch("/api/post-budgetName", {
         method: "POST",
-        body: JSON.stringify({ nameOfBudget: name ,icon:icon}),
+        body: JSON.stringify({ nameOfBudget: name, icon: icon }),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -126,7 +127,7 @@ const Page = () => {
         <h1 className="text-4xl font-light">
           You have not added any budget name. Please add one to continue.
         </h1>
-        <div className="w-full h-32 flex flex-col items-start gap-4">
+        <div className="h-32 flex flex-col items-start gap-4">
           <Dialog>
             <DialogTrigger asChild>
               <Button>ADD NAME</Button>
@@ -151,7 +152,9 @@ const Page = () => {
                 />
                 <div className="grid grid-cols-4 gap-2">
                   {icons?.map((icon: any, index: number) => {
-                    const iconUrl = icon.raster_sizes[icon.raster_sizes.length -1].formats[0].preview_url;
+                    const iconUrl =
+                      icon.raster_sizes[icon.raster_sizes.length - 1].formats[0]
+                        .preview_url;
                     const isSelected = icon === iconUrl;
 
                     return (
@@ -190,58 +193,24 @@ const Page = () => {
     return (
       <div className="w-full py-3 flex items-center justify-center gap-4 h-[30rem] flex-col">
         <h1 className="text-4xl font-light">
-          You have not added any budget name. Please add one to continue.
+          You have not added any budget . Please add one to continue.
         </h1>
-        <div className="w-full h-32 flex flex-col items-start gap-4">
+        <div className="w-full h-32 flex flex-col items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button>ADD NAME</Button>
+              <Button>+ ADD Budget</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Add Name</DialogTitle>
-                <DialogDescription>
-                  Add the name you want for your budget and choose an icon
-                </DialogDescription>
+                <DialogTitle>Add Budger</DialogTitle>
+                <DialogDescription>Add the BUUdget</DialogDescription>
               </DialogHeader>
-              <form
-                onSubmit={handleAddBudgetName}
-                className="flex flex-col gap-4"
-              >
-                <input
-                  type="text"
-                  value={nameOfBudget}
-                  name="category"
-                  onChange={(e) => setNameOfBudget(e.target.value)}
-                  className="w-full p-2 rounded-lg text-zinc-800"
-                />
-                <div className="grid grid-cols-4 gap-2">
-                  {icons?.map((icon: any, index: number) => {
-                    const iconUrl = icon.raster_sizes[icon.raster_sizes.length -1].formats[0].preview_url;
-                    const isSelected = icon === iconUrl;
 
-                    return (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => setIcon(iconUrl)}
-                        className={`border-2 rounded-lg p-1 ${
-                          isSelected ? "border-blue-500" : "border-transparent"
-                        }`}
-                      >
-                        <Image
-                          src={iconUrl}
-                          height={56}
-                          width={56}
-                          alt={`Icon ${index + 1}`}
-                          className="rounded"
-                        />
-                      </button>
-                    );
-                  })}
-                </div>
-                <Button type="submit">Submit</Button>
-              </form>
+              {data?.budgetName ? (
+                <AddAmount />
+              ) : (
+                <p>please add budget name first</p>
+              )}
             </DialogContent>
           </Dialog>
         </div>
