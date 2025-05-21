@@ -3,10 +3,8 @@
 import React, { useEffect } from "react";
 import { AmountGet } from "@/app/accounts/page";
 import { useQuery } from "@tanstack/react-query";
-
 import LineChart from "./LineChart";
-import { Button } from "./ui/button";
-import AddAmount from "./AddAmount";
+import Image from "next/image";
 
 const AccountHistory = ({ accountId }: { accountId: string }) => {
   const [idBudget, setIdBudget] = React.useState<AmountGet>();
@@ -27,8 +25,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
     }
   };
 
-
-  const { data=[] } = useQuery({
+  const { data = [] } = useQuery({
     queryKey: ["budget"],
     queryFn: async () => fetchBudget(),
   });
@@ -38,15 +35,27 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
 
     setIdBudget(budget);
   }, [accountId, data]);
- 
+
   return (
-    <div className="flex justify-around">
-      <div>
+    <div className="font-serif py-4">
+      <div className="flex flex-col justify-between h-full gap-4">
         {idBudget && (
-          <div>
-            {idBudget.budgetFor}
-            {idBudget.amount}
-             {new Date(idBudget.endDate).toLocaleDateString("en-US") }
+          <div className="flex gap-2 items-center w-full justify-start">
+            <div className="text-2xl font-bold  w-full flex items-center gap-2">
+              <div className="relative w-10 h-10">
+                <Image
+                  src={idBudget.image}
+                  alt={idBudget.budgetFor}
+                  fill
+                  lazyBoundary="100px"
+                />
+              </div>
+              <h1 className="text-4xl">{idBudget.budgetFor}</h1>
+            </div>
+            <div className="flex flex-col items-start justify-center w-full">
+              <h1>Amount{" "} : {idBudget.amount}</h1>
+              <h1>Duration{" "}: {new Date(idBudget.startDate).toLocaleDateString("en-US")} - {new Date(idBudget.endDate).toLocaleDateString("en-US")}</h1>
+            </div>
           </div>
         )}
 
@@ -55,9 +64,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
         </div>
       </div>
 
-      <div>
-       
-      </div>
+      <div></div>
     </div>
   );
 };

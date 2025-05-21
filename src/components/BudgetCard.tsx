@@ -97,7 +97,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
   
 
   return (
-    <Link href={`/accounts/${budget._id}`} className="min-w-96 h-48 bg-[rgba(46,204,113,0.5)] backdrop:blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start relative">
+    <Link href={`/accounts/${budget._id}`} className="w-96 max-lg:min-w-80 h-48 bg-[rgba(46,204,113,0.5)] backdrop:blur-md border border-white/30 rounded-xl p-6 shadow-[0_4px_10px_2px_rgba(117,171,140,0.2)] hover:shadow-[0_4px_12px_3px_rgba(0,0,0,0.25)] hover:transition-all hover:duration-300 hover:ease-in-out duration-300 ease-in-out hover:scale-[1.01] flex flex-col gap-3 items-start relative text-white">
       <div className="flex items-center gap-2">
         <Image
           src={budget.image === "" ? "/image1.jpg" : budget.image}
@@ -106,7 +106,7 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
           height={40}
           className="rounded-full"
         />
-        <h1 className="text-2xl text-white/80 font-medium">
+        <h1 className="text-2xl font-medium">
           {budget.budgetFor}
         </h1>
       </div>
@@ -143,11 +143,11 @@ const BudgetCard = ({ budget }: { budget: AmountGet }) => {
       <div></div>
       <div>
        <h1>
-       {new Date(budget.startDate).toLocaleDateString("en-US") }
+       Start's From :{" "} {new Date(budget.startDate).toLocaleDateString("en-US") }
        </h1>
 
        <h1>
-        {budget.amount}
+       Budget :{" "} {budget.amount}
        </h1>
        
        

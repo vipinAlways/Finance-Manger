@@ -254,8 +254,8 @@ const Page = () => {
                     <Button
                       key={index}
                       type="button"
-                      onClick={() => setIcon(iconUrl)}
-                      className={`border-2 rounded-lg p-1 bg-transparent hover:bg-transparent  ${
+                      onClick={() => setIcon(iconUrl)} 
+                      className={`border-2 rounded-lg p-1 bg-transparent hover:bg-transparent focus:border-blue-400 ${
                         isSelected ? "border-blue-500" : "border-transparent"
                       }`}
                     >

@@ -31,7 +31,9 @@ interface categoryGrp {
 
 const Page: React.FC = () => {
   const [Transactions, setTransactions] = useState<Transaction[]>([]);
-  const [FilteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  const [FilteredTransactions, setFilteredTransactions] = useState<
+    Transaction[]
+  >([]);
   const [searchBox, setSearchBox] = useState("");
   const [selectType, setSelectType] = useState("");
   const [nameOfcateGorey, setNameOfcateGorey] = useState<string>("");
@@ -39,8 +41,8 @@ const Page: React.FC = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [categoryGroup, setCategoryGroup] = useState<categoryGrp[]>([]);
   const { toast } = useToast();
-  const [open,setOpen] = useState<boolean>()
-    const queryClient = useQueryClient();
+  const [open, setOpen] = useState<boolean>();
+  const queryClient = useQueryClient();
 
   const fetchTransactions = async () => {
     try {
@@ -99,8 +101,8 @@ const Page: React.FC = () => {
         description: "Category created successfully",
       });
       setNameOfcateGorey("");
-      setOpen(false)
-      queryClient.invalidateQueries({queryKey: ["categories"]});
+      setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: (error) => {
       toast({
@@ -129,23 +131,19 @@ const Page: React.FC = () => {
     if (result && Array.isArray(result.getAllCateGories)) {
       return result.getAllCateGories;
     } else {
-      return []
-      
+      return [];
     }
   };
 
-  const { data: categoryGroupsData=[] } = useQuery({
+  const { data: categoryGroupsData = [] } = useQuery({
     queryKey: ["categories"],
-    queryFn: async ()=>await fetchCategories(),
+    queryFn: async () => await fetchCategories(),
   });
-  
-  
 
   return (
     <div className="w-full">
-      
-      <div className="p-4 flex justify-start gap-3 flex-1">
-        <Dialog open={open} onOpenChange={ ()=>setOpen(!open)}>
+      <div className="p-4 flex justify-start w-full  px-16 gap-3 flex-1">
+        <Dialog open={open} onOpenChange={() => setOpen(!open)}>
           <DialogTrigger asChild>
             <Button className="w-40">ADD CATEGORY</Button>
           </DialogTrigger>
@@ -174,9 +172,7 @@ const Page: React.FC = () => {
         </Dialog>
       </div>
 
-      
       <div className="w-full flex justify-evenly items-center my-4 max-sm:gap-1 max-md:flex-col">
-      
         <div className="flex items-center gap-3 w-full max-sm:justify-between flex-col">
           <label htmlFor="category" className="text-xl leading-none">
             Category
@@ -189,15 +185,15 @@ const Page: React.FC = () => {
             <option value="" disabled>
               Select a Category
             </option>
-            { Array.isArray(categoryGroupsData) && categoryGroupsData.map((cate:categoryGrp, index:number) => (
-              <option key={index} value={cate.nameOfCategorey}>
-                {cate.nameOfCategorey}
-              </option>
-            ))}
+            {Array.isArray(categoryGroupsData) &&
+              categoryGroupsData.map((cate: categoryGrp, index: number) => (
+                <option key={index} value={cate.nameOfCategorey}>
+                  {cate.nameOfCategorey}
+                </option>
+              ))}
           </select>
         </div>
 
-        
         <div className="flex items-center gap-3 w-full flex-col">
           <label className="font-semibold text-lg text-zinc-800">
             Transaction Type
@@ -216,9 +212,11 @@ const Page: React.FC = () => {
           </select>
         </div>
 
-       
         <div className="flex items-center gap-3 w-full flex-col">
-          <label htmlFor="start" className="font-semibold text-lg text-zinc-800">
+          <label
+            htmlFor="start"
+            className="font-semibold text-lg text-zinc-800"
+          >
             From
           </label>
           <input
@@ -241,7 +239,6 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-     
       {Transactions.length > 0 && (
         <div className="w-full border-2">
           <Table>
@@ -250,7 +247,7 @@ const Page: React.FC = () => {
             </TableCaption>
             <TableHeader>
               <TableRow className="text-green-900">
-                <TableHead >Date</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead>From</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Method</TableHead>
@@ -262,15 +259,13 @@ const Page: React.FC = () => {
             <TableBody>
               {FilteredTransactions.map((t, index) => (
                 <TableRow key={index} className="text-black">
-                  <TableCell >
-                    {new Date(t.date).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell >{t.from}</TableCell>
-                  <TableCell >{t.amount}</TableCell>
-                  <TableCell >{t.method}</TableCell>
-                  <TableCell >{t.category}</TableCell>
-                  <TableCell >{t.transactionType}</TableCell>
-                  <TableCell >{t.note}</TableCell>
+                  <TableCell>{new Date(t.date).toLocaleDateString()}</TableCell>
+                  <TableCell>{t.from}</TableCell>
+                  <TableCell>{t.amount}</TableCell>
+                  <TableCell>{t.method}</TableCell>
+                  <TableCell>{t.category}</TableCell>
+                  <TableCell>{t.transactionType}</TableCell>
+                  <TableCell>{t.note}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

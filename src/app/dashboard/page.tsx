@@ -105,7 +105,7 @@ function Home() {
           <div className="flex flex-col w-full items-center justify-center h-full lg:text-xl max-md:text-lg max-sm:text-sm">
             <Link
               href="/categories"
-              className="h-[55vh] max-md:h-80 flex flex-col max-lg:w-[90%] lg:w-96 max-sm:w-[95%] justify-center rounded-xl items-center bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
+              className="h-[55vh] max-md:h-80 flex flex-col max-lg:w-[90%] lg:w-96 max-sm:w-[98%] justify-center rounded-xl items-center bg-gradient-to-tr from-green-800 via-green-300 to-green-500 "
             >
               <PieGraph forWhich={from} />
             </Link>

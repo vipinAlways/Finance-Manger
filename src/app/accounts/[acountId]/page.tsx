@@ -15,7 +15,6 @@ import React, { use, useEffect } from "react";
 import { AmountGet } from "../page";
 import AddAmount from "@/components/AddAmount";
 
-
 const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
   const [idBudget, setIdBudget] = React.useState<AmountGet>();
   const { acountId } = use(params);
@@ -81,16 +80,14 @@ const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
     },
   });
 
-   
-
   return (
-    <div className="flex items-center justify-around">
+    <div className="flex items-start justify-evenly px-10 font-serif">
       <AccountHistory accountId={acountId} />
-      <div className="flex flex-col justify-around h-80">
+      <div className="flex flex-col justify-start gap-4">
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className=" hover:bg-green-700 hover:scale-105 hover:transition-all hover:duration-150 hover:ease-out text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+              <Button className=" hover:bg-green-700 hover:scale-105 hover:transition-all hover:duration-150 hover:ease-out text-white px-4 py-2 rounded-lg transition duration-200">
                 Update Budget
               </Button>
             </AlertDialogTrigger>
@@ -108,7 +105,12 @@ const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <Button onClick={() => mutate()} className="hover:bg-green-700 hover:scale-105 hover:transition-all hover:duration-150 hover:ease-out">Drop budget</Button>
+        <Button
+          onClick={() => mutate()}
+          className="hover:bg-green-700 hover:scale-105 hover:transition-all hover:duration-150 hover:ease-out"
+        >
+          Drop budget
+        </Button>
       </div>
     </div>
   );
