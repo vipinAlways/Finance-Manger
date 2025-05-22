@@ -81,9 +81,9 @@ const Page = ({ params }: { params: Promise<{ acountId: string }> }) => {
   });
 
   return (
-    <div className="flex items-start justify-evenly px-10 font-serif">
+    <div className="flex items-start justify-evenly  h-full max-lg:gap-3 w-full max-lg:justify-center max-lg:items-center px-10 max-lg:px-3 font-serif max-lg:flex-col">
       <AccountHistory accountId={acountId} />
-      <div className="flex flex-col justify-start gap-4">
+      <div className="flex flex-col justify-start max-lg:justify-center gap-4 items-center max-lg:flex-row w-full">
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>

@@ -38,9 +38,9 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
 
   return (
     <div className="font-serif py-4">
-      <div className="flex flex-col justify-between h-full gap-4">
+      <div className="flex flex-col justify-between h-full gap-4  max-lg:h-fit">
         {idBudget && (
-          <div className="flex gap-2 items-center w-full justify-start">
+          <div className="flex gap-2 items-center w-full justify-start max-md:justify-center  max-md:flex-col">
             <div className="text-2xl font-bold  w-full flex items-center gap-2">
               <div className="relative w-10 h-10">
                 <Image
@@ -50,7 +50,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
                   lazyBoundary="100px"
                 />
               </div>
-              <h1 className="text-4xl">{idBudget.budgetFor}</h1>
+              <h1 className="text-4xl max-lg:text-2xl">{idBudget.budgetFor}</h1>
             </div>
             <div className="flex flex-col items-start justify-center w-full">
               <h1>Amount{" "} : {idBudget.amount}</h1>
@@ -59,7 +59,7 @@ const AccountHistory = ({ accountId }: { accountId: string }) => {
           </div>
         )}
 
-        <div className="h-96">
+        <div className="h-[30rem] max-lg:h-[11rem] max-lg:w-80 w-[50vw]">
           <LineChart forWhich={idBudget ? idBudget.budgetFor : ""} />
         </div>
       </div>

@@ -45,13 +45,12 @@ function AddTransaction({ className }: { className: string }) {
   const fetchAmounts = async () => {
     try {
       const response = await fetch(`/api/get-amount`);
-        const result = await response.json();
+      const result = await response.json();
 
       if (result.ok) {
         if (Array.isArray(result.budgetCurrent)) {
           return result.budgetCurrent;
         } else {
-          console.error("Unexpected API response structure from amount");
           return [];
         }
       } else {
@@ -140,6 +139,7 @@ function AddTransaction({ className }: { className: string }) {
     });
   };
 
+
   return (
     <div
       className={cn(
@@ -153,7 +153,7 @@ function AddTransaction({ className }: { className: string }) {
             <Button>ADD TRANSACTION</Button>
           </DialogTrigger>
 
-          {amountData?.length > 0 && amountData?.budgetCurrent?.length > 0 ? (
+          {amountData?.length > 0  ? (
             <DialogContent className="w-[95%] h-4/5 max-lg:h-3/5 flex flex-col items-center justify-center rounded-lg p-2">
               <DialogHeader>
                 <DialogTitle>Add Category</DialogTitle>
@@ -167,7 +167,6 @@ function AddTransaction({ className }: { className: string }) {
                 className="flex flex-col items-center w-full h-full px-3 py-3 text-white bg-green-700 rounded-xl"
                 aria-label="Add Transaction Form"
               >
-     
                 <div className="w-full flex items-start h-12 text-zinc-800 mb-5">
                   <select
                     name="from"
@@ -191,8 +190,8 @@ function AddTransaction({ className }: { className: string }) {
                     <option value="" disabled>
                       Select Budget
                     </option>
-                    {amountData.map((amount: AmountGet) => (
-                      <option key={amount._id} value={amount._id}>
+                    {amountData.map((amount: AmountGet,index:string) => (
+                      <option key={amount._id + index} value={amount._id}>
                         {amount.budgetFor}
                       </option>
                     ))}
@@ -241,9 +240,9 @@ function AddTransaction({ className }: { className: string }) {
                   <option value="" disabled>
                     Select a Category
                   </option>
-                  {categoryData?.getAllCateGories?.map((cate: any) => (
+                  {categoryData?.getAllCateGories?.map((cate: any,index:string) => (
                     <option
-                      key={cate.nameOfCategorey}
+                      key={cate.nameOfCategorey + index}
                       value={cate.nameOfCategorey}
                     >
                       {cate.nameOfCategorey}
@@ -263,8 +262,8 @@ function AddTransaction({ className }: { className: string }) {
                   </option>
                   <option value="spend">Spend</option>
                   <option value="earn">Earn</option>
-                    <option value="loan">Loan</option>
-                  </select>
+                  <option value="loan">Loan</option>
+                </select>
 
                 <input
                   type="text"
@@ -288,18 +287,14 @@ function AddTransaction({ className }: { className: string }) {
             </DialogContent>
           ) : (
             <DialogContent className="flex flex-col items-center justify-center rounded-lg p-5">
-             <DialogTitle>
-
+              <DialogTitle>
                 <span className="text-xl font-semibold ">
                   Seems like you haven’t added your budget yet
                 </span>
-             </DialogTitle>
-                <Link href="/accounts">
-                  <Button className="bg-green-700 text-white">
-                    ADD BUDGET
-                  </Button>
-                </Link>
-
+              </DialogTitle>
+              <Link href="/accounts">
+                <Button className="bg-green-700 text-white">ADD BUDGET</Button>
+              </Link>
             </DialogContent>
           )}
         </Dialog>

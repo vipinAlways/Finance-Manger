@@ -65,6 +65,8 @@ export async function GET(req: Request) {
             })
           );
     }
+
+    console.log(budgetCurrent,"budcurrent`");
     return NextResponse.json(
       { budgetCurrent, budgetNameForBudget, budgetall, ok: true },
       { status: 200 }

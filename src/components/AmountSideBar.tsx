@@ -54,15 +54,15 @@ const AmountSideBar = () => {
     queryFn: async () => getbudgets(),
   });
   return (
-    <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-[#2ecc71] rounded-md">
-      <aside className="h-[30rem] w-40 p-1 flex flex-col sticky top-0 items-center justify-between max-md:hidden">
+    <div className=" w-fit h-fit py-3 flex sticky top-48 left-0 bg-[#2ecc71] rounded-md ">
+      <aside className="h-[30rem] max-lg:h-[80vw] w-40 p-1 flex flex-col sticky top-0 items-center justify-between max-md:hidden">
         <h1 className="w-full text-2xl leading-none text-center text-zinc-800 font-bold  font-serif ">
           Budgets
         </h1>
 
         <div className="h-96 w-full flex flex-col items-center text-green-100 py-4">
           {data.length > 0 &&
-            data.map((bud: BudgetTypes) => (
+            data.map((bud: BudgetTypes) => (  
               <Link
                 href={`/accounts/${bud._id}`}
                 key={bud._id}
