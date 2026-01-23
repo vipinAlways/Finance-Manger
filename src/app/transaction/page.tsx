@@ -18,12 +18,6 @@ function Page() {
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    const preventDefault = (e: Event) => {
-      e.preventDefault();
-    };
-
-  }, [block]);
 
   return (
     <div className="max-lg:p-4 flex flex-col gap-2">

@@ -66,7 +66,7 @@ function AddTransaction({ className }: { className: string }) {
     queryKey: ["amounts"],
     queryFn: async () => await fetchAmounts(),
   });
-
+  console.log(amountData);
   const addTransaction = async (transaction: {
     amount: string;
     dateAt: Date | null;
@@ -107,6 +107,8 @@ function AddTransaction({ className }: { className: string }) {
     },
   });
 
+  console.log(endDate);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -121,7 +123,7 @@ function AddTransaction({ className }: { className: string }) {
       return;
     }
 
-    if (dateAt > endDate!) {
+    if (endDate && dateAt > endDate) {
       toast({
         title: "Error",
         description: "Date should be less than end date",
@@ -139,12 +141,11 @@ function AddTransaction({ className }: { className: string }) {
     });
   };
 
-
   return (
     <div
       className={cn(
         "w-full h-full flex items-center justify-start pt-3 my-3 px-4",
-        className
+        className,
       )}
     >
       {amountData && categoryData?.getAllCateGories?.length > 0 ? (
@@ -153,7 +154,7 @@ function AddTransaction({ className }: { className: string }) {
             <Button>ADD TRANSACTION</Button>
           </DialogTrigger>
 
-          {amountData?.length > 0  ? (
+          {amountData?.length > 0 ? (
             <DialogContent className="w-[95%] h-4/5 max-lg:h-3/5 flex flex-col items-center justify-center rounded-lg p-2">
               <DialogHeader>
                 <DialogTitle>Add Category</DialogTitle>
@@ -172,26 +173,29 @@ function AddTransaction({ className }: { className: string }) {
                     name="from"
                     id="from"
                     className="rounded-sm border h-10 w-40"
-                    onChange={(e) => {
-                      setFrom(e.target.value);
-                      setEndDate(() => {
-                        const selectedBudget = amountData.find(
-                          (budget: AmountGet) =>
-                            budget.budgetFor === e.target.value
-                        );
-                        return selectedBudget
-                          ? new Date(selectedBudget.endDate)
-                          : null;
-                      });
-                    }}
                     value={from}
                     required
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      setFrom(selectedId);
+
+                      const selectedBudget = amountData.find(
+                        (budget: AmountGet) => budget._id === selectedId,
+                      );
+
+                      setEndDate(
+                        selectedBudget
+                          ? new Date(selectedBudget.endDate)
+                          : null,
+                      );
+                    }}
                   >
                     <option value="" disabled>
                       Select Budget
                     </option>
-                    {amountData.map((amount: AmountGet,index:string) => (
-                      <option key={amount._id + index} value={amount._id}>
+
+                    {amountData.map((amount: AmountGet, index: number) => (
+                      <option key={`${amount._id}-${index}`} value={amount._id}>
                         {amount.budgetFor}
                       </option>
                     ))}
@@ -240,14 +244,16 @@ function AddTransaction({ className }: { className: string }) {
                   <option value="" disabled>
                     Select a Category
                   </option>
-                  {categoryData?.getAllCateGories?.map((cate: any,index:string) => (
-                    <option
-                      key={cate.nameOfCategorey + index}
-                      value={cate.nameOfCategorey}
-                    >
-                      {cate.nameOfCategorey}
-                    </option>
-                  ))}
+                  {categoryData?.getAllCateGories?.map(
+                    (cate: any, index: string) => (
+                      <option
+                        key={cate.nameOfCategorey + index}
+                        value={cate.nameOfCategorey}
+                      >
+                        {cate.nameOfCategorey}
+                      </option>
+                    ),
+                  )}
                 </select>
 
                 <select
