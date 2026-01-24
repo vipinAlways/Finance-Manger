@@ -66,7 +66,7 @@ function AddTransaction({ className }: { className: string }) {
     queryKey: ["amounts"],
     queryFn: async () => await fetchAmounts(),
   });
-  console.log(amountData);
+
   const addTransaction = async (transaction: {
     amount: string;
     dateAt: Date | null;
@@ -107,7 +107,7 @@ function AddTransaction({ className }: { className: string }) {
     },
   });
 
-  console.log(endDate);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,7 +154,7 @@ function AddTransaction({ className }: { className: string }) {
             <Button>ADD TRANSACTION</Button>
           </DialogTrigger>
 
-          {amountData?.length > 0 ? (
+          {amountData ? (
             <DialogContent className="w-[95%] h-4/5 max-lg:h-3/5 flex flex-col items-center justify-center rounded-lg p-2">
               <DialogHeader>
                 <DialogTitle>Add Category</DialogTitle>

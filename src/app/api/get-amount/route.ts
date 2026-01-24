@@ -17,7 +17,7 @@ export async function GET(req: Request) {
   if (!user || !user.email) {
     return NextResponse.json(
       { success: false, message: "User not found or not authenticated" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     if (!dbuser) {
       return NextResponse.json(
         { success: false, message: "User not found in database" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -56,25 +56,24 @@ export async function GET(req: Request) {
             await amountModel.find({
               user: dbuser._id,
               budgetFor: from,
-            })
+            }),
           )
         : budgetall.push(
             await amountModel.find({
               user: dbuser._id,
               budgetFor: budgetNameForBudget[i].nameOfCategorey,
-            })
+            }),
           );
     }
 
-    console.log(budgetCurrent,"budcurrent`");
     return NextResponse.json(
       { budgetCurrent, budgetNameForBudget, budgetall, ok: true },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
       { success: false, message: "An error occurred while fetching amounts" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
